@@ -40,7 +40,7 @@ object EkranMotoru {
     fun animOku(): Pair<Map<String, String?>, String?> {
         val m = LinkedHashMap<String, String?>()
         for (k in animAnahtar) {
-            val o = AyarMotoru.tekOku("global", k)
+            val o = AyarMotoru.hizliOku("global", k)
             if (o.hata != null) return Pair(emptyMap(), o.hata)
             m[k] = o.deger
         }
@@ -56,7 +56,7 @@ object EkranMotoru {
 
     fun animUygula(ctx: Context, deger: String): String? {
         for (k in animAnahtar) {
-            val o = AyarMotoru.tekOku("global", k)
+            val o = AyarMotoru.hizliOku("global", k)
             if (o.hata != null) return o.hata
             if (o.deger != null && ayniMi(o.deger, deger)) continue
             val h = AyarMotoru.yaz(ctx, "global", k, deger)

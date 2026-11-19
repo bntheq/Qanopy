@@ -36,11 +36,47 @@ data class Durum(
     val ayrinti: String
 )
 
+object DurumOnbellek {
+    @Volatile
+    var son: Durum? = null
+}
+
 object Denetim {
     const val HEDEF_CIHAZ = "surya"
 
-    private fun varMi(yol: String, bayrak: String = "f"): Boolean {
-        return Root.calistir("test -" + bayrak + " " + yol + " && echo evet || echo hayir").cikti.trim() == "evet"
+    private const val BETIK = """id
+echo '@@MAGISK'
+magisk -v 2>/dev/null
+echo '@@MODUL'
+test -d /data/adb/modules/qanopy_core && echo evet || echo hayir
+echo '@@SURUM'
+grep '^version=' /data/adb/modules/qanopy_core/module.prop 2>/dev/null | cut -d= -f2
+echo '@@KAPALI'
+test -f /data/adb/modules/qanopy_core/disable && echo evet || echo hayir
+echo '@@GUVENLI'
+test -f /data/adb/qanopy/safe_mode && echo evet || echo hayir
+echo '@@SAYAC'
+cat /data/adb/qanopy/boot_count 2>/dev/null || echo ?
+echo '@@LOG'
+tail -n 40 /data/adb/qanopy/boot.log 2>/dev/null
+echo '@@SON'
+"""
+
+    private fun bol(cikti: String): Map<String, String> {
+        val b = HashMap<String, String>()
+        var anahtar = "id"
+        val sb = StringBuilder()
+        for (satir in cikti.lines()) {
+            if (satir.startsWith("@@")) {
+                b[anahtar] = sb.toString().trim()
+                anahtar = satir.substring(2).trim()
+                sb.setLength(0)
+            } else {
+                sb.append(satir).append('\n')
+            }
+        }
+        b[anahtar] = sb.toString().trim()
+        return b
     }
 
     fun kontrolEt(): Durum {
@@ -48,28 +84,25 @@ object Denetim {
         if (cihaz != HEDEF_CIHAZ) {
             return Durum(cihaz, false, null, null, null, null, null, null, null, null, "cihaz kilidi")
         }
-        val id = Root.calistir("id")
-        val rootVar = id.basarili && id.cikti.contains("uid=0")
-        if (!rootVar) {
-            return Durum(cihaz, true, false, null, null, null, null, null, null, null, "su: " + id.cikti)
+        val r = Root.calistir(BETIK)
+        val b = bol(r.cikti)
+        val idc = b["id"] ?: ""
+        if (!idc.contains("uid=0")) {
+            return Durum(cihaz, true, false, null, null, null, null, null, null, null, "su: " + r.cikti.take(200))
         }
-        val mv = Root.calistir("magisk -v")
-        val modulKurulu = varMi("/data/adb/modules/qanopy_core", "d")
-        var surum: String? = null
-        var kapali: Boolean? = null
-        if (modulKurulu) {
-            val s = Root.calistir("grep '^version=' /data/adb/modules/qanopy_core/module.prop | cut -d= -f2")
-            surum = if (s.basarili && s.cikti.isNotEmpty()) s.cikti else null
-            kapali = varMi("/data/adb/modules/qanopy_core/disable")
-        }
-        val guvenli = varMi("/data/adb/qanopy/safe_mode")
-        val sayac = Root.calistir("cat /data/adb/qanopy/boot_count 2>/dev/null || echo ?").cikti.trim()
-        val log = Root.calistir("tail -n 40 /data/adb/qanopy/boot.log 2>/dev/null").cikti
+        val mv = b["MAGISK"].orEmpty()
+        val modulKurulu = b["MODUL"] == "evet"
+        val surumHam = b["SURUM"].orEmpty()
+        val surum = if (modulKurulu && surumHam.isNotEmpty()) surumHam else null
+        val kapali: Boolean? = if (modulKurulu) b["KAPALI"] == "evet" else null
+        val guvenli = b["GUVENLI"] == "evet"
+        val sayac = b["SAYAC"].orEmpty().ifEmpty { "?" }
+        val log = b["LOG"].orEmpty()
         return Durum(
             cihaz,
             true,
             true,
-            if (mv.basarili && mv.cikti.isNotEmpty()) mv.cikti else null,
+            if (mv.isNotEmpty()) mv else null,
             modulKurulu,
             surum,
             kapali,

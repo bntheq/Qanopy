@@ -15,6 +15,7 @@ import androidx.compose.ui.platform.LocalContext
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AyarMotoru.baglam = applicationContext
         setContent {
             val ctx = LocalContext.current
             val koyu = isSystemInDarkTheme()

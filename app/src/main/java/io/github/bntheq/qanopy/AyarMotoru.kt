@@ -84,6 +84,29 @@ object AyarMotoru {
         }
     }
 
+    @Volatile
+    var baglam: Context? = null
+
+    private fun uygulamaOku(tablo: String, anahtar: String): String? {
+        val c = baglam ?: return null
+        return try {
+            when (tablo) {
+                "global" -> android.provider.Settings.Global.getString(c.contentResolver, anahtar)
+                "system" -> android.provider.Settings.System.getString(c.contentResolver, anahtar)
+                "secure" -> android.provider.Settings.Secure.getString(c.contentResolver, anahtar)
+                else -> null
+            }
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    // Once uygulama icinden (root yok, hizli), bos donerse eski content yoluna duser
+    fun hizliOku(tablo: String, anahtar: String): Okuma {
+        val h = uygulamaOku(tablo, anahtar)
+        return if (h != null) Okuma(null, h) else tekOku(tablo, anahtar)
+    }
+
     private fun gecmisDosya(ctx: Context) = File(ctx.filesDir, "gecmis.txt")
 
     // yeni == null -> ayari sil. Basari: null, hata: mesaj
@@ -91,7 +114,7 @@ object AyarMotoru {
         if (tablo !in tablolar) return "Geçersiz tablo"
         if (!anahtarDesen.matches(anahtar)) return "Ad geçersiz (harf, rakam, _ . : - kullan, en çok 100 karakter)"
         if (yeni != null && !duzMu(yeni)) return "Değerde satır sonu veya sekme olamaz"
-        val e = tekOku(tablo, anahtar)
+        val e = hizliOku(tablo, anahtar)
         if (e.hata != null) return e.hata
         val eski = e.deger
         if (eski != null && !duzMu(eski)) return "Eski değer çok satırlı, güvenle geri alınamaz. Yazılmadı."
@@ -103,7 +126,8 @@ object AyarMotoru {
             kabuk("content insert --uri content://settings/$tablo --bind ${sq("name:s:$anahtar")} --bind ${sq("value:s:$yeni")}")
         }
         if (w.kod != 0) return "Yazma hatası: " + w.cikti.take(300)
-        val d = tekOku(tablo, anahtar)
+        var d = hizliOku(tablo, anahtar)
+        if (d.hata == null && d.deger != yeni) d = tekOku(tablo, anahtar)
         if (d.hata != null) return d.hata
         if (d.deger != yeni) return "Doğrulama BAŞARISIZ: beklenen=${yeni ?: "(yok)"} okunan=${d.deger ?: "(yok)"}"
         val zaman = SimpleDateFormat("dd.MM HH:mm:ss", Locale.US).format(Date())

@@ -71,11 +71,14 @@ fun Ekran() {
     val pano = LocalClipboardManager.current
     val kapsam = rememberCoroutineScope()
     var deneme by remember { mutableIntStateOf(0) }
-    var durum by remember { mutableStateOf<Durum?>(null) }
+    var durum by remember { mutableStateOf<Durum?>(DurumOnbellek.son) }
 
     LaunchedEffect(deneme) {
+        if (deneme == 0 && DurumOnbellek.son != null) return@LaunchedEffect
         durum = null
-        durum = withContext(Dispatchers.IO) { Denetim.kontrolEt() }
+        val yeniDurum = withContext(Dispatchers.IO) { Denetim.kontrolEt() }
+        DurumOnbellek.son = yeniDurum
+        durum = yeniDurum
     }
 
     val surum = remember {
