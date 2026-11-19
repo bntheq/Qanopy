@@ -32,3 +32,20 @@ jobs:
         with:
           name: Qanopy-debug-apk
           path: app/build/outputs/apk/debug/*.apk
+
+  modul:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Modulu paketle
+        run: |
+          cd module
+          mkdir -p META-INF/com/google/android
+          curl -fsSL -o META-INF/com/google/android/update-binary https://raw.githubusercontent.com/topjohnwu/Magisk/master/scripts/module_installer.sh
+          grep -q "install_module" META-INF/com/google/android/update-binary || { echo "Kurulum betigi beklenen icerikte degil"; exit 1; }
+          echo "#MAGISK" > META-INF/com/google/android/updater-script
+          zip -r9 ../qanopy_core-X1.2a.zip .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Qanopy-core-modul
+          path: qanopy_core-X1.2a.zip

@@ -1,0 +1,6 @@
+id=qanopy_core
+name=Qanopy Core
+version=X1.2a
+versionCode=5
+author=bntheq
+description=Qanopy bootloop korumasi (X1.2a: sadece log yazar, sisteme dokunmaz)
