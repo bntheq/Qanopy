@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Qanopy</string>
+    <string name="surum_etiket">Version %1$s</string>
+    <string name="kontrol_ediliyor">Checking…</string>
+    <string name="kilit_baslik">This device is not supported</string>
+    <string name="kilit_aciklama">Qanopy is built only for the Poco X3 NFC (surya). This device codename: %1$s. For safety, nothing will be done.</string>
+    <string name="cihaz_baslik">Device</string>
+    <string name="cihaz_uygun">Supported (%1$s)</string>
+    <string name="root_baslik">Root</string>
+    <string name="root_var">Root access available</string>
+    <string name="root_yok">No root access</string>
+    <string name="root_yok_aciklama">Grant Qanopy access in the Magisk prompt, then retry. If you denied it earlier, enable it under Superuser in Magisk.</string>
+    <string name="magisk_baslik">Magisk</string>
+    <string name="magisk_bilinmiyor">Could not read version</string>
+    <string name="modul_baslik">qanopy_core module</string>
+    <string name="modul_kurulu">Installed</string>
+    <string name="modul_yok">Not installed (coming in X1.2)</string>
+    <string name="tekrar_dene">Check again</string>
+    <string name="rapor_kopyala">Copy report</string>
+    <string name="rapor_kopyalandi">Report copied</string>
+</resources>

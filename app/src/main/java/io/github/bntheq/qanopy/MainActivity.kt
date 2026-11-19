@@ -1,20 +1,33 @@
 package io.github.bntheq.qanopy
 
-import android.app.Activity
-import android.graphics.Color
 import android.os.Bundle
-import android.view.Gravity
-import android.widget.TextView
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 
-class MainActivity : Activity() {
+class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val yazi = TextView(this)
-        yazi.text = getString(R.string.hello)
-        yazi.textSize = 28f
-        yazi.gravity = Gravity.CENTER
-        yazi.setTextColor(Color.WHITE)
-        yazi.setBackgroundColor(Color.parseColor("#1B1B2F"))
-        setContentView(yazi)
+        setContent {
+            MaterialTheme(
+                colorScheme = darkColorScheme(
+                    primary = Color(0xFF6EE7B7),
+                    background = Color(0xFF12121F),
+                    surface = Color(0xFF1B1B2F)
+                )
+            ) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    Ekran()
+                }
+            }
+        }
     }
 }

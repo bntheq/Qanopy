@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Qanopy</string>
-    <string name="hello">Qanopy çalışıyor</string>
+    <string name="surum_etiket">Sürüm %1$s</string>
+    <string name="kontrol_ediliyor">Kontrol ediliyor…</string>
+    <string name="kilit_baslik">Bu cihaz desteklenmiyor</string>
+    <string name="kilit_aciklama">Qanopy yalnızca Poco X3 NFC (surya) için yapıldı. Bu cihazın kod adı: %1$s. Güvenlik için hiçbir işlem yapılmayacak.</string>
+    <string name="cihaz_baslik">Cihaz</string>
+    <string name="cihaz_uygun">Uygun (%1$s)</string>
+    <string name="root_baslik">Root</string>
+    <string name="root_var">Root erişimi var</string>
+    <string name="root_yok">Root erişimi yok</string>
+    <string name="root_yok_aciklama">Magisk izin penceresinde Qanopy için izin ver, sonra tekrar dene. Daha önce reddettiysen Magisk, Süper Kullanıcı bölümünden izni aç.</string>
+    <string name="magisk_baslik">Magisk</string>
+    <string name="magisk_bilinmiyor">Sürüm okunamadı</string>
+    <string name="modul_baslik">qanopy_core modülü</string>
+    <string name="modul_kurulu">Kurulu</string>
+    <string name="modul_yok">Kurulu değil (X1.2 ile gelecek)</string>
+    <string name="tekrar_dene">Tekrar kontrol et</string>
+    <string name="rapor_kopyala">Raporu kopyala</string>
+    <string name="rapor_kopyalandi">Rapor kopyalandı</string>
 </resources>
