@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ekran31_tab">Ekran</string>
+    <string name="ekran31_anim_title">Animasyon hızı</string>
+    <string name="ekran31_anim_help">Pencere, geçiş ve animatör hızlarını birlikte değiştirir. Düşük değer arayüzü hızlı, yüksek değer yavaş gösterir. Her değişiklik defterine yazılır ve Geçmiş sekmesinden geri alınabilir.</string>
+    <string name="ekran31_off">Kapalı (0x)</string>
+    <string name="ekran31_fast">Hızlı (0,5x)</string>
+    <string name="ekran31_normal">Normal (1x)</string>
+    <string name="ekran31_slow">Yavaş (1,5x)</string>
+    <string name="ekran31_window">Pencere animasyonu</string>
+    <string name="ekran31_transition">Geçiş animasyonu</string>
+    <string name="ekran31_animator">Animatör süresi</string>
+    <string name="ekran31_unset">ayarlanmamış (varsayılan 1.0)</string>
+    <string name="ekran31_current">Şu an: %1$s</string>
+    <string name="ekran31_custom">Özel değer</string>
+    <string name="ekran31_applied">Animasyon hızı uygulandı.</string>
+</resources>

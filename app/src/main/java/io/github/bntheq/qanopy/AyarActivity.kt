@@ -102,6 +102,7 @@ fun AyarEkran() {
     val onbellek = remember { mutableStateMapOf<String, Map<String, String>>() }
     val basliklar = listOf(
         R.string.ayar_tab_status,
+        R.string.ekran31_tab,
         R.string.ayar_tab_list,
         R.string.ayar_tab_history,
         R.string.ayar_tab_diff,
@@ -118,9 +119,10 @@ fun AyarEkran() {
             }
             when (sekme) {
                 0 -> Ekran()
-                1 -> AyarListeSekmesi(onbellek)
-                2 -> AyarGecmisSekmesi()
-                3 -> AyarFarkSekmesi()
+                1 -> EkranAyarSekmesi()
+                2 -> AyarListeSekmesi(onbellek)
+                3 -> AyarGecmisSekmesi()
+                4 -> AyarFarkSekmesi()
                 else -> AyarTestSekmesi()
             }
         }

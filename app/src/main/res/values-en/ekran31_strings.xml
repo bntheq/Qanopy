@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ekran31_tab">Display</string>
+    <string name="ekran31_anim_title">Animation speed</string>
+    <string name="ekran31_anim_help">Changes window, transition and animator speeds together. A lower value makes the interface faster, a higher value slower. Every change is written to the journal and can be undone from the History tab.</string>
+    <string name="ekran31_off">Off (0x)</string>
+    <string name="ekran31_fast">Fast (0.5x)</string>
+    <string name="ekran31_normal">Normal (1x)</string>
+    <string name="ekran31_slow">Slow (1.5x)</string>
+    <string name="ekran31_window">Window animation</string>
+    <string name="ekran31_transition">Transition animation</string>
+    <string name="ekran31_animator">Animator duration</string>
+    <string name="ekran31_unset">not set (default 1.0)</string>
+    <string name="ekran31_current">Current: %1$s</string>
+    <string name="ekran31_custom">Custom value</string>
+    <string name="ekran31_applied">Animation speed applied.</string>
+</resources>
