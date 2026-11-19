@@ -304,8 +304,42 @@ fun AyarGecmisSekmesi() {
     var liste by remember { mutableStateOf(AyarMotoru.gecmis(ctx)) }
     var mesaj by remember { mutableStateOf<String?>(null) }
     var calisiyor by remember { mutableStateOf(false) }
+    var onay by remember { mutableStateOf<AyarMotoru.Kayit?>(null) }
     val yok = stringResource(R.string.ayar_none)
     val silindi = stringResource(R.string.ayar_deleted)
+    val kaynakAd = mapOf(
+        "qanopy" to stringResource(R.string.ayar22_src_qanopy),
+        "geri" to stringResource(R.string.ayar22_src_undo),
+        "fark" to stringResource(R.string.ayar22_src_diff)
+    )
+    val aktifYazi = stringResource(R.string.ayar22_active)
+    val geriYazi = stringResource(R.string.ayar22_reverted)
+    val yeniVar = stringResource(R.string.ayar22_newer_exists)
+
+    onay?.let { k ->
+        AlertDialog(
+            onDismissRequest = { onay = null },
+            title = { Text(stringResource(R.string.ayar22_confirm_title)) },
+            text = { Text(stringResource(R.string.ayar22_confirm_text, k.tablo + "/" + k.anahtar, k.eski ?: yok)) },
+            confirmButton = {
+                Button(onClick = {
+                    onay = null
+                    calisiyor = true
+                    thread {
+                        val h = AyarMotoru.geriAl(ctx, k)
+                        anaIs {
+                            mesaj = h ?: ctx.getString(R.string.ayar_undone, k.tablo, k.anahtar)
+                            liste = AyarMotoru.gecmis(ctx)
+                            calisiyor = false
+                        }
+                    }
+                }) { Text(stringResource(R.string.ayar22_confirm_yes)) }
+            },
+            dismissButton = {
+                OutlinedButton(onClick = { onay = null }) { Text(stringResource(R.string.ayar22_cancel)) }
+            }
+        )
+    }
 
     Column(
         Modifier.fillMaxSize().padding(horizontal = 12.dp, vertical = 8.dp),
@@ -313,6 +347,7 @@ fun AyarGecmisSekmesi() {
     ) {
         Text(stringResource(R.string.ayar_history_title), style = MaterialTheme.typography.titleSmall)
         mesaj?.let { Text(it) }
+        if (calisiyor) LinearProgressIndicator(Modifier.fillMaxWidth())
         if (liste.isEmpty()) Text(stringResource(R.string.ayar_history_empty))
         LazyColumn(Modifier.weight(1f)) {
             items(liste) { k ->
@@ -320,20 +355,21 @@ fun AyarGecmisSekmesi() {
                     Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                         Text("${k.zaman}  ${k.tablo}/${k.anahtar}", style = MaterialTheme.typography.titleSmall)
                         Text("${k.eski ?: yok}  →  ${k.yeni ?: silindi}", style = MaterialTheme.typography.bodySmall)
-                        OutlinedButton(
-                            enabled = !calisiyor,
-                            onClick = {
-                                calisiyor = true
-                                thread {
-                                    val h = AyarMotoru.yaz(ctx, k.tablo, k.anahtar, k.eski)
-                                    anaIs {
-                                        mesaj = h ?: ctx.getString(R.string.ayar_undone, k.tablo, k.anahtar)
-                                        liste = AyarMotoru.gecmis(ctx)
-                                        calisiyor = false
-                                    }
-                                }
+                        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                            Text(kaynakAd[k.kaynak] ?: k.kaynak, style = MaterialTheme.typography.labelMedium)
+                            Text(
+                                if (k.geriAlindi) geriYazi else aktifYazi,
+                                style = MaterialTheme.typography.labelMedium,
+                                color = if (k.geriAlindi) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.primary
+                            )
+                        }
+                        if (k.geriAlinabilir) {
+                            OutlinedButton(enabled = !calisiyor, onClick = { onay = k }) {
+                                Text(stringResource(R.string.ayar_undo))
                             }
-                        ) { Text(stringResource(R.string.ayar_undo)) }
+                        } else if (!k.geriAlindi && k.kaynak != "geri") {
+                            Text(yeniVar, style = MaterialTheme.typography.bodySmall)
+                        }
                     }
                 }
             }
@@ -345,9 +381,45 @@ fun AyarGecmisSekmesi() {
 fun AyarFarkSekmesi() {
     val ctx = LocalContext.current
     var onceZ by remember { mutableStateOf(onceZamani(ctx)) }
-    var sonuc by remember { mutableStateOf<List<String>>(emptyList()) }
+    var sonuc by remember { mutableStateOf<List<AyarMotoru.FarkSatir>>(emptyList()) }
     var mesaj by remember { mutableStateOf<String?>(null) }
     var calisiyor by remember { mutableStateOf(false) }
+    var onay by remember { mutableStateOf<AyarMotoru.FarkSatir?>(null) }
+    val bitti = remember { mutableStateMapOf<String, Boolean>() }
+    val yok = stringResource(R.string.ayar_none)
+    val etiketQ = stringResource(R.string.ayar22_tag_qanopy)
+    val etiketD = stringResource(R.string.ayar22_tag_external)
+    val dondu = stringResource(R.string.ayar22_restored)
+    val cokSatirYazi = stringResource(R.string.ayar22_multiline)
+
+    onay?.let { s ->
+        AlertDialog(
+            onDismissRequest = { onay = null },
+            title = { Text(stringResource(R.string.ayar22_confirm_title)) },
+            text = { Text(stringResource(R.string.ayar22_confirm_text, s.tamAd, s.once ?: yok)) },
+            confirmButton = {
+                Button(onClick = {
+                    onay = null
+                    calisiyor = true
+                    thread {
+                        val h = AyarMotoru.farkDondur(ctx, s)
+                        anaIs {
+                            if (h == null) {
+                                bitti[s.tamAd] = true
+                                mesaj = ctx.getString(R.string.ayar22_restore_done, s.tamAd)
+                            } else {
+                                mesaj = h
+                            }
+                            calisiyor = false
+                        }
+                    }
+                }) { Text(stringResource(R.string.ayar22_confirm_yes)) }
+            },
+            dismissButton = {
+                OutlinedButton(onClick = { onay = null }) { Text(stringResource(R.string.ayar22_cancel)) }
+            }
+        )
+    }
 
     Column(
         Modifier.fillMaxSize().padding(horizontal = 12.dp, vertical = 8.dp),
@@ -393,14 +465,14 @@ fun AyarFarkSekmesi() {
                             if (r.second != null) {
                                 anaIs { mesaj = ctx.getString(R.string.ayar_error, r.second); calisiyor = false }
                             } else {
-                                val tum = AyarMotoru.fark(once, r.first)
-                                val gosterilen = if (tum.size > 300) {
-                                    tum.take(300) + ctx.getString(R.string.ayar_diff_more, tum.size - 300)
-                                } else tum
+                                val tum = AyarMotoru.farkSatirlari(ctx, once, r.first)
+                                val gosterilen = tum.take(300)
+                                val ek = if (tum.size > 300) " " + ctx.getString(R.string.ayar_diff_more, tum.size - 300) else ""
                                 anaIs {
+                                    bitti.clear()
                                     sonuc = gosterilen
                                     mesaj = if (tum.isEmpty()) ctx.getString(R.string.ayar_diff_none)
-                                    else ctx.getString(R.string.ayar_diff_found, tum.size)
+                                    else ctx.getString(R.string.ayar_diff_found, tum.size) + ek
                                     calisiyor = false
                                 }
                             }
@@ -409,7 +481,7 @@ fun AyarFarkSekmesi() {
                 }
             ) { Text(stringResource(R.string.ayar_after)) }
             if (sonuc.isNotEmpty()) {
-                OutlinedButton(onClick = { kopyala(ctx, sonuc.joinToString("\n")) }) {
+                OutlinedButton(onClick = { kopyala(ctx, sonuc.joinToString("\n") { AyarMotoru.farkMetni(it) }) }) {
                     Text(stringResource(R.string.ayar_copy))
                 }
             }
@@ -417,8 +489,31 @@ fun AyarFarkSekmesi() {
         if (calisiyor) LinearProgressIndicator(Modifier.fillMaxWidth())
         mesaj?.let { Text(it) }
         LazyColumn(Modifier.weight(1f)) {
-            items(sonuc) {
-                Text(it, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(vertical = 2.dp))
+            items(sonuc) { s ->
+                Card(Modifier.fillMaxWidth().padding(vertical = 3.dp)) {
+                    Column(Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                        Text(AyarMotoru.farkMetni(s), style = MaterialTheme.typography.bodySmall)
+                        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                            Text(
+                                if (s.qanopy) etiketQ else etiketD,
+                                style = MaterialTheme.typography.labelMedium,
+                                color = if (s.qanopy) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.tertiary
+                            )
+                            if (bitti[s.tamAd] == true) {
+                                Text(dondu, style = MaterialTheme.typography.labelMedium)
+                            }
+                        }
+                        if (bitti[s.tamAd] != true) {
+                            if (AyarMotoru.cokSatirli(s)) {
+                                Text(cokSatirYazi, style = MaterialTheme.typography.bodySmall)
+                            } else {
+                                OutlinedButton(enabled = !calisiyor, onClick = { onay = s }) {
+                                    Text(stringResource(R.string.ayar22_restore))
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }

@@ -16,7 +16,19 @@ object AyarMotoru {
     class Sonuc(val kod: Int, val cikti: String)
     class Liste(val veri: Map<String, String>, val hata: String?)
     class Okuma(val hata: String?, val deger: String?)
-    class Kayit(val zaman: String, val tablo: String, val anahtar: String, val eski: String?, val yeni: String?)
+    class Kayit(
+        val zaman: String,
+        val tablo: String,
+        val anahtar: String,
+        val eski: String?,
+        val yeni: String?,
+        val no: Int = 0,
+        val kaynak: String = "qanopy",
+        val hedef: Int = 0,
+        val geriAlindi: Boolean = false,
+        val geriAlinabilir: Boolean = false
+    )
+    class FarkSatir(val tamAd: String, val tur: Char, val once: String?, val sonra: String?, val qanopy: Boolean)
 
     private fun sq(s: String) = "'" + s.replace("'", "'\\''") + "'"
     private fun duzMu(s: String) = !s.contains('\n') && !s.contains('\r') && !s.contains('\t')
@@ -75,7 +87,7 @@ object AyarMotoru {
     private fun gecmisDosya(ctx: Context) = File(ctx.filesDir, "gecmis.txt")
 
     // yeni == null -> ayari sil. Basari: null, hata: mesaj
-    fun yaz(ctx: Context, tablo: String, anahtar: String, yeni: String?): String? {
+    fun yaz(ctx: Context, tablo: String, anahtar: String, yeni: String?, kaynak: String = "qanopy", hedef: Int = 0): String? {
         if (tablo !in tablolar) return "Geçersiz tablo"
         if (!anahtarDesen.matches(anahtar)) return "Ad geçersiz (harf, rakam, _ . : - kullan, en çok 100 karakter)"
         if (yeni != null && !duzMu(yeni)) return "Değerde satır sonu veya sekme olamaz"
@@ -95,18 +107,81 @@ object AyarMotoru {
         if (d.hata != null) return d.hata
         if (d.deger != yeni) return "Doğrulama BAŞARISIZ: beklenen=${yeni ?: "(yok)"} okunan=${d.deger ?: "(yok)"}"
         val zaman = SimpleDateFormat("dd.MM HH:mm:ss", Locale.US).format(Date())
-        gecmisDosya(ctx).appendText("$zaman\t$tablo\t$anahtar\t${eski ?: "NULL"}\t${yeni ?: "NULL"}\n")
+        gecmisDosya(ctx).appendText("$zaman\t$tablo\t$anahtar\t${eski ?: "NULL"}\t${yeni ?: "NULL"}\t$kaynak\t$hedef\n")
         return null
     }
 
-    fun gecmis(ctx: Context): List<Kayit> {
+    private fun gecmisOku(ctx: Context): List<Kayit> {
         val f = gecmisDosya(ctx)
         if (!f.exists()) return emptyList()
-        return f.readLines().takeLast(100).reversed().mapNotNull { s ->
-            val p = s.split("\t", limit = 5)
-            if (p.size < 5) null
-            else Kayit(p[0], p[1], p[2], if (p[3] == "NULL") null else p[3], if (p[4] == "NULL") null else p[4])
+        val ham = ArrayList<Kayit>()
+        var no = 0
+        for (s in f.readLines()) {
+            no++
+            val p = s.split("\t", limit = 7)
+            if (p.size < 5) continue
+            val kaynak = p.getOrNull(5)?.takeIf { it.isNotEmpty() } ?: "qanopy"
+            val hedef = p.getOrNull(6)?.toIntOrNull() ?: 0
+            ham.add(
+                Kayit(
+                    p[0], p[1], p[2],
+                    if (p[3] == "NULL") null else p[3],
+                    if (p[4] == "NULL") null else p[4],
+                    no, kaynak, hedef
+                )
+            )
         }
+        val geri = HashSet<Int>()
+        for (k in ham) if (k.kaynak == "geri" && k.hedef > 0) geri.add(k.hedef)
+        val bas = HashMap<String, Int>()
+        for (k in ham) if (k.kaynak != "geri" && k.no !in geri) bas[k.tablo + "/" + k.anahtar] = k.no
+        return ham.map { k ->
+            val alindi = k.no in geri
+            val olur = k.kaynak != "geri" && !alindi && bas[k.tablo + "/" + k.anahtar] == k.no
+            Kayit(k.zaman, k.tablo, k.anahtar, k.eski, k.yeni, k.no, k.kaynak, k.hedef, alindi, olur)
+        }
+    }
+
+    fun gecmis(ctx: Context): List<Kayit> = gecmisOku(ctx).takeLast(100).reversed()
+
+    fun geriAl(ctx: Context, k: Kayit): String? {
+        val g = gecmisOku(ctx).firstOrNull { it.no == k.no }
+        if (g == null || !g.geriAlinabilir) return "Bu kayıt artık geri alınamaz (zaten geri alınmış ya da daha yeni bir kayıt var)."
+        return yaz(ctx, g.tablo, g.anahtar, g.eski, "geri", g.no)
+    }
+
+    fun farkSatirlari(ctx: Context, once: Map<String, String>, sonra: Map<String, String>): List<FarkSatir> {
+        val son = HashMap<String, String?>()
+        for (k in gecmisOku(ctx)) son[k.tablo + "/" + k.anahtar] = k.yeni
+        val c = ArrayList<FarkSatir>()
+        fun ekle(ad: String, tur: Char, o: String?, s: String?) {
+            c.add(FarkSatir(ad, tur, o, s, son.containsKey(ad) && son[ad] == s))
+        }
+        for ((k, v) in sonra) {
+            val o = once[k]
+            if (o == null) ekle(k, '+', null, v)
+            else if (o != v) ekle(k, '~', o, v)
+        }
+        for ((k, v) in once) {
+            if (!sonra.containsKey(k)) ekle(k, '-', v, null)
+        }
+        return c
+    }
+
+    fun farkMetni(s: FarkSatir): String = when (s.tur) {
+        '+' -> "+ ${s.tamAd} = ${kisalt(s.sonra ?: "")}"
+        '~' -> "~ ${s.tamAd}: ${kisalt(s.once ?: "")} -> ${kisalt(s.sonra ?: "")}"
+        else -> "- ${s.tamAd} (eskiden: ${kisalt(s.once ?: "")})"
+    }
+
+    fun cokSatirli(s: FarkSatir): Boolean =
+        (s.once?.contains("\\n") == true) || (s.sonra?.contains("\\n") == true)
+
+    fun farkDondur(ctx: Context, s: FarkSatir): String? {
+        val i = s.tamAd.indexOf('/')
+        if (i <= 0) return "Ayar adı çözülemedi."
+        if (cokSatirli(s)) return "Çok satırlı değer, güvenle döndürülemez."
+        return yaz(ctx, s.tamAd.substring(0, i), s.tamAd.substring(i + 1), s.once, "fark", 0)
     }
 
     fun yazmaTesti(): List<String> {

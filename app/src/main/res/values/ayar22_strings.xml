@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ayar22_src_qanopy">Qanopy yaptı</string>
+    <string name="ayar22_src_undo">Geri alma kaydı</string>
+    <string name="ayar22_src_diff">Fark sekmesinden döndürme</string>
+    <string name="ayar22_active">Aktif</string>
+    <string name="ayar22_reverted">Geri alındı</string>
+    <string name="ayar22_newer_exists">Bu ayar için daha yeni bir kayıt var, önce onu geri al.</string>
+    <string name="ayar22_confirm_title">Eski değere döndür</string>
+    <string name="ayar22_confirm_text">%1$s ayarı şu değere döndürülecek: %2$s\n\nDeğişiklik günlüğe yazılır ve Geçmiş sekmesinde görünür.</string>
+    <string name="ayar22_confirm_yes">Döndür</string>
+    <string name="ayar22_cancel">Vazgeç</string>
+    <string name="ayar22_tag_qanopy">Qanopy yaptı</string>
+    <string name="ayar22_tag_external">Dışarıdan değişti</string>
+    <string name="ayar22_restore">Eski değere döndür</string>
+    <string name="ayar22_restored">Döndürüldü</string>
+    <string name="ayar22_multiline">Çok satırlı değer, güvenle döndürülemez</string>
+    <string name="ayar22_restore_done">%1$s eski değerine döndürüldü.</string>
+</resources>

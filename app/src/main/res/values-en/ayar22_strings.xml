@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ayar22_src_qanopy">Made by Qanopy</string>
+    <string name="ayar22_src_undo">Undo record</string>
+    <string name="ayar22_src_diff">Restored from Diff tab</string>
+    <string name="ayar22_active">Active</string>
+    <string name="ayar22_reverted">Undone</string>
+    <string name="ayar22_newer_exists">A newer entry exists for this setting, undo it first.</string>
+    <string name="ayar22_confirm_title">Restore previous value</string>
+    <string name="ayar22_confirm_text">%1$s will be restored to: %2$s\n\nThe change is written to the journal and shown in the History tab.</string>
+    <string name="ayar22_confirm_yes">Restore</string>
+    <string name="ayar22_cancel">Cancel</string>
+    <string name="ayar22_tag_qanopy">Made by Qanopy</string>
+    <string name="ayar22_tag_external">Changed externally</string>
+    <string name="ayar22_restore">Restore previous value</string>
+    <string name="ayar22_restored">Restored</string>
+    <string name="ayar22_multiline">Multi-line value, cannot be restored safely</string>
+    <string name="ayar22_restore_done">%1$s restored to its previous value.</string>
+</resources>
