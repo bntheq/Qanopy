@@ -16,7 +16,17 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: 8.9
+      - name: Imza anahtarini hazirla
+        env:
+          KS_B64: ${{ secrets.QANOPY_KEYSTORE_B64 }}
+        run: |
+          if [ -n "$KS_B64" ]; then
+            echo "$KS_B64" | base64 -d > "$RUNNER_TEMP/qanopy.jks"
+            echo "QANOPY_KEYSTORE_PATH=$RUNNER_TEMP/qanopy.jks" >> "$GITHUB_ENV"
+          fi
       - name: APK derle
+        env:
+          QANOPY_KEY_PASSWORD: ${{ secrets.QANOPY_KEY_PASSWORD }}
         run: gradle assembleDebug --no-daemon
       - uses: actions/upload-artifact@v4
         with:

@@ -3,6 +3,8 @@ plugins {
     id("org.jetbrains.kotlin.android") version "1.9.24"
 }
 
+val ksPath: String? = System.getenv("QANOPY_KEYSTORE_PATH")
+
 android {
     namespace = "io.github.bntheq.qanopy"
     compileSdk = 34
@@ -11,8 +13,27 @@ android {
         applicationId = "io.github.bntheq.qanopy"
         minSdk = 29
         targetSdk = 34
-        versionCode = 1
-        versionName = "X0-test"
+        versionCode = 2
+        versionName = "X0-imza"
+    }
+
+    signingConfigs {
+        if (ksPath != null) {
+            create("qanopy") {
+                storeFile = file(ksPath)
+                storePassword = System.getenv("QANOPY_KEY_PASSWORD")
+                keyAlias = "qanopy"
+                keyPassword = System.getenv("QANOPY_KEY_PASSWORD")
+            }
+        }
+    }
+
+    buildTypes {
+        getByName("debug") {
+            if (ksPath != null) {
+                signingConfig = signingConfigs.getByName("qanopy")
+            }
+        }
     }
 
     compileOptions {
