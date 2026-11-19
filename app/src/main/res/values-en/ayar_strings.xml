@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ayar_title">Qanopy Settings</string>
+    <string name="ayar_tab_list">List</string>
+    <string name="ayar_tab_history">History</string>
+    <string name="ayar_tab_diff">Diff</string>
+    <string name="ayar_tab_test">Test</string>
+    <string name="ayar_search">Search (name or value)</string>
+    <string name="ayar_refresh">Refresh</string>
+    <string name="ayar_add">Add setting</string>
+    <string name="ayar_error">Error: %1$s</string>
+    <string name="ayar_count">%1$d / %2$d settings</string>
+    <string name="ayar_dialog_title">%1$s setting</string>
+    <string name="ayar_sure">Are you sure?</string>
+    <string name="ayar_name">Name</string>
+    <string name="ayar_current">Current value: %1$s</string>
+    <string name="ayar_new_value">New value</string>
+    <string name="ayar_warning">Warning: a wrong setting can break the system. If unsure, only write test settings starting with qanopy_.</string>
+    <string name="ayar_confirm_body">Table: %1$s\nName: %2$s\nOld: %3$s\nNew: %4$s</string>
+    <string name="ayar_journal_note">The old value will be saved to the journal. You can undo it from the History tab.</string>
+    <string name="ayar_none">(none)</string>
+    <string name="ayar_deleted">(deleted)</string>
+    <string name="ayar_continue">Continue</string>
+    <string name="ayar_cancel">Cancel</string>
+    <string name="ayar_back">Back</string>
+    <string name="ayar_confirm_write">Confirm and write</string>
+    <string name="ayar_written">Written: %1$s/%2$s = %3$s</string>
+    <string name="ayar_history_title">Change history (newest first, max 100)</string>
+    <string name="ayar_history_empty">No records yet.</string>
+    <string name="ayar_undo">Undo</string>
+    <string name="ayar_undone">Undone: %1$s/%2$s</string>
+    <string name="ayar_diff_help">1) Tap Before.\n2) Change ONE thing in the phone settings.\n3) Tap After.</string>
+    <string name="ayar_before">Before</string>
+    <string name="ayar_after">After</string>
+    <string name="ayar_no_before">No saved Before.</string>
+    <string name="ayar_before_saved">Saved Before: %1$s</string>
+    <string name="ayar_need_before">No Before snapshot yet, do the first step.</string>
+    <string name="ayar_before_done">Before saved: %1$d settings</string>
+    <string name="ayar_diff_none">No difference</string>
+    <string name="ayar_diff_found">%1$d differences found</string>
+    <string name="ayar_diff_more">… %1$d more lines (truncated)</string>
+    <string name="ayar_reading">Reading…</string>
+    <string name="ayar_working">Working…</string>
+    <string name="ayar_copy">Copy</string>
+    <string name="ayar_copied">Copied</string>
+    <string name="ayar_test_help">Writes a fake qanopy_test_x2 setting to each table, reads it back and deletes it.</string>
+    <string name="ayar_test_run">Run write test</string>
+</resources>

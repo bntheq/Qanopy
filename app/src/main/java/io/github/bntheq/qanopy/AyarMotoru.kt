@@ -27,7 +27,7 @@ object AyarMotoru {
             val cikti = p.inputStream.bufferedReader().readText()
             if (!p.waitFor(20, TimeUnit.SECONDS)) {
                 p.destroy()
-                Sonuc(-1, "Zaman asimi")
+                Sonuc(-1, "Zaman aşımı")
             } else {
                 Sonuc(p.exitValue(), cikti)
             }
@@ -76,24 +76,24 @@ object AyarMotoru {
 
     // yeni == null -> ayari sil. Basari: null, hata: mesaj
     fun yaz(ctx: Context, tablo: String, anahtar: String, yeni: String?): String? {
-        if (tablo !in tablolar) return "Gecersiz tablo"
-        if (!anahtarDesen.matches(anahtar)) return "Ad gecersiz (harf, rakam, _ . : - kullan, en cok 100 karakter)"
-        if (yeni != null && !duzMu(yeni)) return "Degerde satir sonu veya sekme olamaz"
+        if (tablo !in tablolar) return "Geçersiz tablo"
+        if (!anahtarDesen.matches(anahtar)) return "Ad geçersiz (harf, rakam, _ . : - kullan, en çok 100 karakter)"
+        if (yeni != null && !duzMu(yeni)) return "Değerde satır sonu veya sekme olamaz"
         val e = tekOku(tablo, anahtar)
         if (e.hata != null) return e.hata
         val eski = e.deger
-        if (eski != null && !duzMu(eski)) return "Eski deger cok satirli, guvenle geri alinamaz. Yazilmadi."
+        if (eski != null && !duzMu(eski)) return "Eski değer çok satırlı, güvenle geri alınamaz. Yazılmadı."
         val j = kabuk("mkdir -p /data/adb/qanopy && printf '%s\\n' ${sq("$tablo|$anahtar|${eski ?: "NULL"}")} >> $JURNAL")
-        if (j.kod != 0) return "Gunluge yazilamadi, degisiklik YAPILMADI: " + j.cikti.take(200)
+        if (j.kod != 0) return "Günlüğe yazılamadı, değişiklik YAPILMADI: " + j.cikti.take(200)
         val w = if (yeni == null) {
             kabuk("content delete --uri content://settings/$tablo --where ${sq("name='$anahtar'")}")
         } else {
             kabuk("content insert --uri content://settings/$tablo --bind ${sq("name:s:$anahtar")} --bind ${sq("value:s:$yeni")}")
         }
-        if (w.kod != 0) return "Yazma hatasi: " + w.cikti.take(300)
+        if (w.kod != 0) return "Yazma hatası: " + w.cikti.take(300)
         val d = tekOku(tablo, anahtar)
         if (d.hata != null) return d.hata
-        if (d.deger != yeni) return "Dogrulama BASARISIZ: beklenen=${yeni ?: "(yok)"} okunan=${d.deger ?: "(yok)"}"
+        if (d.deger != yeni) return "Doğrulama BAŞARISIZ: beklenen=${yeni ?: "(yok)"} okunan=${d.deger ?: "(yok)"}"
         val zaman = SimpleDateFormat("dd.MM HH:mm:ss", Locale.US).format(Date())
         gecmisDosya(ctx).appendText("$zaman\t$tablo\t$anahtar\t${eski ?: "NULL"}\t${yeni ?: "NULL"}\n")
         return null
@@ -119,9 +119,9 @@ object AyarMotoru {
             val o2 = tekOku(t, k)
             val tamam = o1.hata == null && o1.deger == "1" && o2.hata == null && o2.deger == null
             if (tamam) {
-                sonuc.add("$t: yazma ve silme CALISTI")
+                sonuc.add("$t: yazma ve silme ÇALIŞTI")
             } else {
-                sonuc.add("$t: BASARISIZ ekle=[${a.cikti.trim().take(120)}] okunan=[${o1.hata ?: o1.deger}] sil=[${b.cikti.trim().take(120)}] sonra=[${o2.hata ?: o2.deger ?: "yok"}]")
+                sonuc.add("$t: BAŞARISIZ ekle=[${a.cikti.trim().take(120)}] okunan=[${o1.hata ?: o1.deger}] sil=[${b.cikti.trim().take(120)}] sonra=[${o2.hata ?: o2.deger ?: "yok"}]")
             }
         }
         return sonuc

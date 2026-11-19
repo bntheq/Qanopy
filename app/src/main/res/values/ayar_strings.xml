@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ayar_title">Qanopy Ayar</string>
+    <string name="ayar_tab_list">Liste</string>
+    <string name="ayar_tab_history">Geçmiş</string>
+    <string name="ayar_tab_diff">Fark</string>
+    <string name="ayar_tab_test">Test</string>
+    <string name="ayar_search">Ara (ad veya değer)</string>
+    <string name="ayar_refresh">Yenile</string>
+    <string name="ayar_add">Yeni ayar ekle</string>
+    <string name="ayar_error">Hata: %1$s</string>
+    <string name="ayar_count">%1$d / %2$d ayar</string>
+    <string name="ayar_dialog_title">%1$s ayarı</string>
+    <string name="ayar_sure">Emin misin?</string>
+    <string name="ayar_name">Ad</string>
+    <string name="ayar_current">Şimdiki değer: %1$s</string>
+    <string name="ayar_new_value">Yeni değer</string>
+    <string name="ayar_warning">Uyarı: yanlış bir ayar sistemi bozabilir. Emin değilsen yalnızca qanopy_ ile başlayan deneme ayarları yaz.</string>
+    <string name="ayar_confirm_body">Tablo: %1$s\nAd: %2$s\nEski: %3$s\nYeni: %4$s</string>
+    <string name="ayar_journal_note">Eski değer günlüğe yazılacak. Geçmiş sekmesinden geri alabilirsin.</string>
+    <string name="ayar_none">(yok)</string>
+    <string name="ayar_deleted">(silindi)</string>
+    <string name="ayar_continue">Devam</string>
+    <string name="ayar_cancel">Vazgeç</string>
+    <string name="ayar_back">Geri</string>
+    <string name="ayar_confirm_write">Onayla ve yaz</string>
+    <string name="ayar_written">Yazıldı: %1$s/%2$s = %3$s</string>
+    <string name="ayar_history_title">Değişiklik geçmişi (en yeni üstte, en çok 100)</string>
+    <string name="ayar_history_empty">Henüz kayıt yok.</string>
+    <string name="ayar_undo">Geri al</string>
+    <string name="ayar_undone">Geri alındı: %1$s/%2$s</string>
+    <string name="ayar_diff_help">1) Önce düğmesine bas.\n2) Telefon ayarlarında TEK bir şey değiştir.\n3) Sonra düğmesine bas.</string>
+    <string name="ayar_before">Önce</string>
+    <string name="ayar_after">Sonra</string>
+    <string name="ayar_no_before">Kayıtlı Önce yok.</string>
+    <string name="ayar_before_saved">Kayıtlı Önce: %1$s</string>
+    <string name="ayar_need_before">Henüz Önce kaydı yok, ilk adımı yap.</string>
+    <string name="ayar_before_done">Önce kaydedildi: %1$d ayar</string>
+    <string name="ayar_diff_none">Fark yok</string>
+    <string name="ayar_diff_found">%1$d fark bulundu</string>
+    <string name="ayar_diff_more">… %1$d satır daha (kısaltıldı)</string>
+    <string name="ayar_reading">Okunuyor…</string>
+    <string name="ayar_working">Çalışıyor…</string>
+    <string name="ayar_copy">Kopyala</string>
+    <string name="ayar_copied">Kopyalandı</string>
+    <string name="ayar_test_help">Her tabloya sahte qanopy_test_x2 ayarı yazar, geri okur ve siler.</string>
+    <string name="ayar_test_run">Yazma testini çalıştır</string>
+</resources>
