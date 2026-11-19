@@ -98,7 +98,7 @@ class AyarActivity : ComponentActivity() {
 
 @Composable
 fun AyarEkran() {
-    var sekme by remember { mutableIntStateOf(0) }
+    var sekme by androidx.compose.runtime.saveable.rememberSaveable { androidx.compose.runtime.mutableStateOf(0) }
     val onbellek = remember { mutableStateMapOf<String, Map<String, String>>() }
     val basliklar = listOf(
         R.string.ayar_tab_status,
