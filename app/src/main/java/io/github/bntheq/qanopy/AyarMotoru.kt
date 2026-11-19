@@ -106,12 +106,12 @@ object AyarMotoru {
     }
 
     fun tekOku(tablo: String, anahtar: String): Okuma {
-        val s = kabuk("content query --uri content://settings/$tablo --where ${sq("name='$anahtar'")} --projection value")
+        val s = kabuk("cmd settings get $tablo ${sq(anahtar)} < /dev/null")
         val c = s.cikti.trimEnd('\n')
         return when {
-            c.startsWith("No result found") -> Okuma(null, null)
-            c.startsWith("Row: 0 value=") -> Okuma(null, c.removePrefix("Row: 0 value="))
-            else -> Okuma("($tablo/$anahtar) " + c.take(300), null)
+            s.kod != 0 -> Okuma("($tablo/$anahtar) " + c.take(300), null)
+            c == "null" -> Okuma(null, null)
+            else -> Okuma(null, c)
         }
     }
 
@@ -153,9 +153,9 @@ object AyarMotoru {
         val j = kabuk("mkdir -p /data/adb/qanopy && { grep -qF ${sq(onEk)} $JURNAL 2>/dev/null || printf '%s\\n' ${sq("$tablo|$anahtar|${eski ?: "NULL"}")} >> $JURNAL; }")
         if (j.kod != 0) return "Günlüğe yazılamadı, değişiklik YAPILMADI: " + j.cikti.take(200)
         val w = if (yeni == null) {
-            kabuk("content delete --uri content://settings/$tablo --where ${sq("name='$anahtar'")}")
+            kabuk("cmd settings delete $tablo ${sq(anahtar)} < /dev/null")
         } else {
-            kabuk("content insert --uri content://settings/$tablo --bind ${sq("name:s:$anahtar")} --bind ${sq("value:s:$yeni")}")
+            kabuk("cmd settings put $tablo ${sq(anahtar)} ${sq(yeni)} < /dev/null")
         }
         if (w.kod != 0) return "Yazma hatası: " + w.cikti.take(300)
         var d = hizliOku(tablo, anahtar)

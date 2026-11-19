@@ -25,7 +25,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+
+private val yazKilidi = Mutex()
 
 @Composable
 fun DurumCubuguKarti() {
@@ -33,7 +37,6 @@ fun DurumCubuguKarti() {
     val kapsam = rememberCoroutineScope()
     var degerler by remember { mutableStateOf<Map<String, AyarMotoru.Okuma>?>(null) }
     var mesaj by remember { mutableStateOf<String?>(null) }
-    var calisiyor by remember { mutableStateOf(false) }
     var yenile by remember { mutableIntStateOf(0) }
 
     val ogeler = listOf(
@@ -62,7 +65,6 @@ fun DurumCubuguKarti() {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Text(stringResource(R.string.durum41_title), style = MaterialTheme.typography.titleMedium)
             Text(stringResource(R.string.durum41_help), style = MaterialTheme.typography.bodyMedium)
-            if (calisiyor) LinearProgressIndicator(Modifier.fillMaxWidth())
             mesaj?.let { Text(it) }
             if (d == null) {
                 LinearProgressIndicator(Modifier.fillMaxWidth())
@@ -86,17 +88,28 @@ fun DurumCubuguKarti() {
                         }
                         Switch(
                             checked = acik,
-                            enabled = !calisiyor && hata == null && !ozel,
+                            enabled = hata == null && !ozel,
                             onCheckedChange = { yeni ->
-                                calisiyor = true
+                                val yd = if (yeni) "1" else "0"
+                                val mevcut = degerler
+                                if (mevcut != null) {
+                                    val kopya = LinkedHashMap<String, AyarMotoru.Okuma>(mevcut)
+                                    kopya[o.first] = AyarMotoru.Okuma(null, yd)
+                                    degerler = kopya
+                                }
                                 mesaj = null
                                 kapsam.launch {
                                     val h = withContext(Dispatchers.IO) {
-                                        AyarMotoru.yaz(ctx, "system", o.first, if (yeni) "1" else "0")
+                                        yazKilidi.withLock {
+                                            AyarMotoru.yaz(ctx, "system", o.first, yd)
+                                        }
                                     }
-                                    mesaj = h ?: tamam
-                                    yenile++
-                                    calisiyor = false
+                                    if (h != null) {
+                                        mesaj = h
+                                        yenile++
+                                    } else {
+                                        mesaj = tamam
+                                    }
                                 }
                             }
                         )
