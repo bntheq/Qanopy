@@ -44,8 +44,8 @@ jobs:
           curl -fsSL -o META-INF/com/google/android/update-binary https://raw.githubusercontent.com/topjohnwu/Magisk/master/scripts/module_installer.sh
           grep -q "install_module" META-INF/com/google/android/update-binary || { echo "Kurulum betigi beklenen icerikte degil"; exit 1; }
           echo "#MAGISK" > META-INF/com/google/android/updater-script
-          zip -r9 ../qanopy_core-X1.2a.zip .
+          zip -r9 ../qanopy_core-X1.2b.zip .
       - uses: actions/upload-artifact@v4
         with:
           name: Qanopy-core-modul
-          path: qanopy_core-X1.2a.zip
+          path: qanopy_core-X1.2b.zip
