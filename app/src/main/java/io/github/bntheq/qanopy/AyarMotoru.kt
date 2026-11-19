@@ -118,7 +118,8 @@ object AyarMotoru {
         if (e.hata != null) return e.hata
         val eski = e.deger
         if (eski != null && !duzMu(eski)) return "Eski değer çok satırlı, güvenle geri alınamaz. Yazılmadı."
-        val j = kabuk("mkdir -p /data/adb/qanopy && printf '%s\\n' ${sq("$tablo|$anahtar|${eski ?: "NULL"}")} >> $JURNAL")
+        val onEk = "$tablo|$anahtar|"
+        val j = kabuk("mkdir -p /data/adb/qanopy && { grep -qF ${sq(onEk)} $JURNAL 2>/dev/null || printf '%s\\n' ${sq("$tablo|$anahtar|${eski ?: "NULL"}")} >> $JURNAL; }")
         if (j.kod != 0) return "Günlüğe yazılamadı, değişiklik YAPILMADI: " + j.cikti.take(200)
         val w = if (yeni == null) {
             kabuk("content delete --uri content://settings/$tablo --where ${sq("name='$anahtar'")}")

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="boyut33_title">Size</string>
+    <string name="boyut33_help">Changes the screen size (DPI) and the font size. After every change, if you do not press Confirm within 15 seconds, the old value is restored. The screen may redraw for a moment.</string>
+    <string name="boyut33_dpi_head">Screen size</string>
+    <string name="boyut33_font_head">Font size</string>
+    <string name="boyut33_d440">Comfortable (440)</string>
+    <string name="boyut33_d400">Default (400)</string>
+    <string name="boyut33_d360">Balanced (360)</string>
+    <string name="boyut33_d320">Compact (320)</string>
+    <string name="boyut33_f085">Small (0.85)</string>
+    <string name="boyut33_f100">Default (1.0)</string>
+    <string name="boyut33_f115">Large (1.15)</string>
+    <string name="boyut33_f130">Extra large (1.3)</string>
+    <string name="boyut33_current">Now: %1$d DPI, font scale %2$s</string>
+    <string name="boyut33_physical">Phone native value: %1$d DPI</string>
+    <string name="boyut33_confirm">Does this look right? If you do not press Confirm within %1$d seconds, the old value is restored.</string>
+    <string name="boyut33_confirm_btn">Confirm</string>
+    <string name="boyut33_revert_btn">Restore old value</string>
+    <string name="boyut33_confirmed">Confirmed. The new size is permanent.</string>
+    <string name="boyut33_reverted">Old value restored.</string>
+    <string name="boyut33_timeout">Time is up, old value restored.</string>
+    <string name="boyut33_same">Already at this value.</string>
+    <string name="boyut33_applied">Applied. If you do not confirm, it reverts when the countdown ends.</string>
+</resources>

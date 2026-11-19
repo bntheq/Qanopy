@@ -123,6 +123,7 @@ fun EkranAyarSekmesi() {
         Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
+        BoyutKarti()
         Card(Modifier.fillMaxWidth()) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text(stringResource(R.string.ekran31_anim_title), style = MaterialTheme.typography.titleMedium)

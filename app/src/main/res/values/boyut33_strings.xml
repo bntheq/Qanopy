@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="boyut33_title">Boyut</string>
+    <string name="boyut33_help">Ekran boyutunu (DPI) ve yazı boyutunu değiştirir. Her değişiklikten sonra 15 saniye içinde Onayla düğmesine basmazsan eski değere dönülür. Ekran bir an yeniden çizilebilir.</string>
+    <string name="boyut33_dpi_head">Ekran boyutu</string>
+    <string name="boyut33_font_head">Yazı boyutu</string>
+    <string name="boyut33_d440">Rahat (440)</string>
+    <string name="boyut33_d400">Varsayılan (400)</string>
+    <string name="boyut33_d360">Dengeli (360)</string>
+    <string name="boyut33_d320">Kompakt (320)</string>
+    <string name="boyut33_f085">Küçük (0,85)</string>
+    <string name="boyut33_f100">Varsayılan (1,0)</string>
+    <string name="boyut33_f115">Büyük (1,15)</string>
+    <string name="boyut33_f130">Çok büyük (1,3)</string>
+    <string name="boyut33_current">Şu an: %1$d DPI, yazı ölçeği %2$s</string>
+    <string name="boyut33_physical">Telefonun kendi değeri: %1$d DPI</string>
+    <string name="boyut33_confirm">Bu ayar uygun mu? %1$d saniye içinde Onayla düğmesine basmazsan eski değere dönülür.</string>
+    <string name="boyut33_confirm_btn">Onayla</string>
+    <string name="boyut33_revert_btn">Eski değere dön</string>
+    <string name="boyut33_confirmed">Onaylandı. Yeni boyut kalıcı.</string>
+    <string name="boyut33_reverted">Eski değere dönüldü.</string>
+    <string name="boyut33_timeout">Süre doldu, eski değere dönüldü.</string>
+    <string name="boyut33_same">Zaten bu değerde.</string>
+    <string name="boyut33_applied">Uygulandı. Onaylamazsan geri sayım bitince eski değere döner.</string>
+</resources>
