@@ -49,3 +49,17 @@ jobs:
         with:
           name: Qanopy-core-modul
           path: qanopy_core-X1.2b.zip
+
+  kurtarma:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Kurtarma zip paketle
+        run: |
+          cd recovery
+          chmod 755 META-INF/com/google/android/update-binary
+          zip -r9 ../qanopy_kurtarma-X1.3.zip META-INF
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Qanopy-kurtarma-zip
+          path: qanopy_kurtarma-X1.3.zip

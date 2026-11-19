@@ -1,0 +1,42 @@
+#!/sbin/sh
+OUTFD=$2
+
+ui_print() {
+  printf 'ui_print %s\nui_print\n' "$1" >> /proc/self/fd/$OUTFD
+}
+
+M=/data/adb/modules/qanopy_core
+D=/data/adb/qanopy
+Y=/data/adb/qanopy_eski
+
+ui_print " "
+ui_print "Qanopy Kurtarma X1.3"
+ui_print " "
+
+mount /data 2>/dev/null
+
+if [ ! -d /data/adb ]; then
+  ui_print "HATA: /data/adb bulunamadi. Hicbir sey silinmedi."
+  exit 1
+fi
+
+if [ -d "$M" ]; then
+  rm -rf "$M"
+  ui_print "Modul silindi: qanopy_core"
+else
+  ui_print "Modul zaten yok: qanopy_core"
+fi
+
+if [ -d "$D" ]; then
+  rm -rf "$Y"
+  mv "$D" "$Y"
+  ui_print "Veri klasoru tasindi: /data/adb/qanopy_eski"
+else
+  ui_print "Veri klasoru zaten yok"
+fi
+
+ui_print " "
+ui_print "Diger moduller ve /data/adb icindeki baska dosyalar DEGISMEDI"
+ui_print "Sistem ayarlari (DPI vb.) geri ALINMAZ"
+ui_print "Bitti. Yeniden baslatabilirsin."
+exit 0
