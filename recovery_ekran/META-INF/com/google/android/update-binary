@@ -1,0 +1,48 @@
+#!/sbin/sh
+OUTFD=$2
+
+ui_print() {
+  printf 'ui_print %s\nui_print\n' "$1" >> /proc/self/fd/$OUTFD
+}
+
+D=/data/adb/qanopy
+M=/data/adb/modules/qanopy_core
+X=/data/system/display_settings.xml
+Y=/data/adb/qanopy_ekran_yedek
+
+ui_print " "
+ui_print "Qanopy Ekran Sifirla X3.3a"
+ui_print " "
+
+mount /data 2>/dev/null
+
+if [ ! -d /data/system ]; then
+  ui_print "HATA: /data/system bulunamadi. Hicbir sey degistirilmedi."
+  exit 1
+fi
+
+if [ -f "$X" ]; then
+  mkdir -p "$Y"
+  if cp -p "$X" "$Y/display_settings.xml.yedek"; then
+    rm -f "$X"
+    ui_print "Ekran dosyasi yedeklendi ve kaldirildi (yedek: $Y)"
+  else
+    ui_print "HATA: yedek alinamadi, dosyaya dokunulmadi"
+    exit 1
+  fi
+else
+  ui_print "Ekran dosyasi zaten yok"
+fi
+
+if [ -d "$M" ]; then
+  mkdir -p "$D"
+  touch "$D/ekran_sifirla"
+  ui_print "Modul acilista yogunluk, boyut ve yazi olcegini sifirlayacak"
+else
+  ui_print "Qanopy modulu kurulu degil: yalnizca ekran dosyasi kaldirildi"
+fi
+
+ui_print " "
+ui_print "Moduller ve baska dosyalar DEGISMEDI"
+ui_print "Bitti. Yeniden baslatabilirsin."
+exit 0

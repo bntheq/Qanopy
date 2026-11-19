@@ -1,6 +1,6 @@
 id=qanopy_core
 name=Qanopy Core
-version=X1.2b
-versionCode=6
+version=X3.3a
+versionCode=7
 author=bntheq
-description=Qanopy bootloop korumasi (X1.2b: sayac, guvenli mod, geri alma)
+description=Qanopy bootloop korumasi (X3.3a: ekran sifirlama bayragi, ekran geri alma)

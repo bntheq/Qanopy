@@ -44,11 +44,11 @@ jobs:
           curl -fsSL -o META-INF/com/google/android/update-binary https://raw.githubusercontent.com/topjohnwu/Magisk/master/scripts/module_installer.sh
           grep -q "install_module" META-INF/com/google/android/update-binary || { echo "Kurulum betigi beklenen icerikte degil"; exit 1; }
           echo "#MAGISK" > META-INF/com/google/android/updater-script
-          zip -r9 ../qanopy_core-X1.2b.zip .
+          zip -r9 ../qanopy_core-X3.3a.zip .
       - uses: actions/upload-artifact@v4
         with:
           name: Qanopy-core-modul
-          path: qanopy_core-X1.2b.zip
+          path: qanopy_core-X3.3a.zip
 
   kurtarma:
     runs-on: ubuntu-latest
@@ -59,7 +59,12 @@ jobs:
           cd recovery
           chmod 755 META-INF/com/google/android/update-binary
           zip -r9 ../qanopy_kurtarma-X1.3.zip META-INF
+          cd ../recovery_ekran
+          chmod 755 META-INF/com/google/android/update-binary
+          zip -r9 ../qanopy_ekran_sifirla-X3.3a.zip META-INF
       - uses: actions/upload-artifact@v4
         with:
           name: Qanopy-kurtarma-zip
-          path: qanopy_kurtarma-X1.3.zip
+          path: |
+            qanopy_kurtarma-X1.3.zip
+            qanopy_ekran_sifirla-X3.3a.zip
