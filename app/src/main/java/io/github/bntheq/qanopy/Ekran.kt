@@ -95,11 +95,6 @@ fun Ekran() {
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Text(
-            stringResource(R.string.app_name),
-            style = MaterialTheme.typography.displaySmall,
-            fontWeight = FontWeight.Bold
-        )
         Text(stringResource(R.string.surum_etiket, surum), style = MaterialTheme.typography.titleSmall)
 
         val d = durum

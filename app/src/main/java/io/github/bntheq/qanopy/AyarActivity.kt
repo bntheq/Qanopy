@@ -35,6 +35,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
@@ -100,24 +101,26 @@ fun AyarEkran() {
     var sekme by remember { mutableIntStateOf(0) }
     val onbellek = remember { mutableStateMapOf<String, Map<String, String>>() }
     val basliklar = listOf(
+        R.string.ayar_tab_status,
         R.string.ayar_tab_list,
         R.string.ayar_tab_history,
         R.string.ayar_tab_diff,
         R.string.ayar_tab_test
     )
     Scaffold(
-        topBar = { TopAppBar(title = { Text(stringResource(R.string.ayar_title)) }) }
+        topBar = { TopAppBar(title = { Text(stringResource(R.string.app_name)) }) }
     ) { pad ->
         Column(Modifier.padding(pad).fillMaxSize().navigationBarsPadding()) {
-            TabRow(selectedTabIndex = sekme) {
+            ScrollableTabRow(selectedTabIndex = sekme, edgePadding = 8.dp) {
                 basliklar.forEachIndexed { i, b ->
                     Tab(selected = sekme == i, onClick = { sekme = i }, text = { Text(stringResource(b)) })
                 }
             }
             when (sekme) {
-                0 -> AyarListeSekmesi(onbellek)
-                1 -> AyarGecmisSekmesi()
-                2 -> AyarFarkSekmesi()
+                0 -> Ekran()
+                1 -> AyarListeSekmesi(onbellek)
+                2 -> AyarGecmisSekmesi()
+                3 -> AyarFarkSekmesi()
                 else -> AyarTestSekmesi()
             }
         }
