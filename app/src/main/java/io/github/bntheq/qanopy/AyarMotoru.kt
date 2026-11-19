@@ -48,7 +48,7 @@ object AyarMotoru {
         }
     }
 
-    fun tabloOku(tablo: String): Liste {
+    private fun tabloOkuYavas(tablo: String): Liste {
         val s = kabuk("content query --uri content://settings/$tablo --projection name:value")
         val harita = TreeMap<String, String>()
         val desen = Regex("^Row: \\d+ name=(.*?), value=(.*)$")
@@ -71,6 +71,37 @@ object AyarMotoru {
                 return Liste(emptyMap(), "($tablo) " + c.take(300))
             }
         }
+        return Liste(harita, null)
+    }
+
+    // cmd settings list: content'ten ~14 kat hizli. Beklenmedik cikti olursa eski yola doner.
+    // cmd "null" yazar, content "NULL" yazar; eski bicimle uyum icin "NULL" kullaniyoruz.
+    fun tabloOku(tablo: String): Liste {
+        if (tablo !in tablolar) return tabloOkuYavas(tablo)
+        val s = kabuk("cmd settings list $tablo < /dev/null")
+        if (s.kod != 0) return tabloOkuYavas(tablo)
+        val harita = TreeMap<String, String>()
+        val desen = Regex("^([A-Za-z0-9_.:-]{1,100})=(.*)$")
+        var ad: String? = null
+        var dg = StringBuilder()
+        for (satir in s.cikti.trimEnd('\n').lines()) {
+            val m = desen.find(satir)
+            if (m != null) {
+                if (ad != null) {
+                    val v = dg.toString()
+                    harita[ad] = if (v == "null") "NULL" else v
+                }
+                ad = m.groupValues[1]
+                dg = StringBuilder(m.groupValues[2])
+            } else if (ad != null) {
+                dg.append("\\n").append(satir)
+            }
+        }
+        if (ad != null) {
+            val v = dg.toString()
+            harita[ad] = if (v == "null") "NULL" else v
+        }
+        if (harita.size < 10) return tabloOkuYavas(tablo)
         return Liste(harita, null)
     }
 
