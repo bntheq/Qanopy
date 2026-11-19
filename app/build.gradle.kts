@@ -13,8 +13,8 @@ android {
         applicationId = "io.github.bntheq.qanopy"
         minSdk = 29
         targetSdk = 34
-        versionCode = 19
-        versionName = "X3.4a"
+        versionCode = 20
+        versionName = "X4.1"
     }
 
     signingConfigs {

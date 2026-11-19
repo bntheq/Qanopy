@@ -161,5 +161,6 @@ fun EkranAyarSekmesi() {
             }
         }
         YenilemeKarti()
+        DurumCubuguKarti()
     }
 }

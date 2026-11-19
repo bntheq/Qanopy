@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="durum41_title">Status bar</string>
+    <string name="durum41_help">Turns the clock and battery parts of the bar at the top of the screen on or off. Changes show immediately. Every change is written to the History tab and can be undone there.</string>
+    <string name="durum41_seconds">Seconds in clock</string>
+    <string name="durum41_bold">Bold clock</string>
+    <string name="durum41_date">Date next to clock</string>
+    <string name="durum41_percent">Battery percentage</string>
+    <string name="durum41_bar">Battery bar</string>
+    <string name="durum41_notif">Notification count</string>
+    <string name="durum41_colored">Colored icons</string>
+    <string name="durum41_unset">(not set)</string>
+    <string name="durum41_custom">Custom value: %1$s (cannot be changed here)</string>
+    <string name="durum41_applied">Applied. Look at the status bar.</string>
+</resources>

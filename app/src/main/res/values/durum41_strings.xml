@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="durum41_title">Durum çubuğu</string>
+    <string name="durum41_help">Ekranın üstündeki çubuğun saat ve pil bölümünü açıp kapatır. Değişiklik hemen görünür. Her değişiklik Geçmiş sekmesine yazılır ve oradan geri alınabilir.</string>
+    <string name="durum41_seconds">Saatte saniye</string>
+    <string name="durum41_bold">Saat kalın yazı</string>
+    <string name="durum41_date">Saatin yanında tarih</string>
+    <string name="durum41_percent">Pil yüzdesi</string>
+    <string name="durum41_bar">Pil çubuğu</string>
+    <string name="durum41_notif">Bildirim sayısı</string>
+    <string name="durum41_colored">Renkli simgeler</string>
+    <string name="durum41_unset">(ayarlanmamış)</string>
+    <string name="durum41_custom">Özel değer: %1$s (burada değiştirilemez)</string>
+    <string name="durum41_applied">Uygulandı. Durum çubuğuna bak.</string>
+</resources>
