@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="yenileme32_title">Yenileme hızı</string>
+    <string name="yenileme32_help">Ekranın en düşük ve en yüksek yenileme hızını belirler. Yüksek hız akıcı görünür ama pili daha çok harcar. Sabit seçeneklerde ekran hep o hızda kalır. Her değişiklik defterine yazılır ve Geçmiş sekmesinden geri alınabilir.</string>
+    <string name="yenileme32_auto">Otomatik (60–120 Hz)</string>
+    <string name="yenileme32_60">60 Hz sabit</string>
+    <string name="yenileme32_90">90 Hz sabit</string>
+    <string name="yenileme32_120">120 Hz sabit</string>
+    <string name="yenileme32_custom">Özel değer</string>
+    <string name="yenileme32_unset">ayarlanmamış</string>
+    <string name="yenileme32_unknown">Bilinmiyor</string>
+    <string name="yenileme32_values">En düşük: %1$s Hz, en yüksek: %2$s Hz</string>
+    <string name="yenileme32_report">Sistem raporu: %1$s Hz</string>
+    <string name="yenileme32_ok">Uygulandı. Sistem de yeni aralığı kabul etti.</string>
+    <string name="yenileme32_diff">Yazıldı, ama sistemin raporu farklı (%1$s Hz). Bu ROM ayarı beklediğimiz gibi kullanmıyor olabilir.</string>
+    <string name="yenileme32_noreport">Yazıldı, ama sistem raporu okunamadı. Sonucu doğrulayamadım.</string>
+</resources>

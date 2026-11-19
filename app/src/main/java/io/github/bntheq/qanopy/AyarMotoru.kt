@@ -171,6 +171,11 @@ object AyarMotoru {
     fun geriAl(ctx: Context, k: Kayit): String? {
         val g = gecmisOku(ctx).firstOrNull { it.no == k.no }
         if (g == null || !g.geriAlinabilir) return "Bu kayıt artık geri alınamaz (zaten geri alınmış ya da daha yeni bir kayıt var)."
+        val su = hizliOku(g.tablo, g.anahtar)
+        if (su.hata != null) return su.hata
+        if (su.deger != g.yeni) {
+            return "Ayar sonradan başka yerde değişmiş (şu an: ${su.deger ?: "(yok)"}, kayıttaki: ${g.yeni ?: "(yok)"}). Başkasının değişikliğini ezmemek için geri alınmadı."
+        }
         return yaz(ctx, g.tablo, g.anahtar, g.eski, "geri", g.no)
     }
 
@@ -205,7 +210,12 @@ object AyarMotoru {
         val i = s.tamAd.indexOf('/')
         if (i <= 0) return "Ayar adı çözülemedi."
         if (cokSatirli(s)) return "Çok satırlı değer, güvenle döndürülemez."
-        return yaz(ctx, s.tamAd.substring(0, i), s.tamAd.substring(i + 1), s.once, "fark", 0)
+        val tb = s.tamAd.substring(0, i)
+        val an = s.tamAd.substring(i + 1)
+        val su = hizliOku(tb, an)
+        if (su.hata != null) return su.hata
+        if (su.deger != s.sonra) return "Ayar, Fark'ın okuduğundan sonra tekrar değişmiş (şu an: ${su.deger ?: "(yok)"}). Ezmemek için döndürülmedi; Sonra'ya tekrar bas."
+        return yaz(ctx, tb, an, s.once, "fark", 0)
     }
 
     fun yazmaTesti(): List<String> {

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="yenileme32_title">Refresh rate</string>
+    <string name="yenileme32_help">Sets the lowest and highest refresh rate of the screen. A higher rate looks smoother but uses more battery. Fixed options keep the screen at that rate. Every change is written to the journal and can be undone from the History tab.</string>
+    <string name="yenileme32_auto">Automatic (60–120 Hz)</string>
+    <string name="yenileme32_60">60 Hz fixed</string>
+    <string name="yenileme32_90">90 Hz fixed</string>
+    <string name="yenileme32_120">120 Hz fixed</string>
+    <string name="yenileme32_custom">Custom value</string>
+    <string name="yenileme32_unset">not set</string>
+    <string name="yenileme32_unknown">Unknown</string>
+    <string name="yenileme32_values">Lowest: %1$s Hz, highest: %2$s Hz</string>
+    <string name="yenileme32_report">System report: %1$s Hz</string>
+    <string name="yenileme32_ok">Applied. The system accepted the new range.</string>
+    <string name="yenileme32_diff">Written, but the system reports something different (%1$s Hz). This ROM may not use the setting the way we expect.</string>
+    <string name="yenileme32_noreport">Written, but the system report could not be read. Could not verify the result.</string>
+</resources>

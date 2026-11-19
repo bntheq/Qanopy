@@ -159,5 +159,6 @@ fun EkranAyarSekmesi() {
                 }
             }
         }
+        YenilemeKarti()
     }
 }
