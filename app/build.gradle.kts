@@ -7,14 +7,18 @@ val ksPath: String? = System.getenv("QANOPY_KEYSTORE_PATH")
 
 android {
     namespace = "io.github.bntheq.qanopy"
-    compileSdk = 36
+    compileSdk {
+        version = release(37) {
+            minorApiLevel = 2
+        }
+    }
 
     defaultConfig {
         applicationId = "io.github.bntheq.qanopy"
         minSdk = 29
         targetSdk = 34
-        versionCode = 35
-        versionName = "X5.3"
+        versionCode = 36
+        versionName = "X5.3fix"
     }
 
     signingConfigs {
