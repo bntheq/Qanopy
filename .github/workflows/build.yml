@@ -15,7 +15,7 @@ jobs:
           java-version: 17
       - uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: 8.9
+          gradle-version: 9.9.2
       - name: Imza anahtarini hazirla
         env:
           KS_B64: ${{ secrets.QANOPY_KEYSTORE_B64 }}
