@@ -17,7 +17,7 @@ import kotlin.math.roundToInt
 import kotlin.math.sqrt
 
 // Bir piksel kutusunun boyu (dp). 1 = yaricap kac dp ise o kadar piksel.
-private const val PIKSEL_DP = 4f
+const val PIKSEL_DP = 4f
 
 // Rasterizasyon: yaricapi R piksel olan dairenin kosesi.
 // Her satir k (0 = en dis satir) icin, piksel merkezi daire icinde mi diye bakilir.

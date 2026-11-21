@@ -58,9 +58,10 @@ fun OutlinedButton(
 ) {
     androidx.compose.material3.OutlinedButton(
         onClick = onClick,
-        modifier = modifier,
+        modifier = modifier.pikselCerceveRenk(enabled, 12.dp),
         enabled = enabled,
         shape = PikselDugme,
+        border = null,
         content = content
     )
 }
@@ -103,17 +104,17 @@ fun Switch(
     } else modifier
     Box(
         modifier = m
-            .size(52.dp, 32.dp)
+            .size(56.dp, 36.dp)
             .alpha(a)
             .background(iz, PikselIz)
-            .border(2.dp, kenar, PikselIz)
-            .padding(4.dp),
+            .pikselCerceve(kenar, 16.dp)
+            .padding(8.dp),
         contentAlignment = Alignment.CenterStart
     ) {
         Box(
             Modifier
                 .align(if (checked) Alignment.CenterEnd else Alignment.CenterStart)
-                .size(24.dp)
+                .size(20.dp)
                 .background(top, PikselTop)
         )
     }
