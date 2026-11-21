@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
             } else {
                 if (koyu) darkColorScheme() else lightColorScheme()
             }
-            MaterialTheme(colorScheme = renkler) {
+            MaterialTheme(colorScheme = renkler, shapes = PikselSekiller, typography = PikselYazi) {
                 AyarEkran()
             }
         }
