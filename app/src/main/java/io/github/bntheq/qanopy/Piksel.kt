@@ -17,7 +17,7 @@ import kotlin.math.roundToInt
 import kotlin.math.sqrt
 
 // Bir piksel kutusunun boyu (dp). 1 = yaricap kac dp ise o kadar piksel.
-private const val PIKSEL_DP = 1f
+private const val PIKSEL_DP = 4f
 
 // Rasterizasyon: yaricapi R piksel olan dairenin kosesi.
 // Her satir k (0 = en dis satir) icin, piksel merkezi daire icinde mi diye bakilir.
@@ -105,11 +105,11 @@ class PikselSekil(
 }
 
 val PikselSekiller = Shapes(
-    extraSmall = PikselSekil(4.dp),
-    small = PikselSekil(8.dp),
-    medium = PikselSekil(12.dp),
-    large = PikselSekil(16.dp),
-    extraLarge = PikselSekil(28.dp)
+    extraSmall = PikselSekil(8.dp),
+    small = PikselSekil(12.dp),
+    medium = PikselSekil(20.dp),
+    large = PikselSekil(24.dp),
+    extraLarge = PikselSekil(32.dp)
 )
 
 private val mono = FontFamily.Monospace
