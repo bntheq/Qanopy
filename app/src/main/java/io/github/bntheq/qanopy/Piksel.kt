@@ -1,27 +1,45 @@
 package io.github.bntheq.qanopy
 
+import androidx.compose.foundation.shape.CornerBasedShape
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Typography
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 
-class PikselSekil(private val birim: Dp, private val adim: Int) : Shape {
+class PikselSekil(
+    private val adim: Int,
+    ts: CornerSize,
+    te: CornerSize,
+    be: CornerSize,
+    bs: CornerSize
+) : CornerBasedShape(ts, te, be, bs) {
+
+    constructor(birim: Dp, adim: Int) : this(
+        adim,
+        CornerSize(birim),
+        CornerSize(birim),
+        CornerSize(birim),
+        CornerSize(birim)
+    )
+
     override fun createOutline(
         size: Size,
-        layoutDirection: LayoutDirection,
-        density: Density
+        topStart: Float,
+        topEnd: Float,
+        bottomEnd: Float,
+        bottomStart: Float,
+        layoutDirection: LayoutDirection
     ): Outline {
         val w = size.width
         val h = size.height
         val n = adim
-        val s = minOf(with(density) { birim.toPx() }, minOf(w, h) / (2f * n))
+        val s = topStart / n
         val p = Path()
         p.moveTo(n * s, 0f)
         p.lineTo(w - n * s, 0f)
@@ -47,6 +65,13 @@ class PikselSekil(private val birim: Dp, private val adim: Int) : Shape {
         p.close()
         return Outline.Generic(p)
     }
+
+    override fun copy(
+        topStart: CornerSize,
+        topEnd: CornerSize,
+        bottomEnd: CornerSize,
+        bottomStart: CornerSize
+    ): CornerBasedShape = PikselSekil(adim, topStart, topEnd, bottomEnd, bottomStart)
 }
 
 val PikselSekiller = Shapes(
