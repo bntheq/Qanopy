@@ -107,11 +107,7 @@ fun AyarEkran() {
         topBar = { TopAppBar(title = { Text(stringResource(R.string.app_name)) }) }
     ) { pad ->
         Column(Modifier.padding(pad).fillMaxSize().navigationBarsPadding()) {
-            ScrollableTabRow(selectedTabIndex = sekme, edgePadding = 8.dp) {
-                basliklar.forEachIndexed { i, b ->
-                    Tab(selected = sekme == i, onClick = { sekme = i }, text = { Text(stringResource(b)) })
-                }
-            }
+            PikselSekmeSatiri(sekme, basliklar) { sekme = it }
             when (sekme) {
                 0 -> Ekran()
                 1 -> EkranAyarSekmesi()
