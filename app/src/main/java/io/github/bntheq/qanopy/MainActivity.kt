@@ -6,7 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.LocalMinimumInteractiveComponentSize
+import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.unit.Dp
 import androidx.compose.material3.darkColorScheme
@@ -29,7 +29,7 @@ class MainActivity : ComponentActivity() {
                 if (koyu) darkColorScheme() else lightColorScheme()
             }
             MaterialTheme(colorScheme = renkler, shapes = PikselSekiller, typography = PikselYazi) {
-                CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
+                CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
                     AyarEkran()
                 }
             }
