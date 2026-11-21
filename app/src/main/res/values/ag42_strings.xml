@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ag42_title">Ağ hızı</string>
+    <string name="ag42_help">Durum çubuğunda yükleme ve indirme hızını gösterir. Değişiklik hemen görünür. Her değişiklik Geçmiş sekmesine yazılır ve oradan geri alınabilir.</string>
+    <string name="ag42_mode_label">Gösterim</string>
+    <string name="ag42_mode_off">Kapalı</string>
+    <string name="ag42_mode_up">Yükleme</string>
+    <string name="ag42_mode_down">İndirme</string>
+    <string name="ag42_mode_both">İkisi</string>
+    <string name="ag42_unit_label">Birim</string>
+    <string name="ag42_unit_kbit">kb/s</string>
+    <string name="ag42_unit_mbit">Mb/s</string>
+    <string name="ag42_unit_kbyte">kB/s</string>
+    <string name="ag42_unit_mbyte">MB/s</string>
+    <string name="ag42_unit_auto">Otomatik</string>
+    <string name="ag42_autohide">Otomatik gizle</string>
+    <string name="ag42_autohide_help">Ağ etkinliği yokken gizler</string>
+    <string name="ag42_unset">(ayarlanmamış)</string>
+    <string name="ag42_custom">Özel değer: %1$s</string>
+    <string name="ag42_applied">Uygulandı. Durum çubuğuna bak.</string>
+</resources>
