@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="simge43_title">Durum çubuğu simgeleri</string>
+    <string name="simge43_help">Açık = simge çubukta görünür, kapalı = gizlenir. Değişiklik hemen görünür. Her değişiklik Geçmiş sekmesine yazılır ve oradan geri alınabilir. Kartta olmayan adlara dokunulmaz.</string>
+    <string name="simge43_group_conn">Bağlantı</string>
+    <string name="simge43_group_sound">Ses</string>
+    <string name="simge43_group_other">Diğer</string>
+    <string name="simge43_group_critical">Önemli simgeler</string>
+    <string name="simge43_unknown">Kartta olmayan, dokunulmayan adlar: %1$s</string>
+    <string name="simge43_confirm_title">Bu simge gizlensin mi?</string>
+    <string name="simge43_confirm_text">%1$s simgesi durum çubuğundan kaybolacak. Geri açmak için bu karttan anahtarı tekrar aç.</string>
+    <string name="simge43_confirm_yes">Gizle</string>
+    <string name="simge43_confirm_no">Vazgeç</string>
+    <string name="simge43_applied">Uygulandı. Durum çubuğuna bak.</string>
+    <string name="simge43_bluetooth">Bluetooth</string>
+    <string name="simge43_nfc">NFC</string>
+    <string name="simge43_hotspot">Kişisel erişim noktası</string>
+    <string name="simge43_cast">Ekran yansıtma</string>
+    <string name="simge43_ethernet">Ethernet</string>
+    <string name="simge43_data_saver">Veri tasarrufu</string>
+    <string name="simge43_airplane">Uçak modu</string>
+    <string name="simge43_roaming">Dolaşım</string>
+    <string name="simge43_call_strength">Arama sinyal gücü</string>
+    <string name="simge43_vpn">VPN</string>
+    <string name="simge43_vowifi">Wi-Fi çağrı (VoWiFi)</string>
+    <string name="simge43_volte">VoLTE</string>
+    <string name="simge43_vonr">VoNR (5G ses)</string>
+    <string name="simge43_volume">Ses seviyesi</string>
+    <string name="simge43_mute">Sessiz</string>
+    <string name="simge43_zen">Rahatsız etme</string>
+    <string name="simge43_headset">Kulaklık</string>
+    <string name="simge43_alarm_clock">Alarm</string>
+    <string name="simge43_managed_profile">İş profili</string>
+    <string name="simge43_firewall">Güvenlik duvarı</string>
+    <string name="simge43_rotate">Ekran döndürme</string>
+    <string name="simge43_wifi">Wi-Fi</string>
+    <string name="simge43_battery">Pil</string>
+    <string name="simge43_clock">Saat</string>
+    <string name="simge43_mobile">Mobil sinyal</string>
+</resources>

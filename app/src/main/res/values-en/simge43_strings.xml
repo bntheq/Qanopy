@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="simge43_title">Status bar icons</string>
+    <string name="simge43_help">On = icon is shown in the bar, off = hidden. Changes show immediately. Every change is written to the History tab and can be undone there. Names not on this card are left untouched.</string>
+    <string name="simge43_group_conn">Connectivity</string>
+    <string name="simge43_group_sound">Sound</string>
+    <string name="simge43_group_other">Other</string>
+    <string name="simge43_group_critical">Important icons</string>
+    <string name="simge43_unknown">Names not on this card, left untouched: %1$s</string>
+    <string name="simge43_confirm_title">Hide this icon?</string>
+    <string name="simge43_confirm_text">The %1$s icon will disappear from the status bar. To show it again, turn its switch back on in this card.</string>
+    <string name="simge43_confirm_yes">Hide</string>
+    <string name="simge43_confirm_no">Cancel</string>
+    <string name="simge43_applied">Applied. Look at the status bar.</string>
+    <string name="simge43_bluetooth">Bluetooth</string>
+    <string name="simge43_nfc">NFC</string>
+    <string name="simge43_hotspot">Hotspot</string>
+    <string name="simge43_cast">Screen cast</string>
+    <string name="simge43_ethernet">Ethernet</string>
+    <string name="simge43_data_saver">Data saver</string>
+    <string name="simge43_airplane">Airplane mode</string>
+    <string name="simge43_roaming">Roaming</string>
+    <string name="simge43_call_strength">Call signal strength</string>
+    <string name="simge43_vpn">VPN</string>
+    <string name="simge43_vowifi">Wi-Fi calling (VoWiFi)</string>
+    <string name="simge43_volte">VoLTE</string>
+    <string name="simge43_vonr">VoNR (5G voice)</string>
+    <string name="simge43_volume">Volume</string>
+    <string name="simge43_mute">Mute</string>
+    <string name="simge43_zen">Do not disturb</string>
+    <string name="simge43_headset">Headset</string>
+    <string name="simge43_alarm_clock">Alarm</string>
+    <string name="simge43_managed_profile">Work profile</string>
+    <string name="simge43_firewall">Firewall</string>
+    <string name="simge43_rotate">Screen rotation</string>
+    <string name="simge43_wifi">Wi-Fi</string>
+    <string name="simge43_battery">Battery</string>
+    <string name="simge43_clock">Clock</string>
+    <string name="simge43_mobile">Mobile signal</string>
+</resources>

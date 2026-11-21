@@ -163,5 +163,6 @@ fun EkranAyarSekmesi() {
         YenilemeKarti()
         DurumCubuguKarti()
         AgHiziKarti()
+        SimgeGizlemeKarti()
     }
 }
