@@ -131,6 +131,7 @@ fun SimgeGizlemeKarti() {
     val bekleyen = onay
     if (bekleyen != null) {
         AlertDialog(
+            shape = androidx.compose.material3.MaterialTheme.shapes.extraLarge,
             onDismissRequest = { onay = null },
             title = { Text(stringResource(R.string.simge43_confirm_title)) },
             text = { Text(stringResource(R.string.simge43_confirm_text, stringResource(bekleyen.etiket))) },

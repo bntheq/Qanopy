@@ -105,24 +105,30 @@ fun AyarEkran() {
     )
     val sayfa = androidx.compose.foundation.pager.rememberPagerState(pageCount = { basliklar.size })
     val kapsam = androidx.compose.runtime.rememberCoroutineScope()
+    var ayarAcik by androidx.compose.runtime.saveable.rememberSaveable { androidx.compose.runtime.mutableStateOf(false) }
+    androidx.activity.compose.BackHandler(enabled = ayarAcik) { ayarAcik = false }
     Scaffold { pad ->
         Column(Modifier.padding(pad).fillMaxSize().navigationBarsPadding()) {
-            QanopyBaslik()
-            PikselSekmeSatiri(sayfa.currentPage, basliklar) {
-                kapsam.launch { sayfa.animateScrollToPage(it) }
-            }
-            androidx.compose.foundation.pager.HorizontalPager(
-                state = sayfa,
-                beyondViewportPageCount = 1,
-                modifier = Modifier.fillMaxSize()
-            ) { s ->
-                when (s) {
-                    0 -> Ekran()
-                    1 -> EkranAyarSekmesi()
-                    2 -> AyarListeSekmesi(onbellek)
-                    3 -> AyarGecmisSekmesi()
-                    4 -> AyarFarkSekmesi()
-                    else -> AyarTestSekmesi()
+            QanopyBaslik { ayarAcik = !ayarAcik }
+            if (ayarAcik) {
+                UygulamaAyarlari()
+            } else {
+                PikselSekmeSatiri(sayfa.currentPage, basliklar) {
+                    kapsam.launch { sayfa.animateScrollToPage(it) }
+                }
+                androidx.compose.foundation.pager.HorizontalPager(
+                    state = sayfa,
+                    beyondViewportPageCount = 1,
+                    modifier = Modifier.fillMaxSize()
+                ) { s ->
+                    when (s) {
+                        0 -> Ekran()
+                        1 -> EkranAyarSekmesi()
+                        2 -> AyarListeSekmesi(onbellek)
+                        3 -> AyarGecmisSekmesi()
+                        4 -> AyarFarkSekmesi()
+                        else -> AyarTestSekmesi()
+                    }
                 }
             }
         }
@@ -229,6 +235,7 @@ fun AyarDialog(tablo: String, anahtar0: String, eski0: String?, yeniAnahtar: Boo
     val yok = stringResource(R.string.ayar_none)
 
     AlertDialog(
+        shape = androidx.compose.material3.MaterialTheme.shapes.extraLarge,
         onDismissRequest = { if (!calisiyor) bitti(null) },
         title = {
             Text(if (onay) stringResource(R.string.ayar_sure) else stringResource(R.string.ayar_dialog_title, tablo))
@@ -323,6 +330,7 @@ fun AyarGecmisSekmesi() {
 
     onay?.let { k ->
         AlertDialog(
+            shape = androidx.compose.material3.MaterialTheme.shapes.extraLarge,
             onDismissRequest = { onay = null },
             title = { Text(stringResource(R.string.ayar22_confirm_title)) },
             text = { Text(stringResource(R.string.ayar22_confirm_text, k.tablo + "/" + k.anahtar, k.eski ?: yok)) },
@@ -399,6 +407,7 @@ fun AyarFarkSekmesi() {
 
     onay?.let { s ->
         AlertDialog(
+            shape = androidx.compose.material3.MaterialTheme.shapes.extraLarge,
             onDismissRequest = { onay = null },
             title = { Text(stringResource(R.string.ayar22_confirm_title)) },
             text = { Text(stringResource(R.string.ayar22_confirm_text, s.tamAd, s.once ?: yok)) },

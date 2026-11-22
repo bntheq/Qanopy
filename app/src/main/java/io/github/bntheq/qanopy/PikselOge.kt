@@ -1,5 +1,6 @@
 package io.github.bntheq.qanopy
 
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -42,10 +43,10 @@ fun Button(
 ) {
     androidx.compose.material3.Button(
         onClick = onClick,
-        modifier = modifier,
+        modifier = modifier.heightIn(min = 56.dp),
         enabled = enabled,
         shape = PikselDugme,
-        content = content
+        content = { BuyukYazi { content() } }
     )
 }
 
@@ -58,11 +59,11 @@ fun OutlinedButton(
 ) {
     androidx.compose.material3.OutlinedButton(
         onClick = onClick,
-        modifier = modifier.pikselCerceveRenk(enabled, 12.dp),
+        modifier = modifier.heightIn(min = 56.dp).pikselCerceveRenk(enabled, 12.dp),
         enabled = enabled,
         shape = PikselDugme,
         border = null,
-        content = content
+        content = { BuyukYazi { content() } }
     )
 }
 

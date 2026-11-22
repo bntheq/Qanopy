@@ -99,7 +99,7 @@ fun Ekran() {
 
         val d = durum
         if (d == null) {
-            CircularProgressIndicator()
+            PikselYukleme()
             Text(stringResource(R.string.kontrol_ediliyor))
         } else if (!d.cihazUygun) {
             Kart(

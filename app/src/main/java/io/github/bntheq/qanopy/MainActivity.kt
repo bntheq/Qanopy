@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.MotionScheme
+import androidx.compose.material3.Typography
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.unit.Dp
@@ -24,10 +25,16 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AyarMotoru.baglam = applicationContext
+        Tercih.yukle(applicationContext)
         setContent {
             val ctx = LocalContext.current
-            val koyu = isSystemInDarkTheme()
-            val renkler = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val sistemKoyu = isSystemInDarkTheme()
+            val koyu = when (Tercih.tema) {
+                1 -> false
+                2 -> true
+                else -> sistemKoyu
+            }
+            val renkler = if (Tercih.dinamikRenk && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 if (koyu) dynamicDarkColorScheme(ctx) else dynamicLightColorScheme(ctx)
             } else {
                 if (koyu) darkColorScheme() else lightColorScheme()
@@ -36,7 +43,7 @@ class MainActivity : ComponentActivity() {
                 colorScheme = renkler,
                 motionScheme = MotionScheme.expressive(),
                 shapes = PikselSekiller,
-                typography = PikselYazi
+                typography = if (Tercih.pikselYazi) PikselYazi else Typography()
             ) {
                 CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
                     AyarEkran()

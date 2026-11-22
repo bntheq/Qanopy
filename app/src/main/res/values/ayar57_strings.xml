@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ayar57_button_desc">Ayarlar</string>
+    <string name="ayar57_theme">Tema</string>
+    <string name="ayar57_theme_system">Sistemi izle</string>
+    <string name="ayar57_theme_light">Açık</string>
+    <string name="ayar57_theme_dark">Koyu</string>
+    <string name="ayar57_color">Renk</string>
+    <string name="ayar57_color_dynamic">Duvar kâğıdı renkleri</string>
+    <string name="ayar57_color_help">Kapalıyken sabit standart palet kullanılır.</string>
+    <string name="ayar57_font">Yazı</string>
+    <string name="ayar57_font_pixel">Piksel yazı (şimdilik sabit genişlikli sistem yazısı)</string>
+    <string name="ayar57_font_system">Sistem yazısı</string>
+    <string name="ayar57_font_help">Kendi çizdiğin piksel font hazır olunca buraya eklenecek.</string>
+    <string name="ayar57_about">Hakkında</string>
+    <string name="ayar57_version">Sürüm: %1$s</string>
+    <string name="ayar57_license">Lisans: GPL-3.0</string>
+    <string name="ayar57_github">GitHub sayfasını aç</string>
+</resources>
