@@ -92,9 +92,10 @@ fun Ekran() {
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(20.dp),
+            .padding(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
+        UstBolum()
         Text(stringResource(R.string.surum_etiket, surum), style = MaterialTheme.typography.titleSmall)
 
         val d = durum

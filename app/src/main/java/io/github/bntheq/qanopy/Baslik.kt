@@ -23,13 +23,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun QanopyBaslik(onAyar: () -> Unit) {
+fun QanopyBaslik(yan: androidx.compose.ui.unit.Dp = 12.dp, dikey: androidx.compose.ui.unit.Dp = 8.dp, onAyar: () -> Unit) {
     val cs = MaterialTheme.colorScheme
     val aciklama = stringResource(R.string.ayar57_button_desc)
     Box(
         Modifier
             .fillMaxWidth()
-            .padding(horizontal = 12.dp, vertical = 8.dp)
+            .padding(horizontal = yan, vertical = dikey)
             .clip(MaterialTheme.shapes.extraLarge)
             .background(cs.primaryContainer)
             .padding(horizontal = 20.dp, vertical = 14.dp)

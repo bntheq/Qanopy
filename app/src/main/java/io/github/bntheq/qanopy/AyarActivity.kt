@@ -107,27 +107,34 @@ fun AyarEkran() {
     val kapsam = androidx.compose.runtime.rememberCoroutineScope()
     var ayarAcik by androidx.compose.runtime.saveable.rememberSaveable { androidx.compose.runtime.mutableStateOf(false) }
     androidx.activity.compose.BackHandler(enabled = ayarAcik) { ayarAcik = false }
+    val ust: @Composable () -> Unit = {
+        Column {
+            QanopyBaslik(0.dp, 0.dp) { ayarAcik = !ayarAcik }
+            PikselSekmeSatiri(sayfa.currentPage, basliklar) {
+                kapsam.launch { sayfa.animateScrollToPage(it) }
+            }
+        }
+    }
     Scaffold { pad ->
         Column(Modifier.padding(pad).fillMaxSize().navigationBarsPadding()) {
-            QanopyBaslik { ayarAcik = !ayarAcik }
             if (ayarAcik) {
+                QanopyBaslik { ayarAcik = !ayarAcik }
                 UygulamaAyarlari()
             } else {
-                PikselSekmeSatiri(sayfa.currentPage, basliklar) {
-                    kapsam.launch { sayfa.animateScrollToPage(it) }
-                }
-                androidx.compose.foundation.pager.HorizontalPager(
-                    state = sayfa,
-                    beyondViewportPageCount = 1,
-                    modifier = Modifier.fillMaxSize()
-                ) { s ->
-                    when (s) {
-                        0 -> Ekran()
-                        1 -> EkranAyarSekmesi()
-                        2 -> AyarListeSekmesi(onbellek)
-                        3 -> AyarGecmisSekmesi()
-                        4 -> AyarFarkSekmesi()
-                        else -> AyarTestSekmesi()
+                androidx.compose.runtime.CompositionLocalProvider(LocalUst provides ust) {
+                    androidx.compose.foundation.pager.HorizontalPager(
+                        state = sayfa,
+                        beyondViewportPageCount = 1,
+                        modifier = Modifier.fillMaxSize()
+                    ) { s ->
+                        when (s) {
+                            0 -> Ekran()
+                            1 -> EkranAyarSekmesi()
+                            2 -> AyarListeSekmesi(onbellek)
+                            3 -> AyarGecmisSekmesi()
+                            4 -> AyarFarkSekmesi()
+                            else -> AyarTestSekmesi()
+                        }
                     }
                 }
             }
@@ -165,6 +172,7 @@ fun AyarListeSekmesi(onbellek: MutableMap<String, Map<String, String>>) {
         Modifier.fillMaxSize().padding(horizontal = 12.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
+        UstBolum()
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             AyarMotoru.tablolar.forEach { t ->
                 FilterChip(selected = tablo == t, onClick = { tablo = t }, label = { Text(t) })
@@ -358,6 +366,7 @@ fun AyarGecmisSekmesi() {
         Modifier.fillMaxSize().padding(horizontal = 12.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
+        UstBolum()
         Text(stringResource(R.string.ayar_history_title), style = MaterialTheme.typography.titleSmall)
         mesaj?.let { Text(it) }
         if (calisiyor) LinearProgressIndicator(Modifier.fillMaxWidth())
@@ -439,6 +448,7 @@ fun AyarFarkSekmesi() {
         Modifier.fillMaxSize().padding(horizontal = 12.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
+        UstBolum()
         Text(stringResource(R.string.ayar_diff_help))
         Text(
             onceZ?.let { stringResource(R.string.ayar_before_saved, it) } ?: stringResource(R.string.ayar_no_before),
@@ -543,6 +553,7 @@ fun AyarTestSekmesi() {
         Modifier.fillMaxSize().padding(horizontal = 12.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
+        UstBolum()
         Text(stringResource(R.string.ayar_test_help))
         Button(
             enabled = !calisiyor,

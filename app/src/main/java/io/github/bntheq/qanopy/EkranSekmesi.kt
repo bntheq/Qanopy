@@ -120,6 +120,7 @@ fun EkranAyarSekmesi() {
         Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
+        UstBolum()
         BoyutKarti()
         RenkKart(1) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
