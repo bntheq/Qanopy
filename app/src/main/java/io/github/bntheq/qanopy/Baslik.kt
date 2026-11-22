@@ -19,13 +19,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun QanopyBaslik(yan: androidx.compose.ui.unit.Dp = 12.dp, dikey: androidx.compose.ui.unit.Dp = 8.dp, onAyar: () -> Unit) {
+fun QanopyBaslik(yan: Dp = 12.dp, dikey: Dp = 8.dp, geri: Boolean = false, onAyar: () -> Unit) {
     val cs = MaterialTheme.colorScheme
-    val aciklama = stringResource(R.string.ayar57_button_desc)
+    val aciklama = stringResource(if (geri) R.string.ayar58_back_desc else R.string.ayar57_button_desc)
     Box(
         Modifier
             .fillMaxWidth()
@@ -53,8 +54,15 @@ fun QanopyBaslik(yan: androidx.compose.ui.unit.Dp = 12.dp, dikey: androidx.compo
         ) {
             Canvas(Modifier.size(25.dp)) {
                 val c = size.width / 5f
-                for (i in 0 until 3) {
-                    drawRect(cs.onPrimary, Offset(0f, i * 2 * c), Size(size.width, c))
+                if (geri) {
+                    val hucre = listOf(2 to 0, 1 to 1, 0 to 2, 1 to 2, 2 to 2, 3 to 2, 4 to 2, 1 to 3, 2 to 4)
+                    hucre.forEach { (x, y) ->
+                        drawRect(cs.onPrimary, Offset(x * c, y * c), Size(c, c))
+                    }
+                } else {
+                    for (i in 0 until 3) {
+                        drawRect(cs.onPrimary, Offset(0f, i * 2 * c), Size(size.width, c))
+                    }
                 }
             }
         }

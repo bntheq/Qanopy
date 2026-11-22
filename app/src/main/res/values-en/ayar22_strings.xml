@@ -5,7 +5,7 @@
     <string name="ayar22_src_diff">Restored from Diff tab</string>
     <string name="ayar22_active">Active</string>
     <string name="ayar22_reverted">Undone</string>
-    <string name="ayar22_newer_exists">A newer entry exists for this setting, undo it first.</string>
+    <string name="ayar22_newer_exists">Undo the newer entry first.</string>
     <string name="ayar22_confirm_title">Restore previous value</string>
     <string name="ayar22_confirm_text">%1$s will be restored to: %2$s\n\nThe change is written to the journal and shown in the History tab.</string>
     <string name="ayar22_confirm_yes">Restore</string>

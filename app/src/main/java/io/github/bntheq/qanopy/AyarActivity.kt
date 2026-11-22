@@ -106,6 +106,7 @@ fun AyarEkran() {
     val sayfa = androidx.compose.foundation.pager.rememberPagerState(pageCount = { basliklar.size })
     val kapsam = androidx.compose.runtime.rememberCoroutineScope()
     var ayarAcik by androidx.compose.runtime.saveable.rememberSaveable { androidx.compose.runtime.mutableStateOf(false) }
+    var ekranGoruntu by androidx.compose.runtime.saveable.rememberSaveable { androidx.compose.runtime.mutableStateOf(false) }
     androidx.activity.compose.BackHandler(enabled = ayarAcik) { ayarAcik = false }
     val ust: @Composable () -> Unit = {
         Column {
@@ -118,12 +119,13 @@ fun AyarEkran() {
     Scaffold { pad ->
         Column(Modifier.padding(pad).fillMaxSize().navigationBarsPadding()) {
             if (ayarAcik) {
-                QanopyBaslik { ayarAcik = !ayarAcik }
+                QanopyBaslik(geri = true) { ayarAcik = !ayarAcik }
+                EkranGoruntuKarti(ekranGoruntu) { ekranGoruntu = it }
                 UygulamaAyarlari()
             } else {
-                Column(Modifier.padding(start = 12.dp, top = 8.dp, end = 12.dp)) { ust() }
+                if (!ekranGoruntu) { Column(Modifier.padding(start = 12.dp, top = 8.dp, end = 12.dp)) { ust() } }
                 val bos: @Composable () -> Unit = {}
-                androidx.compose.runtime.CompositionLocalProvider(LocalUst provides bos) {
+                androidx.compose.runtime.CompositionLocalProvider(LocalUst provides (if (ekranGoruntu) ust else bos)) {
                     androidx.compose.foundation.pager.HorizontalPager(
                         state = sayfa,
                         beyondViewportPageCount = 1,

@@ -96,7 +96,7 @@ fun Ekran() {
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         UstBolum()
-        Text(stringResource(R.string.surum_etiket, surum), style = MaterialTheme.typography.titleSmall)
+        SurumRozeti(stringResource(R.string.surum_etiket, surum))
 
         val d = durum
         if (d == null) {

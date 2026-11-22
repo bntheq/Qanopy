@@ -140,22 +140,14 @@ fun EkranAyarSekmesi() {
                     }
                 }
                 mesaj?.let { Text(it) }
-                secenekler.forEach { s ->
-                    val secili = eslesen != null && eslesen.second == s.second
-                    if (secili) {
-                        Button(
-                            onClick = { uygula(s.second) },
-                            enabled = !calisiyor && d != null,
-                            modifier = Modifier.fillMaxWidth()
-                        ) { Text(s.first) }
-                    } else {
-                        OutlinedButton(
-                            onClick = { uygula(s.second) },
-                            enabled = !calisiyor && d != null,
-                            modifier = Modifier.fillMaxWidth()
-                        ) { Text(s.first) }
-                    }
-                }
+                SecenekSatirlari(
+                    secenekler = secenekler,
+                    sutun = 2,
+                    secili = { eslesen != null && eslesen.second == it.second },
+                    etiket = { it.first },
+                    aktif = !calisiyor && d != null,
+                    sec = { uygula(it.second) }
+                )
             }
         }
         YenilemeKarti()

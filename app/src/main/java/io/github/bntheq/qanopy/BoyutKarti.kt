@@ -317,40 +317,24 @@ fun BoyutKarti() {
             mesaj?.let { Text(it) }
 
             Text(stringResource(R.string.boyut33_dpi_head), style = MaterialTheme.typography.labelLarge)
-            dpiSecenek.forEach { s ->
-                val secili = dpiEsles != null && dpiEsles.first == s.first
-                if (secili) {
-                    Button(
-                        onClick = { BoyutMotoru.uygula(ctx, s.second, null) },
-                        enabled = !calisiyor && hazir,
-                        modifier = Modifier.fillMaxWidth()
-                    ) { Text(s.first) }
-                } else {
-                    OutlinedButton(
-                        onClick = { BoyutMotoru.uygula(ctx, s.second, null) },
-                        enabled = !calisiyor && hazir,
-                        modifier = Modifier.fillMaxWidth()
-                    ) { Text(s.first) }
-                }
-            }
+            SecenekSatirlari(
+                secenekler = dpiSecenek,
+                sutun = 2,
+                secili = { dpiEsles != null && dpiEsles.first == it.first },
+                etiket = { it.first },
+                aktif = !calisiyor && hazir,
+                sec = { BoyutMotoru.uygula(ctx, it.second, null) }
+            )
 
             Text(stringResource(R.string.boyut33_font_head), style = MaterialTheme.typography.labelLarge)
-            fontSecenek.forEach { s ->
-                val secili = fontEsles != null && fontEsles.first == s.first
-                if (secili) {
-                    Button(
-                        onClick = { BoyutMotoru.uygula(ctx, null, s.second) },
-                        enabled = !calisiyor && hazir,
-                        modifier = Modifier.fillMaxWidth()
-                    ) { Text(s.first) }
-                } else {
-                    OutlinedButton(
-                        onClick = { BoyutMotoru.uygula(ctx, null, s.second) },
-                        enabled = !calisiyor && hazir,
-                        modifier = Modifier.fillMaxWidth()
-                    ) { Text(s.first) }
-                }
-            }
+            SecenekSatirlari(
+                secenekler = fontSecenek,
+                sutun = 2,
+                secili = { fontEsles != null && fontEsles.first == it.first },
+                etiket = { it.first },
+                aktif = !calisiyor && hazir,
+                sec = { BoyutMotoru.uygula(ctx, null, it.second) }
+            )
         }
     }
 }

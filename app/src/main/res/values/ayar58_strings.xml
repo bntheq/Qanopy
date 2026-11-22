@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ayar58_back_desc">Geri</string>
+    <string name="ayar58_shot_title">Ekran görüntüsü modu</string>
+    <string name="ayar58_shot_help">Açıkken başlık ve sekmeler sayfayla birlikte kayar, kayan ekran görüntüsünde de çıkar. Sadece uzun görüntü alırken aç.</string>
+</resources>

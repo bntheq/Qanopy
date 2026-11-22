@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ayar58_back_desc">Back</string>
+    <string name="ayar58_shot_title">Screenshot mode</string>
+    <string name="ayar58_shot_help">When on, the header and tabs scroll with the page, so they show up in scrolling screenshots. Turn on only while taking a long screenshot.</string>
+</resources>
