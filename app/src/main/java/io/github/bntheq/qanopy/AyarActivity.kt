@@ -121,7 +121,9 @@ fun AyarEkran() {
                 QanopyBaslik { ayarAcik = !ayarAcik }
                 UygulamaAyarlari()
             } else {
-                androidx.compose.runtime.CompositionLocalProvider(LocalUst provides ust) {
+                Column(Modifier.padding(start = 12.dp, top = 8.dp, end = 12.dp)) { ust() }
+                val bos: @Composable () -> Unit = {}
+                androidx.compose.runtime.CompositionLocalProvider(LocalUst provides bos) {
                     androidx.compose.foundation.pager.HorizontalPager(
                         state = sayfa,
                         beyondViewportPageCount = 1,
