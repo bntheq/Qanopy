@@ -272,9 +272,9 @@ fun BoyutKarti() {
     val dpiEsles = if (d == null || d.hata != null) null else dpiSecenek.firstOrNull { it.third == d.gecerli }
     val fontEsles = if (f == null || f.hata != null) null else fontSecenek.firstOrNull { BoyutMotoru.fontAyni(f.deger, it.second) }
 
-    Card(Modifier.fillMaxWidth()) {
+    RenkKart(0) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(stringResource(R.string.boyut33_title), style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(R.string.boyut33_title), style = MaterialTheme.typography.titleLarge, fontWeight = androidx.compose.ui.text.font.FontWeight.Black)
             Text(stringResource(R.string.boyut33_help), style = MaterialTheme.typography.bodyMedium)
             if (bekliyor) {
                 Text(

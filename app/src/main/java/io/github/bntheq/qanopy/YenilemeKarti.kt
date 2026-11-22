@@ -129,9 +129,9 @@ fun YenilemeKarti() {
         }
     }
 
-    Card(Modifier.fillMaxWidth()) {
+    RenkKart(2) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(stringResource(R.string.yenileme32_title), style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(R.string.yenileme32_title), style = MaterialTheme.typography.titleLarge, fontWeight = androidx.compose.ui.text.font.FontWeight.Black)
             Text(stringResource(R.string.yenileme32_help), style = MaterialTheme.typography.bodyMedium)
             if (calisiyor) LinearProgressIndicator(Modifier.fillMaxWidth())
             if (d != null && d.hata != null) {

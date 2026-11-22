@@ -59,9 +59,9 @@ fun DurumCubuguKarti() {
 
     val d = degerler
 
-    Card(Modifier.fillMaxWidth()) {
+    RenkKart(0) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(stringResource(R.string.durum41_title), style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(R.string.durum41_title), style = MaterialTheme.typography.titleLarge, fontWeight = androidx.compose.ui.text.font.FontWeight.Black)
             Text(stringResource(R.string.durum41_help), style = MaterialTheme.typography.bodyMedium)
             mesaj?.let { Text(it) }
             if (d == null) {

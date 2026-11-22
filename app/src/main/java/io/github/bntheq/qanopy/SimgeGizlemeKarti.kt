@@ -147,9 +147,9 @@ fun SimgeGizlemeKarti() {
     }
 
     val o = okuma
-    Card(Modifier.fillMaxWidth()) {
+    RenkKart(2) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(stringResource(R.string.simge43_title), style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(R.string.simge43_title), style = MaterialTheme.typography.titleLarge, fontWeight = androidx.compose.ui.text.font.FontWeight.Black)
             Text(stringResource(R.string.simge43_help), style = MaterialTheme.typography.bodyMedium)
             mesaj?.let { Text(it) }
             if (o == null) {

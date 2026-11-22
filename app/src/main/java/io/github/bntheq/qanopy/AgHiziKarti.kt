@@ -128,9 +128,9 @@ fun AgHiziKarti() {
     val modAktif = d != null && hata == null
     val bagliAktif = modAktif && mod != "0"
 
-    Card(Modifier.fillMaxWidth()) {
+    RenkKart(1) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(stringResource(R.string.ag42_title), style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(R.string.ag42_title), style = MaterialTheme.typography.titleLarge, fontWeight = androidx.compose.ui.text.font.FontWeight.Black)
             Text(stringResource(R.string.ag42_help), style = MaterialTheme.typography.bodyMedium)
             mesaj?.let { Text(it) }
             if (d == null) {

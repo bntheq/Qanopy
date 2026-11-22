@@ -39,11 +39,11 @@ fun Kart(baslik: String, deger: String, aciklama: String? = null, uyari: Boolean
     val renkler = if (uyari) {
         CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer)
     } else {
-        CardDefaults.cardColors()
+        CardDefaults.cardColors(containerColor = kartKap(kartTon(baslik)), contentColor = kartIc(kartTon(baslik)))
     }
-    Card(modifier = Modifier.fillMaxWidth(), colors = renkler) {
+    Card(modifier = Modifier.fillMaxWidth(), shape = MaterialTheme.shapes.extraLarge, colors = renkler) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text(baslik, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
+            Text(baslik, style = MaterialTheme.typography.labelLarge)
             Text(deger, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
             if (aciklama != null) {
                 Text(aciklama, style = MaterialTheme.typography.bodyMedium)
@@ -54,9 +54,9 @@ fun Kart(baslik: String, deger: String, aciklama: String? = null, uyari: Boolean
 
 @Composable
 fun LogKart(baslik: String, metin: String) {
-    Card(modifier = Modifier.fillMaxWidth()) {
+    Card(modifier = Modifier.fillMaxWidth(), shape = MaterialTheme.shapes.extraLarge) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(baslik, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
+            Text(baslik, style = MaterialTheme.typography.labelLarge)
             Text(metin, fontFamily = FontFamily.Monospace, fontSize = 11.sp, lineHeight = 15.sp)
         }
     }
