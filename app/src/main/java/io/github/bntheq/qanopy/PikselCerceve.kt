@@ -4,7 +4,7 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -21,13 +21,12 @@ private fun yola(o: Outline): Path = when (o) {
 }
 
 // Piksel cerceve: dis sekil eksi 1 hucre iceri cekilmis sekil.
-// Cerceve kalinligi tam 1 piksel hucresi (PIKSEL_DP), basamaklarla birlikte cizilir.
-fun Modifier.pikselCerceve(renk: Color, rad: Dp): Modifier = this.drawWithContent {
-    drawContent()
+// Yol yalnizca boyut degisince hesaplanir (onbellek), her karede degil.
+fun Modifier.pikselCerceve(renk: Color, rad: Dp): Modifier = this.drawWithCache {
     val c = PIKSEL_DP.dp.toPx()
     val w = size.width
     val h = size.height
-    if (w > 2f * c && h > 2f * c) {
+    val fark: Path? = if (w > 2f * c && h > 2f * c) {
         val dis = yola(PikselSekil(rad).createOutline(size, layoutDirection, this))
         val r = (rad.toPx() - c).coerceAtLeast(0f)
         val ic = yola(
@@ -35,8 +34,11 @@ fun Modifier.pikselCerceve(renk: Color, rad: Dp): Modifier = this.drawWithConten
                 .createOutline(Size(w - 2f * c, h - 2f * c), layoutDirection, this)
         )
         ic.translate(Offset(c, c))
-        val fark = Path.combine(PathOperation.Difference, dis, ic)
-        drawPath(fark, renk)
+        Path.combine(PathOperation.Difference, dis, ic)
+    } else null
+    onDrawWithContent {
+        drawContent()
+        if (fark != null) drawPath(fark, renk)
     }
 }
 

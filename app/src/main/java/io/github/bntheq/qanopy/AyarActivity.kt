@@ -2,6 +2,7 @@
 
 package io.github.bntheq.qanopy
 
+import kotlinx.coroutines.launch
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -93,7 +94,6 @@ class AyarActivity : ComponentActivity() {
 
 @Composable
 fun AyarEkran() {
-    var sekme by androidx.compose.runtime.saveable.rememberSaveable { androidx.compose.runtime.mutableStateOf(0) }
     val onbellek = remember { mutableStateMapOf<String, Map<String, String>>() }
     val basliklar = listOf(
         R.string.ayar_tab_status,
@@ -103,18 +103,26 @@ fun AyarEkran() {
         R.string.ayar_tab_diff,
         R.string.ayar_tab_test
     )
-    Scaffold(
-        topBar = { TopAppBar(title = { Text(stringResource(R.string.app_name)) }) }
-    ) { pad ->
+    val sayfa = androidx.compose.foundation.pager.rememberPagerState(pageCount = { basliklar.size })
+    val kapsam = androidx.compose.runtime.rememberCoroutineScope()
+    Scaffold { pad ->
         Column(Modifier.padding(pad).fillMaxSize().navigationBarsPadding()) {
-            PikselSekmeSatiri(sekme, basliklar) { sekme = it }
-            when (sekme) {
-                0 -> Ekran()
-                1 -> EkranAyarSekmesi()
-                2 -> AyarListeSekmesi(onbellek)
-                3 -> AyarGecmisSekmesi()
-                4 -> AyarFarkSekmesi()
-                else -> AyarTestSekmesi()
+            QanopyBaslik()
+            PikselSekmeSatiri(sayfa.currentPage, basliklar) {
+                kapsam.launch { sayfa.animateScrollToPage(it) }
+            }
+            androidx.compose.foundation.pager.HorizontalPager(
+                state = sayfa,
+                modifier = Modifier.fillMaxSize()
+            ) { s ->
+                when (s) {
+                    0 -> Ekran()
+                    1 -> EkranAyarSekmesi()
+                    2 -> AyarListeSekmesi(onbellek)
+                    3 -> AyarGecmisSekmesi()
+                    4 -> AyarFarkSekmesi()
+                    else -> AyarTestSekmesi()
+                }
             }
         }
     }
