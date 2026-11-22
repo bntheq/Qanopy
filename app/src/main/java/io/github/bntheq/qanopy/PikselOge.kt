@@ -41,11 +41,19 @@ fun Button(
     enabled: Boolean = true,
     content: @Composable RowScope.() -> Unit
 ) {
+    val cs = MaterialTheme.colorScheme
+    val dolgu = if (enabled) cs.primary else cs.onSurface.copy(alpha = 0.12f)
     androidx.compose.material3.Button(
         onClick = onClick,
-        modifier = modifier.heightIn(min = 56.dp),
+        modifier = modifier.heightIn(min = 56.dp).pikselDugmeCiz(DugmeCizimleri.DOLU, dolgu),
         enabled = enabled,
         shape = PikselDugme,
+        colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+            containerColor = Color.Transparent,
+            contentColor = cs.onPrimary,
+            disabledContainerColor = Color.Transparent,
+            disabledContentColor = cs.onSurface.copy(alpha = 0.38f)
+        ),
         content = { BuyukYazi { content() } }
     )
 }
@@ -57,12 +65,20 @@ fun OutlinedButton(
     enabled: Boolean = true,
     content: @Composable RowScope.() -> Unit
 ) {
+    val cs = MaterialTheme.colorScheme
+    val cizgi = if (enabled) cs.outline else cs.onSurface.copy(alpha = 0.12f)
     androidx.compose.material3.OutlinedButton(
         onClick = onClick,
-        modifier = modifier.heightIn(min = 56.dp).pikselCerceveRenk(enabled, 12.dp),
+        modifier = modifier.heightIn(min = 56.dp).pikselDugmeCiz(DugmeCizimleri.BOS, cizgi),
         enabled = enabled,
         shape = PikselDugme,
         border = null,
+        colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+            containerColor = Color.Transparent,
+            contentColor = cs.primary,
+            disabledContainerColor = Color.Transparent,
+            disabledContentColor = cs.onSurface.copy(alpha = 0.38f)
+        ),
         content = { BuyukYazi { content() } }
     )
 }
