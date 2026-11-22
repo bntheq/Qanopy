@@ -1,9 +1,9 @@
 package io.github.bntheq.qanopy
 
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -13,8 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -52,19 +50,11 @@ fun QanopyBaslik(yan: Dp = 12.dp, dikey: Dp = 8.dp, geri: Boolean = false, onAya
                 .semantics { contentDescription = aciklama },
             contentAlignment = Alignment.Center
         ) {
-            Canvas(Modifier.size(25.dp)) {
-                val c = size.width / 5f
-                if (geri) {
-                    val hucre = listOf(2 to 0, 1 to 1, 0 to 2, 1 to 2, 2 to 2, 3 to 2, 4 to 2, 1 to 3, 2 to 4)
-                    hucre.forEach { (x, y) ->
-                        drawRect(cs.onPrimary, Offset(x * c, y * c), Size(c, c))
-                    }
-                } else {
-                    for (i in 0 until 3) {
-                        drawRect(cs.onPrimary, Offset(0f, i * 2 * c), Size(size.width, c))
-                    }
-                }
-            }
+            PikselIkon(
+                satirlar = if (geri) PikselIkonlar.GERI else PikselIkonlar.AYAR,
+                renk = cs.onPrimary,
+                modifier = Modifier.fillMaxSize()
+            )
         }
     }
 }
