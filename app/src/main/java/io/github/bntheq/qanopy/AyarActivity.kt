@@ -113,6 +113,7 @@ fun AyarEkran() {
             }
             androidx.compose.foundation.pager.HorizontalPager(
                 state = sayfa,
+                beyondViewportPageCount = 1,
                 modifier = Modifier.fillMaxSize()
             ) { s ->
                 when (s) {
