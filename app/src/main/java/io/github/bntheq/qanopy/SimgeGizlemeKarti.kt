@@ -6,10 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Card
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -131,7 +127,7 @@ fun SimgeGizlemeKarti() {
     val bekleyen = onay
     if (bekleyen != null) {
         AlertDialog(
-            shape = androidx.compose.material3.MaterialTheme.shapes.extraLarge,
+            shape = QTema.shapes.extraLarge,
             onDismissRequest = { onay = null },
             title = { Text(stringResource(R.string.simge43_confirm_title)) },
             text = { Text(stringResource(R.string.simge43_confirm_text, stringResource(bekleyen.etiket))) },
@@ -150,8 +146,8 @@ fun SimgeGizlemeKarti() {
     val o = okuma
     RenkKart(2) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(stringResource(R.string.simge43_title), style = MaterialTheme.typography.titleLarge, fontWeight = androidx.compose.ui.text.font.FontWeight.Black)
-            Text(stringResource(R.string.simge43_help), style = MaterialTheme.typography.bodyMedium)
+            Text(stringResource(R.string.simge43_title), style = QTema.typography.titleLarge, fontWeight = androidx.compose.ui.text.font.FontWeight.Black)
+            Text(stringResource(R.string.simge43_help), style = QTema.typography.bodyMedium)
             mesaj?.let { Text(it) }
             if (o == null) {
                 LinearProgressIndicator(Modifier.fillMaxWidth())
@@ -164,14 +160,14 @@ fun SimgeGizlemeKarti() {
                     simgeGruplari.forEach { g ->
                         Text(
                             stringResource(g.baslik),
-                            style = MaterialTheme.typography.labelLarge,
-                            color = MaterialTheme.colorScheme.primary
+                            style = QTema.typography.labelLarge,
+                            color = QTema.colorScheme.primary
                         )
                         g.ogeler.forEach { oge ->
                             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                                 Column(Modifier.weight(1f)) {
                                     Text(stringResource(oge.etiket))
-                                    Text(oge.ad, style = MaterialTheme.typography.bodySmall)
+                                    Text(oge.ad, style = QTema.typography.bodySmall)
                                 }
                                 Switch(
                                     checked = oge.ad !in liste,
@@ -186,7 +182,7 @@ fun SimgeGizlemeKarti() {
                     if (bilinmeyen.isNotEmpty()) {
                         Text(
                             stringResource(R.string.simge43_unknown, bilinmeyen.joinToString(", ")),
-                            style = MaterialTheme.typography.bodySmall
+                            style = QTema.typography.bodySmall
                         )
                     }
                 }

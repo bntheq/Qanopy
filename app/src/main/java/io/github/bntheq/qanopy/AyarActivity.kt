@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package io.github.bntheq.qanopy
 
 import kotlinx.coroutines.launch
@@ -26,20 +24,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ScrollableTabRow
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -78,16 +62,7 @@ class AyarActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val ctx = LocalContext.current
-            val koyu = isSystemInDarkTheme()
-            val renkler = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                if (koyu) dynamicDarkColorScheme(ctx) else dynamicLightColorScheme(ctx)
-            } else {
-                if (koyu) darkColorScheme() else lightColorScheme()
-            }
-            MaterialTheme(colorScheme = renkler) {
-                AyarEkran()
-            }
+            QanopyTema { AyarEkran() }
         }
     }
 }
@@ -116,7 +91,7 @@ fun AyarEkran() {
             }
         }
     }
-    Scaffold { pad ->
+    QanopyZemin { pad ->
         Column(Modifier.padding(pad).fillMaxSize().navigationBarsPadding()) {
             if (ayarAcik) {
                 QanopyBaslik(geri = true) { ayarAcik = !ayarAcik }
@@ -194,22 +169,22 @@ fun AyarListeSekmesi(onbellek: MutableMap<String, Map<String, String>>) {
             OutlinedButton(onClick = { yeniEkle = true }) { Text(stringResource(R.string.ayar_add)) }
         }
         if (yukleniyor) LinearProgressIndicator(Modifier.fillMaxWidth())
-        hata?.let { Text(stringResource(R.string.ayar_error, it), color = MaterialTheme.colorScheme.error) }
+        hata?.let { Text(stringResource(R.string.ayar_error, it), color = QTema.colorScheme.error) }
         mesaj?.let { Text(it) }
         val veri = onbellek[tablo] ?: emptyMap()
         val sonuc = remember(veri, arama) {
             if (arama.isBlank()) veri.entries.toList()
             else veri.entries.filter { it.key.contains(arama, true) || it.value.contains(arama, true) }
         }
-        Text(stringResource(R.string.ayar_count, sonuc.size, veri.size), style = MaterialTheme.typography.labelLarge)
+        Text(stringResource(R.string.ayar_count, sonuc.size, veri.size), style = QTema.typography.labelLarge)
         LazyColumn(Modifier.weight(1f)) {
             items(sonuc, key = { it.key }) { e ->
                 Card(
                     Modifier.fillMaxWidth().padding(vertical = 4.dp).clickable { duzenle = Pair(e.key, e.value) }
                 ) {
                     Column(Modifier.padding(12.dp)) {
-                        Text(e.key, style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary)
-                        Text(e.value.take(150).ifEmpty { "—" }, style = MaterialTheme.typography.bodySmall)
+                        Text(e.key, style = QTema.typography.titleSmall, color = QTema.colorScheme.primary)
+                        Text(e.value.take(150).ifEmpty { "—" }, style = QTema.typography.bodySmall)
                     }
                 }
             }
@@ -247,7 +222,7 @@ fun AyarDialog(tablo: String, anahtar0: String, eski0: String?, yeniAnahtar: Boo
     val yok = stringResource(R.string.ayar_none)
 
     AlertDialog(
-        shape = androidx.compose.material3.MaterialTheme.shapes.extraLarge,
+        shape = QTema.shapes.extraLarge,
         onDismissRequest = { if (!calisiyor) bitti(null) },
         title = {
             Text(if (onay) stringResource(R.string.ayar_sure) else stringResource(R.string.ayar_dialog_title, tablo))
@@ -263,7 +238,7 @@ fun AyarDialog(tablo: String, anahtar0: String, eski0: String?, yeniAnahtar: Boo
                             singleLine = true
                         )
                     } else {
-                        Text(anahtar, style = MaterialTheme.typography.titleSmall)
+                        Text(anahtar, style = QTema.typography.titleSmall)
                         Text(stringResource(R.string.ayar_current, eski0 ?: yok))
                     }
                     OutlinedTextField(
@@ -271,7 +246,7 @@ fun AyarDialog(tablo: String, anahtar0: String, eski0: String?, yeniAnahtar: Boo
                         onValueChange = { deger = it },
                         label = { Text(stringResource(R.string.ayar_new_value)) }
                     )
-                    Text(stringResource(R.string.ayar_warning), style = MaterialTheme.typography.bodySmall)
+                    Text(stringResource(R.string.ayar_warning), style = QTema.typography.bodySmall)
                 } else {
                     Text(
                         stringResource(
@@ -282,9 +257,9 @@ fun AyarDialog(tablo: String, anahtar0: String, eski0: String?, yeniAnahtar: Boo
                             deger
                         )
                     )
-                    Text(stringResource(R.string.ayar_journal_note), style = MaterialTheme.typography.bodySmall)
+                    Text(stringResource(R.string.ayar_journal_note), style = QTema.typography.bodySmall)
                 }
-                hata?.let { Text(it, color = MaterialTheme.colorScheme.error) }
+                hata?.let { Text(it, color = QTema.colorScheme.error) }
             }
         },
         confirmButton = {
@@ -342,7 +317,7 @@ fun AyarGecmisSekmesi() {
 
     onay?.let { k ->
         AlertDialog(
-            shape = androidx.compose.material3.MaterialTheme.shapes.extraLarge,
+            shape = QTema.shapes.extraLarge,
             onDismissRequest = { onay = null },
             title = { Text(stringResource(R.string.ayar22_confirm_title)) },
             text = { Text(stringResource(R.string.ayar22_confirm_text, k.tablo + "/" + k.anahtar, k.eski ?: yok)) },
@@ -371,7 +346,7 @@ fun AyarGecmisSekmesi() {
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         UstBolum()
-        Text(stringResource(R.string.ayar_history_title), style = MaterialTheme.typography.titleSmall)
+        Text(stringResource(R.string.ayar_history_title), style = QTema.typography.titleSmall)
         mesaj?.let { Text(it) }
         if (calisiyor) LinearProgressIndicator(Modifier.fillMaxWidth())
         if (liste.isEmpty()) Text(stringResource(R.string.ayar_history_empty))
@@ -379,14 +354,14 @@ fun AyarGecmisSekmesi() {
             items(liste) { k ->
                 Card(Modifier.fillMaxWidth().padding(vertical = 4.dp)) {
                     Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        Text("${k.zaman}  ${k.tablo}/${k.anahtar}", style = MaterialTheme.typography.titleSmall)
-                        Text("${k.eski ?: yok}  →  ${k.yeni ?: silindi}", style = MaterialTheme.typography.bodySmall)
+                        Text("${k.zaman}  ${k.tablo}/${k.anahtar}", style = QTema.typography.titleSmall)
+                        Text("${k.eski ?: yok}  →  ${k.yeni ?: silindi}", style = QTema.typography.bodySmall)
                         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                            Text(kaynakAd[k.kaynak] ?: k.kaynak, style = MaterialTheme.typography.labelMedium)
+                            Text(kaynakAd[k.kaynak] ?: k.kaynak, style = QTema.typography.labelMedium)
                             Text(
                                 if (k.geriAlindi) geriYazi else aktifYazi,
-                                style = MaterialTheme.typography.labelMedium,
-                                color = if (k.geriAlindi) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.primary
+                                style = QTema.typography.labelMedium,
+                                color = if (k.geriAlindi) QTema.colorScheme.tertiary else QTema.colorScheme.primary
                             )
                         }
                         if (k.geriAlinabilir) {
@@ -394,7 +369,7 @@ fun AyarGecmisSekmesi() {
                                 Text(stringResource(R.string.ayar_undo))
                             }
                         } else if (!k.geriAlindi && k.kaynak != "geri") {
-                            Text(yeniVar, style = MaterialTheme.typography.bodySmall)
+                            Text(yeniVar, style = QTema.typography.bodySmall)
                         }
                     }
                 }
@@ -420,7 +395,7 @@ fun AyarFarkSekmesi() {
 
     onay?.let { s ->
         AlertDialog(
-            shape = androidx.compose.material3.MaterialTheme.shapes.extraLarge,
+            shape = QTema.shapes.extraLarge,
             onDismissRequest = { onay = null },
             title = { Text(stringResource(R.string.ayar22_confirm_title)) },
             text = { Text(stringResource(R.string.ayar22_confirm_text, s.tamAd, s.once ?: yok)) },
@@ -456,7 +431,7 @@ fun AyarFarkSekmesi() {
         Text(stringResource(R.string.ayar_diff_help))
         Text(
             onceZ?.let { stringResource(R.string.ayar_before_saved, it) } ?: stringResource(R.string.ayar_no_before),
-            style = MaterialTheme.typography.labelLarge
+            style = QTema.typography.labelLarge
         )
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Button(
@@ -520,20 +495,20 @@ fun AyarFarkSekmesi() {
             items(sonuc) { s ->
                 Card(Modifier.fillMaxWidth().padding(vertical = 3.dp)) {
                     Column(Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        Text(AyarMotoru.farkMetni(s), style = MaterialTheme.typography.bodySmall)
+                        Text(AyarMotoru.farkMetni(s), style = QTema.typography.bodySmall)
                         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                             Text(
                                 if (s.qanopy) etiketQ else etiketD,
-                                style = MaterialTheme.typography.labelMedium,
-                                color = if (s.qanopy) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.tertiary
+                                style = QTema.typography.labelMedium,
+                                color = if (s.qanopy) QTema.colorScheme.primary else QTema.colorScheme.tertiary
                             )
                             if (bitti[s.tamAd] == true) {
-                                Text(dondu, style = MaterialTheme.typography.labelMedium)
+                                Text(dondu, style = QTema.typography.labelMedium)
                             }
                         }
                         if (bitti[s.tamAd] != true) {
                             if (AyarMotoru.cokSatirli(s)) {
-                                Text(cokSatirYazi, style = MaterialTheme.typography.bodySmall)
+                                Text(cokSatirYazi, style = QTema.typography.bodySmall)
                             } else {
                                 OutlinedButton(enabled = !calisiyor, onClick = { onay = s }) {
                                     Text(stringResource(R.string.ayar22_restore))

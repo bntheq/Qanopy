@@ -5,9 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -61,8 +58,8 @@ fun DurumCubuguKarti() {
 
     RenkKart(0) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(stringResource(R.string.durum41_title), style = MaterialTheme.typography.titleLarge, fontWeight = androidx.compose.ui.text.font.FontWeight.Black)
-            Text(stringResource(R.string.durum41_help), style = MaterialTheme.typography.bodyMedium)
+            Text(stringResource(R.string.durum41_title), style = QTema.typography.titleLarge, fontWeight = androidx.compose.ui.text.font.FontWeight.Black)
+            Text(stringResource(R.string.durum41_help), style = QTema.typography.bodyMedium)
             mesaj?.let { Text(it) }
             if (d == null) {
                 LinearProgressIndicator(Modifier.fillMaxWidth())
@@ -77,11 +74,11 @@ fun DurumCubuguKarti() {
                         Column(Modifier.weight(1f)) {
                             Text(o.second)
                             if (hata != null) {
-                                Text(stringResource(R.string.ayar_error, hata), style = MaterialTheme.typography.bodySmall)
+                                Text(stringResource(R.string.ayar_error, hata), style = QTema.typography.bodySmall)
                             } else if (v == null) {
-                                Text(ayarsiz, style = MaterialTheme.typography.bodySmall)
+                                Text(ayarsiz, style = QTema.typography.bodySmall)
                             } else if (ozel) {
-                                Text(stringResource(R.string.durum41_custom, v), style = MaterialTheme.typography.bodySmall)
+                                Text(stringResource(R.string.durum41_custom, v), style = QTema.typography.bodySmall)
                             }
                         }
                         Switch(

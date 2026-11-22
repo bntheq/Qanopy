@@ -1,7 +1,6 @@
 package io.github.bntheq.qanopy
 
 import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithCache
@@ -44,7 +43,7 @@ fun Modifier.pikselCerceve(renk: Color, rad: Dp): Modifier = this.drawWithCache 
 
 @Composable
 fun Modifier.pikselCerceveRenk(aktif: Boolean, rad: Dp): Modifier {
-    val cs = MaterialTheme.colorScheme
+    val cs = QTema.colorScheme
     val renk = if (aktif) cs.outline else cs.onSurface.copy(alpha = 0.12f)
     return this.pikselCerceve(renk, rad)
 }

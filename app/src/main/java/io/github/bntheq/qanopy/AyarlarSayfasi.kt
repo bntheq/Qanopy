@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -35,7 +33,7 @@ private fun SecimListesi(secenekler: List<String>, secili: Int, sec: (Int) -> Un
 
 @Composable
 private fun AyarBaslik(metin: String) {
-    Text(metin, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black)
+    Text(metin, style = QTema.typography.titleLarge, fontWeight = FontWeight.Black)
 }
 
 @Composable
@@ -77,7 +75,7 @@ fun UygulamaAyarlari() {
                     Text(stringResource(R.string.ayar57_color_dynamic), modifier = Modifier.weight(1f))
                     Switch(checked = Tercih.dinamikRenk, onCheckedChange = { Tercih.renkSec(ctx, it) })
                 }
-                Text(stringResource(R.string.ayar57_color_help), style = MaterialTheme.typography.bodySmall)
+                Text(stringResource(R.string.ayar57_color_help), style = QTema.typography.bodySmall)
             }
         }
         RenkKart(2) {
@@ -90,7 +88,7 @@ fun UygulamaAyarlari() {
                     ),
                     if (Tercih.pikselYazi) 0 else 1
                 ) { Tercih.yaziSec(ctx, it == 0) }
-                Text(stringResource(R.string.ayar57_font_help), style = MaterialTheme.typography.bodySmall)
+                Text(stringResource(R.string.ayar57_font_help), style = QTema.typography.bodySmall)
             }
         }
         RenkKart(0) {

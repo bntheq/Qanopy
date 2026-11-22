@@ -6,9 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -130,34 +127,34 @@ fun AgHiziKarti() {
 
     RenkKart(1) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(stringResource(R.string.ag42_title), style = MaterialTheme.typography.titleLarge, fontWeight = androidx.compose.ui.text.font.FontWeight.Black)
-            Text(stringResource(R.string.ag42_help), style = MaterialTheme.typography.bodyMedium)
+            Text(stringResource(R.string.ag42_title), style = QTema.typography.titleLarge, fontWeight = androidx.compose.ui.text.font.FontWeight.Black)
+            Text(stringResource(R.string.ag42_help), style = QTema.typography.bodyMedium)
             mesaj?.let { Text(it) }
             if (d == null) {
                 LinearProgressIndicator(Modifier.fillMaxWidth())
             } else if (hata != null) {
                 Text(stringResource(R.string.ayar_error, hata))
             } else {
-                Text(stringResource(R.string.ag42_mode_label), style = MaterialTheme.typography.labelLarge)
+                Text(stringResource(R.string.ag42_mode_label), style = QTema.typography.labelLarge)
                 SecenekGrubu(modlar, mod, modAktif) { uygula(AG_MOD, it) }
                 if (mod == null) {
-                    Text(ayarsiz, style = MaterialTheme.typography.bodySmall)
+                    Text(ayarsiz, style = QTema.typography.bodySmall)
                 } else if (modlar.none { it.second == mod }) {
-                    Text(stringResource(R.string.ag42_custom, mod), style = MaterialTheme.typography.bodySmall)
+                    Text(stringResource(R.string.ag42_custom, mod), style = QTema.typography.bodySmall)
                 }
 
-                Text(stringResource(R.string.ag42_unit_label), style = MaterialTheme.typography.labelLarge)
+                Text(stringResource(R.string.ag42_unit_label), style = QTema.typography.labelLarge)
                 SecenekGrubu(birimler, birim, bagliAktif) { uygula(AG_BIRIM, it) }
                 if (birim == null) {
-                    Text(ayarsiz, style = MaterialTheme.typography.bodySmall)
+                    Text(ayarsiz, style = QTema.typography.bodySmall)
                 } else if (birimler.none { it.second == birim }) {
-                    Text(stringResource(R.string.ag42_custom, birim), style = MaterialTheme.typography.bodySmall)
+                    Text(stringResource(R.string.ag42_custom, birim), style = QTema.typography.bodySmall)
                 }
 
                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                     Column(Modifier.weight(1f)) {
                         Text(stringResource(R.string.ag42_autohide))
-                        Text(stringResource(R.string.ag42_autohide_help), style = MaterialTheme.typography.bodySmall)
+                        Text(stringResource(R.string.ag42_autohide_help), style = QTema.typography.bodySmall)
                     }
                     Switch(
                         checked = gizle == "1",

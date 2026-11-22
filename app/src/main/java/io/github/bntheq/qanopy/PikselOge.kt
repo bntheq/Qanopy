@@ -1,18 +1,20 @@
 package io.github.bntheq.qanopy
 
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.toggleable
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -21,18 +23,46 @@ import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 
-// Piksel sekilli oge seti. Ayni isimli fonksiyonlar paket icinde oldugu icin
-// material3 importlari silinince butun cagrilar otomatik buraya baglanir.
+// Qanopy'nin kendi ogeleri. Hazir tasarim kutuphanesi yok; her sey burada cizilir.
 
 private val PikselDugme = PikselSekil(12.dp)
 private val PikselIz = PikselSekil(16.dp)
 private val PikselTop = PikselSekil(8.dp)
+
+@Composable
+private fun DugmeTaban(
+    onClick: () -> Unit,
+    modifier: Modifier,
+    enabled: Boolean,
+    zemin: Color,
+    icerik: Color,
+    cerceve: Color?,
+    content: @Composable RowScope.() -> Unit
+) {
+    val m = modifier
+        .heightIn(min = 56.dp)
+        .clip(PikselDugme)
+        .background(zemin)
+        .let { if (cerceve != null) it.pikselCerceve(cerceve, 12.dp) else it }
+        .clickable(enabled = enabled, role = Role.Button, onClick = onClick)
+        .padding(horizontal = 24.dp, vertical = 8.dp)
+    Row(
+        m,
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        CompositionLocalProvider(LocalIcerikRenk provides icerik) {
+            BuyukYazi { content() }
+        }
+    }
+}
 
 @Composable
 fun Button(
@@ -41,20 +71,13 @@ fun Button(
     enabled: Boolean = true,
     content: @Composable RowScope.() -> Unit
 ) {
-    val cs = MaterialTheme.colorScheme
-    val dolgu = if (enabled) cs.primary else cs.onSurface.copy(alpha = 0.12f)
-    androidx.compose.material3.Button(
-        onClick = onClick,
-        modifier = modifier.heightIn(min = 56.dp).pikselDugmeCiz(DugmeCizimleri.DOLU, dolgu),
-        enabled = enabled,
-        shape = PikselDugme,
-        colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-            containerColor = Color.Transparent,
-            contentColor = cs.onPrimary,
-            disabledContainerColor = Color.Transparent,
-            disabledContentColor = cs.onSurface.copy(alpha = 0.38f)
-        ),
-        content = { BuyukYazi { content() } }
+    val cs = QTema.colorScheme
+    DugmeTaban(
+        onClick, modifier, enabled,
+        zemin = if (enabled) cs.primary else cs.onSurface.copy(alpha = 0.12f),
+        icerik = if (enabled) cs.onPrimary else cs.onSurface.copy(alpha = 0.38f),
+        cerceve = null,
+        content = content
     )
 }
 
@@ -65,21 +88,13 @@ fun OutlinedButton(
     enabled: Boolean = true,
     content: @Composable RowScope.() -> Unit
 ) {
-    val cs = MaterialTheme.colorScheme
-    val cizgi = if (enabled) cs.outline else cs.onSurface.copy(alpha = 0.12f)
-    androidx.compose.material3.OutlinedButton(
-        onClick = onClick,
-        modifier = modifier.heightIn(min = 56.dp).pikselDugmeCiz(DugmeCizimleri.BOS, cizgi),
-        enabled = enabled,
-        shape = PikselDugme,
-        border = null,
-        colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-            containerColor = Color.Transparent,
-            contentColor = cs.primary,
-            disabledContainerColor = Color.Transparent,
-            disabledContentColor = cs.onSurface.copy(alpha = 0.38f)
-        ),
-        content = { BuyukYazi { content() } }
+    val cs = QTema.colorScheme
+    DugmeTaban(
+        onClick, modifier, enabled,
+        zemin = Color.Transparent,
+        icerik = if (enabled) cs.primary else cs.onSurface.copy(alpha = 0.38f),
+        cerceve = if (enabled) cs.outline else cs.onSurface.copy(alpha = 0.12f),
+        content = content
     )
 }
 
@@ -90,11 +105,12 @@ fun TextButton(
     enabled: Boolean = true,
     content: @Composable RowScope.() -> Unit
 ) {
-    androidx.compose.material3.TextButton(
-        onClick = onClick,
-        modifier = modifier,
-        enabled = enabled,
-        shape = PikselDugme,
+    val cs = QTema.colorScheme
+    DugmeTaban(
+        onClick, modifier, enabled,
+        zemin = Color.Transparent,
+        icerik = if (enabled) cs.primary else cs.onSurface.copy(alpha = 0.38f),
+        cerceve = null,
         content = content
     )
 }
@@ -106,7 +122,7 @@ fun Switch(
     modifier: Modifier = Modifier,
     enabled: Boolean = true
 ) {
-    val cs = MaterialTheme.colorScheme
+    val cs = QTema.colorScheme
     val iz = if (checked) cs.primary else cs.surfaceVariant
     val kenar = if (checked) cs.primary else cs.outline
     val top = if (checked) cs.onPrimary else cs.outline
@@ -152,7 +168,7 @@ private fun pikselZaman(sureMs: Long): State<Float> {
 
 @Composable
 private fun PikselCubuk(modifier: Modifier, oran: Float?, color: Color, trackColor: Color) {
-    val cs = MaterialTheme.colorScheme
+    val cs = QTema.colorScheme
     val dolu = if (color == Color.Unspecified) cs.primary else color
     val iz = if (trackColor == Color.Unspecified) cs.surfaceVariant else trackColor
     val t = if (oran == null) pikselZaman(1400L) else null
@@ -207,7 +223,7 @@ fun CircularProgressIndicator(
     modifier: Modifier = Modifier,
     color: Color = Color.Unspecified
 ) {
-    val renk = if (color == Color.Unspecified) MaterialTheme.colorScheme.primary else color
+    val renk = if (color == Color.Unspecified) QTema.colorScheme.primary else color
     val t = pikselZaman(1000L)
     Canvas(modifier.size(36.dp)) {
         val c = size.width / 3f

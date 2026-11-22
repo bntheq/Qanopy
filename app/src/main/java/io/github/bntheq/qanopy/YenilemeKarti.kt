@@ -5,9 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -131,20 +128,20 @@ fun YenilemeKarti() {
 
     RenkKart(2) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(stringResource(R.string.yenileme32_title), style = MaterialTheme.typography.titleLarge, fontWeight = androidx.compose.ui.text.font.FontWeight.Black)
-            Text(stringResource(R.string.yenileme32_help), style = MaterialTheme.typography.bodyMedium)
+            Text(stringResource(R.string.yenileme32_title), style = QTema.typography.titleLarge, fontWeight = androidx.compose.ui.text.font.FontWeight.Black)
+            Text(stringResource(R.string.yenileme32_help), style = QTema.typography.bodyMedium)
             if (calisiyor) LinearProgressIndicator(Modifier.fillMaxWidth())
             if (d != null && d.hata != null) {
                 Text(stringResource(R.string.ayar_error, d.hata))
             } else if (d != null) {
                 Text(
                     stringResource(R.string.ekran31_current, eslesen?.first ?: ozel),
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.primary
+                    style = QTema.typography.labelLarge,
+                    color = QTema.colorScheme.primary
                 )
                 Text(
                     stringResource(R.string.yenileme32_values, d.enAz ?: ayarsiz, d.tepe ?: ayarsiz),
-                    style = MaterialTheme.typography.bodySmall
+                    style = QTema.typography.bodySmall
                 )
                 val r = rapor
                 Text(
@@ -152,7 +149,7 @@ fun YenilemeKarti() {
                         R.string.yenileme32_report,
                         if (r == null) bilinmiyor else r.enAz.toString() + " - " + r.tepe.toString()
                     ),
-                    style = MaterialTheme.typography.bodySmall
+                    style = QTema.typography.bodySmall
                 )
             }
             mesaj?.let { Text(it) }

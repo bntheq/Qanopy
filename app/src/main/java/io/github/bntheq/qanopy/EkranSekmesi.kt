@@ -8,9 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -124,19 +121,19 @@ fun EkranAyarSekmesi() {
         BoyutKarti()
         RenkKart(1) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text(stringResource(R.string.ekran31_anim_title), style = MaterialTheme.typography.titleLarge, fontWeight = androidx.compose.ui.text.font.FontWeight.Black)
-                Text(stringResource(R.string.ekran31_anim_help), style = MaterialTheme.typography.bodyMedium)
+                Text(stringResource(R.string.ekran31_anim_title), style = QTema.typography.titleLarge, fontWeight = androidx.compose.ui.text.font.FontWeight.Black)
+                Text(stringResource(R.string.ekran31_anim_help), style = QTema.typography.bodyMedium)
                 if (calisiyor) LinearProgressIndicator(Modifier.fillMaxWidth())
                 if (h != null) {
                     Text(stringResource(R.string.ayar_error, h))
                 } else if (d != null) {
                     Text(
                         stringResource(R.string.ekran31_current, eslesen?.first ?: ozelYazi),
-                        style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.primary
+                        style = QTema.typography.labelLarge,
+                        color = QTema.colorScheme.primary
                     )
                     etiketler.forEach { e ->
-                        Text(e.second + ": " + (d[e.first] ?: ayarsiz), style = MaterialTheme.typography.bodySmall)
+                        Text(e.second + ": " + (d[e.first] ?: ayarsiz), style = QTema.typography.bodySmall)
                     }
                 }
                 mesaj?.let { Text(it) }

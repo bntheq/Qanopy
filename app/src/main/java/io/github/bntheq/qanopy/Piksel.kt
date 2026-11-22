@@ -3,8 +3,6 @@ package io.github.bntheq.qanopy
 import android.content.res.Resources
 import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.material3.Shapes
-import androidx.compose.material3.Typography
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
@@ -104,32 +102,10 @@ class PikselSekil(
     ): CornerBasedShape = PikselSekil(topStart, topEnd, bottomEnd, bottomStart)
 }
 
-val PikselSekiller = Shapes(
+val PikselSekiller = QSekiller(
     extraSmall = PikselSekil(8.dp),
     small = PikselSekil(12.dp),
     medium = PikselSekil(20.dp),
     large = PikselSekil(24.dp),
     extraLarge = PikselSekil(32.dp)
 )
-
-private val mono = FontFamily.Monospace
-
-val PikselYazi: Typography = Typography().let { t ->
-    Typography(
-        displayLarge = t.displayLarge.copy(fontFamily = mono),
-        displayMedium = t.displayMedium.copy(fontFamily = mono),
-        displaySmall = t.displaySmall.copy(fontFamily = mono),
-        headlineLarge = t.headlineLarge.copy(fontFamily = mono),
-        headlineMedium = t.headlineMedium.copy(fontFamily = mono),
-        headlineSmall = t.headlineSmall.copy(fontFamily = mono),
-        titleLarge = t.titleLarge.copy(fontFamily = mono),
-        titleMedium = t.titleMedium.copy(fontFamily = mono),
-        titleSmall = t.titleSmall.copy(fontFamily = mono),
-        bodyLarge = t.bodyLarge.copy(fontFamily = mono),
-        bodyMedium = t.bodyMedium.copy(fontFamily = mono),
-        bodySmall = t.bodySmall.copy(fontFamily = mono),
-        labelLarge = t.labelLarge.copy(fontFamily = mono),
-        labelMedium = t.labelMedium.copy(fontFamily = mono),
-        labelSmall = t.labelSmall.copy(fontFamily = mono)
-    )
-}

@@ -5,9 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -274,13 +271,13 @@ fun BoyutKarti() {
 
     RenkKart(0) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(stringResource(R.string.boyut33_title), style = MaterialTheme.typography.titleLarge, fontWeight = androidx.compose.ui.text.font.FontWeight.Black)
-            Text(stringResource(R.string.boyut33_help), style = MaterialTheme.typography.bodyMedium)
+            Text(stringResource(R.string.boyut33_title), style = QTema.typography.titleLarge, fontWeight = androidx.compose.ui.text.font.FontWeight.Black)
+            Text(stringResource(R.string.boyut33_help), style = QTema.typography.bodyMedium)
             if (bekliyor) {
                 Text(
                     stringResource(R.string.boyut33_confirm, kalan),
-                    style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.error
+                    style = QTema.typography.titleSmall,
+                    color = QTema.colorScheme.error
                 )
                 LinearProgressIndicator(
                     progress = { kalan.toFloat() / BoyutMotoru.SURE },
@@ -306,17 +303,17 @@ fun BoyutKarti() {
             } else if (d != null && f != null) {
                 Text(
                     stringResource(R.string.boyut33_current, d.gecerli ?: 0, f.deger ?: "1.0"),
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.primary
+                    style = QTema.typography.labelLarge,
+                    color = QTema.colorScheme.primary
                 )
                 Text(
                     stringResource(R.string.boyut33_physical, d.fiziksel ?: 0),
-                    style = MaterialTheme.typography.bodySmall
+                    style = QTema.typography.bodySmall
                 )
             }
             mesaj?.let { Text(it) }
 
-            Text(stringResource(R.string.boyut33_dpi_head), style = MaterialTheme.typography.labelLarge)
+            Text(stringResource(R.string.boyut33_dpi_head), style = QTema.typography.labelLarge)
             SecenekSatirlari(
                 secenekler = dpiSecenek,
                 sutun = 2,
@@ -326,7 +323,7 @@ fun BoyutKarti() {
                 sec = { BoyutMotoru.uygula(ctx, it.second, null) }
             )
 
-            Text(stringResource(R.string.boyut33_font_head), style = MaterialTheme.typography.labelLarge)
+            Text(stringResource(R.string.boyut33_font_head), style = QTema.typography.labelLarge)
             SecenekSatirlari(
                 secenekler = fontSecenek,
                 sutun = 2,

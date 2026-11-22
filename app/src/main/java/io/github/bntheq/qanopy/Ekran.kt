@@ -9,10 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -37,16 +33,16 @@ import kotlinx.coroutines.withContext
 @Composable
 fun Kart(baslik: String, deger: String, aciklama: String? = null, uyari: Boolean = false) {
     val renkler = if (uyari) {
-        CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer)
+        CardDefaults.cardColors(containerColor = QTema.colorScheme.errorContainer)
     } else {
         CardDefaults.cardColors(containerColor = kartKap(kartTon(baslik)), contentColor = kartIc(kartTon(baslik)))
     }
-    Card(modifier = Modifier.fillMaxWidth(), shape = MaterialTheme.shapes.extraLarge, colors = renkler) {
+    Card(modifier = Modifier.fillMaxWidth(), shape = QTema.shapes.extraLarge, colors = renkler) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text(baslik, style = MaterialTheme.typography.labelLarge)
-            Text(deger, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+            Text(baslik, style = QTema.typography.labelLarge)
+            Text(deger, style = QTema.typography.titleMedium, fontWeight = FontWeight.SemiBold)
             if (aciklama != null) {
-                Text(aciklama, style = MaterialTheme.typography.bodyMedium)
+                Text(aciklama, style = QTema.typography.bodyMedium)
             }
         }
     }
@@ -54,9 +50,9 @@ fun Kart(baslik: String, deger: String, aciklama: String? = null, uyari: Boolean
 
 @Composable
 fun LogKart(baslik: String, metin: String) {
-    Card(modifier = Modifier.fillMaxWidth(), shape = MaterialTheme.shapes.extraLarge) {
+    Card(modifier = Modifier.fillMaxWidth(), shape = QTema.shapes.extraLarge) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(baslik, style = MaterialTheme.typography.labelLarge)
+            Text(baslik, style = QTema.typography.labelLarge)
             Text(metin, fontFamily = FontFamily.Monospace, fontSize = 11.sp, lineHeight = 15.sp)
         }
     }
