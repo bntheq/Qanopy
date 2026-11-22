@@ -17,8 +17,8 @@ android {
         applicationId = "io.github.bntheq.qanopy"
         minSdk = 29
         targetSdk = 34
-        versionCode = 38
-        versionName = "X5.4fix"
+        versionCode = 39
+        versionName = "X5.5"
     }
 
     signingConfigs {
@@ -33,11 +33,21 @@ android {
     }
 
     buildTypes {
+        getByName("release") {
+            isMinifyEnabled = true
+            if (ksPath != null) {
+                signingConfig = signingConfigs.getByName("qanopy")
+            }
+        }
         getByName("debug") {
             if (ksPath != null) {
                 signingConfig = signingConfigs.getByName("qanopy")
             }
         }
+    }
+
+    lint {
+        checkReleaseBuilds = false
     }
 
     buildFeatures {

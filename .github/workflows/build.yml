@@ -27,11 +27,15 @@ jobs:
       - name: APK derle
         env:
           QANOPY_KEY_PASSWORD: ${{ secrets.QANOPY_KEY_PASSWORD }}
-        run: gradle assembleDebug --no-daemon
+        run: gradle assembleDebug assembleRelease --no-daemon
       - uses: actions/upload-artifact@v4
         with:
           name: Qanopy-debug-apk
           path: app/build/outputs/apk/debug/*.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Qanopy-release-apk
+          path: app/build/outputs/apk/release/*.apk
 
   modul:
     runs-on: ubuntu-latest
