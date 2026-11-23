@@ -128,7 +128,7 @@ val QVURGULAR = listOf(
     qVurgu(R.string.ayar58_c7, Color(0xFF002396)),
     qVurgu(R.string.ayar58_c8, Color(0xFF3000AD)),
     qVurgu(R.string.ayar58_c9, Color(0xFF74B000)),
-    qVurgu(R.string.ayar58_c10, Color(0xFF00D877))
+    qVurgu(R.string.ayar58_c10, Color(0xFF00D890))
 )
 
 val LocalQVurgu = staticCompositionLocalOf<QVurgu> { QVURGULAR[0] }
