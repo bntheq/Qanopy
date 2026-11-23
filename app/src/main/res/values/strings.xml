@@ -33,15 +33,15 @@
     <string name="tekrar_dene">Tekrar kontrol et</string>
     <string name="rapor_kopyala">Raporu kopyala</string>
     <string name="rapor_kopyalandi">Rapor kopyalandı</string>
-    <string name="ayar58_c1">Yeşile çalan mavi</string>
-    <string name="ayar58_c2">Akşam mavisi</string>
-    <string name="ayar58_c3">Çivit</string>
-    <string name="ayar58_c4">Lila</string>
+    <string name="ayar58_c1">Amber</string>
+    <string name="ayar58_c2">Kırmızıya yakın turuncu</string>
+    <string name="ayar58_c3">Sarımsı turuncu</string>
+    <string name="ayar58_c4">Kırmızımsı pembe</string>
     <string name="ayar58_c5">Bordo</string>
-    <string name="ayar58_c6">Ahududu</string>
-    <string name="ayar58_c7">Kızıl turuncu</string>
-    <string name="ayar58_c8">Mandalina</string>
-    <string name="ayar58_c9">Amber</string>
-    <string name="ayar58_c10">Taze yeşil</string>
+    <string name="ayar58_c6">Lila</string>
+    <string name="ayar58_c7">Akşam saati mavisi</string>
+    <string name="ayar58_c8">Mora yakın mavi</string>
+    <string name="ayar58_c9">Sarıya yakın yeşil</string>
+    <string name="ayar58_c10">Yeşile çalan mavi</string>
     <string name="ayar58_color_help">Seçtiğin renk kaydedilir. Şimdilik ekranda henüz kullanılmıyor, yerlerini sen belirleyeceksin.</string>
 </resources>
