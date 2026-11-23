@@ -7,6 +7,7 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -97,7 +98,21 @@ val LocalQRenkler = staticCompositionLocalOf<QRenkler> { KOYU_RENK }
 val LocalQYazi = staticCompositionLocalOf<QYazi> { qYazi(true) }
 val LocalQSekiller = staticCompositionLocalOf<QSekiller> { PikselSekiller }
 // Vurgu renkleri (Palette Swap). Degerler ADD baslangic degerleridir; yenileri burada degisir.
-class QVurgu(val ad: Int, val koyu: Color, val ana: Color, val neon: Color)
+class QVurgu(val ad: Int, val koyu: Color, val ana: Color, val neon: Color) {
+    // 9 ton, en koyudan en aciga: ara, KOYU, ara, ara, ANA, ara, ara, NEON, ara
+    // 1. ara: koyudan siyaha %40; 9. ara: neondan sicak beyaza %40; digerleri esit bolunur.
+    val tonlar: List<Color> = listOf(
+        lerp(koyu, Color(0xFF0B0E10), 0.4f),
+        koyu,
+        lerp(koyu, ana, 1f / 3f),
+        lerp(koyu, ana, 2f / 3f),
+        ana,
+        lerp(ana, neon, 1f / 3f),
+        lerp(ana, neon, 2f / 3f),
+        neon,
+        lerp(neon, Color(0xFFF2EFE9), 0.4f)
+    )
+}
 
 val QVURGULAR = listOf(
     QVurgu(R.string.ayar58_c1, Color(0xFF0D423D), Color(0xFF1CB8A5), Color(0xFF58F0DC)),

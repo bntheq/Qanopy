@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -70,10 +71,8 @@ fun UygulamaAyarlari() {
         RenkKart(1) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 AyarBaslik(stringResource(R.string.ayar57_color))
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Box(Modifier.size(32.dp).background(QTema.vurgu.koyu))
-                    Box(Modifier.size(32.dp).background(QTema.vurgu.ana))
-                    Box(Modifier.size(32.dp).background(QTema.vurgu.neon))
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                    QTema.vurgu.tonlar.forEach { Box(Modifier.weight(1f).height(32.dp).background(it)) }
                 }
                 SecimListesi(
                     QVURGULAR.map { stringResource(it.ad) },
