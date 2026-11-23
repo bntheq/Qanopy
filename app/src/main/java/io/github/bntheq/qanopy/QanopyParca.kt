@@ -1,5 +1,6 @@
 package io.github.bntheq.qanopy
 
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -183,6 +184,7 @@ fun AlertDialog(
 
 @Composable
 fun QanopyZemin(content: @Composable (PaddingValues) -> Unit) {
+    PikselSprite.hazirla(LocalContext.current.applicationContext)
     Box(
         Modifier
             .fillMaxSize()

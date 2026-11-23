@@ -32,9 +32,9 @@ import androidx.compose.ui.unit.dp
 
 // Qanopy'nin kendi ogeleri. Hazir tasarim kutuphanesi yok; her sey burada cizilir.
 
-private val PikselDugme = PikselSekil(12.dp)
-private val PikselIz = PikselSekil(16.dp)
-private val PikselTop = PikselSekil(8.dp)
+private val PikselDugme = PikselSekil(3)
+private val PikselIz = PikselSekil(9)
+private val PikselTop = PikselSekil(0)
 
 @Composable
 private fun DugmeTaban(
@@ -50,7 +50,7 @@ private fun DugmeTaban(
         .heightIn(min = 56.dp)
         .clip(PikselDugme)
         .background(zemin)
-        .let { if (cerceve != null) it.pikselCerceve(cerceve, 12.dp) else it }
+        .let { if (cerceve != null) it.pikselCerceve(cerceve, PikselDugme) else it }
         .clickable(enabled = enabled, role = Role.Button, onClick = onClick)
         .padding(horizontal = 24.dp, vertical = 8.dp)
     Row(
@@ -140,7 +140,7 @@ fun Switch(
             .size(56.dp, 36.dp)
             .alpha(a)
             .background(iz, PikselIz)
-            .pikselCerceve(kenar, 16.dp)
+            .pikselCerceve(kenar, PikselIz)
             .padding(8.dp),
         contentAlignment = Alignment.CenterStart
     ) {

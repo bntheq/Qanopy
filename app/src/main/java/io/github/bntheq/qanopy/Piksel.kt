@@ -1,49 +1,48 @@
 package io.github.bntheq.qanopy
 
-import android.content.res.Resources
 import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import kotlin.math.ceil
-import kotlin.math.roundToInt
-import kotlin.math.sqrt
 
-// Bir piksel kutusunun boyu (dp). 1 = yaricap kac dp ise o kadar piksel.
+// Bir piksel kutusunun boyu (dp).
 const val PIKSEL_DP = 4f
 
-// Rasterizasyon: yaricapi R piksel olan dairenin kosesi.
-// Her satir k (0 = en dis satir) icin, piksel merkezi daire icinde mi diye bakilir.
-// Donen dizi: satirin kenardan kac piksel iceride basladigi.
-private fun kose(rDeger: Float, c: Float): IntArray {
-    val r = (rDeger / c).roundToInt()
-    if (r <= 0) return IntArray(0)
-    val rf = r.toFloat()
-    return IntArray(r) { k ->
-        val dy = rf - k - 0.5f
-        val dx = sqrt(rf * rf - dy * dy)
-        val ic = ceil(rf - 0.5f - dx).toInt()
-        if (ic < 0) 0 else ic
-    }
+// Eski dp degerlerini sprite sekil numarasina cevirir.
+private fun dpNo(d: Dp): Int = when {
+    d.value <= 16f -> 3
+    d.value <= 20f -> 6
+    else -> 7
 }
 
+// Sekil, qanopy_shapes.png icindeki bir hucredir (0..9). Siluet sprite'tan okunur.
 class PikselSekil(
     ts: CornerSize,
     te: CornerSize,
     be: CornerSize,
-    bs: CornerSize
+    bs: CornerSize,
+    val no: Int = 3
 ) : CornerBasedShape(ts, te, be, bs) {
 
     constructor(birim: Dp) : this(
         CornerSize(birim),
         CornerSize(birim),
         CornerSize(birim),
-        CornerSize(birim)
+        CornerSize(birim),
+        dpNo(birim)
+    )
+
+    constructor(no: Int) : this(
+        CornerSize(0.dp),
+        CornerSize(0.dp),
+        CornerSize(0.dp),
+        CornerSize(0.dp),
+        no
     )
 
     override fun createOutline(
@@ -56,38 +55,39 @@ class PikselSekil(
     ): Outline {
         val w = size.width
         val h = size.height
-        val c = PIKSEL_DP * Resources.getSystem().displayMetrics.density
-        // Tum koordinatlar fiziksel piksel cizgisine oturur (kenarlar bulanmasin).
-        fun q(v: Float): Float = Math.round(v).toFloat()
-        val lim = minOf(w, h) / 2f
+        val sp = PikselSprite.al(no) ?: return Outline.Rectangle(Rect(0f, 0f, w, h))
+        val kucuk = minOf(w, h)
+        val ol = PikselSprite.olcek(sp.kose, kucuk)
+        val olf = ol.toFloat()
+        val kr = minOf(sp.kose, (kucuk / 2f / olf).toInt())
         val ltr = layoutDirection == LayoutDirection.Ltr
-        val a = kose(minOf(if (ltr) topStart else topEnd, lim), c)
-        val b = kose(minOf(if (ltr) topEnd else topStart, lim), c)
-        val d = kose(minOf(if (ltr) bottomEnd else bottomStart, lim), c)
-        val e = kose(minOf(if (ltr) bottomStart else bottomEnd, lim), c)
+        val a = IntArray(kr) { (if (ltr) sp.ustSol else sp.ustSag)[it] * ol }
+        val b = IntArray(kr) { (if (ltr) sp.ustSag else sp.ustSol)[it] * ol }
+        val d = IntArray(kr) { (if (ltr) sp.altSag else sp.altSol)[it] * ol }
+        val e = IntArray(kr) { (if (ltr) sp.altSol else sp.altSag)[it] * ol }
         val p = Path()
         // Sol ust: soldan yukari
-        if (a.isNotEmpty()) p.moveTo(q(a[a.size - 1] * c), q(a.size * c)) else p.moveTo(0f, 0f)
+        if (a.isNotEmpty()) p.moveTo(a[a.size - 1].toFloat(), a.size * olf) else p.moveTo(0f, 0f)
         for (k in a.size - 1 downTo 0) {
-            p.lineTo(q(a[k] * c), q((k + 1) * c))
-            p.lineTo(q(a[k] * c), q(k * c))
+            p.lineTo(a[k].toFloat(), (k + 1) * olf)
+            p.lineTo(a[k].toFloat(), k * olf)
         }
         // Sag ust: ustten asagi
         if (b.isEmpty()) p.lineTo(w, 0f)
         for (k in b.indices) {
-            p.lineTo(w - q(b[k] * c), q(k * c))
-            p.lineTo(w - q(b[k] * c), q((k + 1) * c))
+            p.lineTo(w - b[k], k * olf)
+            p.lineTo(w - b[k], (k + 1) * olf)
         }
         // Sag alt: sagdan asagi
         for (k in d.size - 1 downTo 0) {
-            p.lineTo(w - q(d[k] * c), h - q((k + 1) * c))
-            p.lineTo(w - q(d[k] * c), h - q(k * c))
+            p.lineTo(w - d[k], h - (k + 1) * olf)
+            p.lineTo(w - d[k], h - k * olf)
         }
         if (d.isEmpty()) p.lineTo(w, h)
         // Sol alt: alttan yukari
         for (k in e.indices) {
-            p.lineTo(q(e[k] * c), h - q(k * c))
-            p.lineTo(q(e[k] * c), h - q((k + 1) * c))
+            p.lineTo(e[k].toFloat(), h - k * olf)
+            p.lineTo(e[k].toFloat(), h - (k + 1) * olf)
         }
         if (e.isEmpty()) p.lineTo(0f, h)
         p.close()
@@ -99,13 +99,14 @@ class PikselSekil(
         topEnd: CornerSize,
         bottomEnd: CornerSize,
         bottomStart: CornerSize
-    ): CornerBasedShape = PikselSekil(topStart, topEnd, bottomEnd, bottomStart)
+    ): CornerBasedShape = PikselSekil(topStart, topEnd, bottomEnd, bottomStart, no)
 }
 
+// Rol -> sekil: kucuk/standart = Sekil3, kart = Sekil6, buyuk kart ve diyalog = Sekil7.
 val PikselSekiller = QSekiller(
-    extraSmall = PikselSekil(8.dp),
-    small = PikselSekil(12.dp),
-    medium = PikselSekil(20.dp),
-    large = PikselSekil(24.dp),
-    extraLarge = PikselSekil(32.dp)
+    extraSmall = PikselSekil(3),
+    small = PikselSekil(3),
+    medium = PikselSekil(6),
+    large = PikselSekil(7),
+    extraLarge = PikselSekil(7)
 )
