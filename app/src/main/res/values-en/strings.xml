@@ -33,4 +33,15 @@
     <string name="tekrar_dene">Check again</string>
     <string name="rapor_kopyala">Copy report</string>
     <string name="rapor_kopyalandi">Report copied</string>
+    <string name="ayar58_c1">Teal blue</string>
+    <string name="ayar58_c2">Dusk blue</string>
+    <string name="ayar58_c3">Indigo</string>
+    <string name="ayar58_c4">Lilac</string>
+    <string name="ayar58_c5">Burgundy</string>
+    <string name="ayar58_c6">Raspberry</string>
+    <string name="ayar58_c7">Flame orange</string>
+    <string name="ayar58_c8">Tangerine</string>
+    <string name="ayar58_c9">Amber</string>
+    <string name="ayar58_c10">Fresh green</string>
+    <string name="ayar58_color_help">Your chosen color is saved. It is not used on screen yet; you will decide where it goes.</string>
 </resources>

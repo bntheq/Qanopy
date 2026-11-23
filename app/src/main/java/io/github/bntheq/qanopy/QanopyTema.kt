@@ -96,6 +96,24 @@ class QSekiller(
 val LocalQRenkler = staticCompositionLocalOf<QRenkler> { KOYU_RENK }
 val LocalQYazi = staticCompositionLocalOf<QYazi> { qYazi(true) }
 val LocalQSekiller = staticCompositionLocalOf<QSekiller> { PikselSekiller }
+// Vurgu renkleri (Palette Swap). Degerler ADD baslangic degerleridir; yenileri burada degisir.
+class QVurgu(val ad: Int, val koyu: Color, val ana: Color, val neon: Color)
+
+val QVURGULAR = listOf(
+    QVurgu(R.string.ayar58_c1, Color(0xFF0D423D), Color(0xFF1CB8A5), Color(0xFF58F0DC)),
+    QVurgu(R.string.ayar58_c2, Color(0xFF0E2342), Color(0xFF2558A6), Color(0xFF6EA6FA)),
+    QVurgu(R.string.ayar58_c3, Color(0xFF1E1B54), Color(0xFF4F46E5), Color(0xFF8E86FC)),
+    QVurgu(R.string.ayar58_c4, Color(0xFF3C1B54), Color(0xFF9D4EDD), Color(0xFFC77DFF)),
+    QVurgu(R.string.ayar58_c5, Color(0xFF420D18), Color(0xFF8F1D33), Color(0xFFD9415F)),
+    QVurgu(R.string.ayar58_c6, Color(0xFF520E2E), Color(0xFFC92A6D), Color(0xFFF763A1)),
+    QVurgu(R.string.ayar58_c7, Color(0xFF54190B), Color(0xFFE6451C), Color(0xFFFF7A54)),
+    QVurgu(R.string.ayar58_c8, Color(0xFF522B08), Color(0xFFF58216), Color(0xFFFFAE57)),
+    QVurgu(R.string.ayar58_c9, Color(0xFF473208), Color(0xFFE0A01E), Color(0xFFFFCD5E)),
+    QVurgu(R.string.ayar58_c10, Color(0xFF29420D), Color(0xFF76B828), Color(0xFFA8F250))
+)
+
+val LocalQVurgu = staticCompositionLocalOf<QVurgu> { QVURGULAR[0] }
+
 val LocalIcerikRenk = staticCompositionLocalOf<Color> { Color.Unspecified }
 val LocalYaziStili = staticCompositionLocalOf<TextStyle> { TextStyle.Default }
 
@@ -106,6 +124,8 @@ object QTema {
         @Composable @ReadOnlyComposable get() = LocalQYazi.current
     val shapes: QSekiller
         @Composable @ReadOnlyComposable get() = LocalQSekiller.current
+    val vurgu: QVurgu
+        @Composable @ReadOnlyComposable get() = LocalQVurgu.current
 }
 
 @Composable
@@ -123,6 +143,7 @@ fun QanopyTema(content: @Composable () -> Unit) {
         LocalQRenkler provides renk,
         LocalQYazi provides yazi,
         LocalQSekiller provides PikselSekiller,
+        LocalQVurgu provides QVURGULAR[Tercih.vurguNo.coerceIn(0, QVURGULAR.size - 1)],
         LocalIcerikRenk provides renk.onSurface,
         LocalYaziStili provides yazi.bodyLarge
     ) {

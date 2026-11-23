@@ -1,6 +1,9 @@
 package io.github.bntheq.qanopy
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -67,15 +70,16 @@ fun UygulamaAyarlari() {
         RenkKart(1) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 AyarBaslik(stringResource(R.string.ayar57_color))
-                Row(
-                    Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    Text(stringResource(R.string.ayar57_color_dynamic), modifier = Modifier.weight(1f))
-                    Switch(checked = Tercih.dinamikRenk, onCheckedChange = { Tercih.renkSec(ctx, it) })
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Box(Modifier.size(32.dp).background(QTema.vurgu.koyu))
+                    Box(Modifier.size(32.dp).background(QTema.vurgu.ana))
+                    Box(Modifier.size(32.dp).background(QTema.vurgu.neon))
                 }
-                Text(stringResource(R.string.ayar57_color_help), style = QTema.typography.bodySmall)
+                SecimListesi(
+                    QVURGULAR.map { stringResource(it.ad) },
+                    Tercih.vurguNo
+                ) { Tercih.vurguSec(ctx, it) }
+                Text(stringResource(R.string.ayar58_color_help), style = QTema.typography.bodySmall)
             }
         }
         RenkKart(2) {

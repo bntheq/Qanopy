@@ -14,6 +14,8 @@ object Tercih {
         private set
     var pikselYazi by mutableStateOf(true)
         private set
+    var vurguNo by mutableIntStateOf(0)
+        private set
     private var yuklendi = false
 
     fun yukle(ctx: Context) {
@@ -22,6 +24,7 @@ object Tercih {
         tema = p.getInt("tema", 0)
         dinamikRenk = p.getBoolean("dinamik", true)
         pikselYazi = p.getBoolean("piksel_yazi", true)
+        vurguNo = p.getInt("vurgu", 0)
         yuklendi = true
     }
 
@@ -38,5 +41,10 @@ object Tercih {
     fun yaziSec(ctx: Context, piksel: Boolean) {
         pikselYazi = piksel
         ctx.getSharedPreferences(DOSYA, Context.MODE_PRIVATE).edit().putBoolean("piksel_yazi", piksel).apply()
+    }
+
+    fun vurguSec(ctx: Context, v: Int) {
+        vurguNo = v
+        ctx.getSharedPreferences(DOSYA, Context.MODE_PRIVATE).edit().putInt("vurgu", v).apply()
     }
 }
