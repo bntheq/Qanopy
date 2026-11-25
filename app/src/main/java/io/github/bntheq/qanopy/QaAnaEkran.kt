@@ -49,16 +49,29 @@ object QaVarlik {
     lateinit var baglam: Context
     private val onbellek = HashMap<String, ImageBitmap>()
 
-    // ACIK TEMA RENK TABLOSU (GECICI, sonra kullanici sececek)
-    private val ACIK: Map<Int, Int> = mapOf(
-        0xFF000000.toInt() to 0xFFFFE8AF.toInt(),
-        0xFFFFE8AF.toInt() to 0xFF000000.toInt(),
-        0xFFFFFFFF.toInt() to 0xFF000000.toInt(),
-        0xFF323232.toInt() to 0xFFCCBA8C.toInt(),
-        0xFF666666.toInt() to 0xFF998B69.toInt(),
-        0xFF888888.toInt() to 0xFF786D52.toInt(),
-        0xFFAEA181.toInt() to 0xFF5A5340.toInt()
-    )
+    // ACIK TEMA: renkler assets/qa/tema_acik.png resminden okunur (ust satir simdiki renk, alt satir acik temadaki renk)
+    private val ACIK: Map<Int, Int> by lazy {
+        val m = HashMap<Int, Int>()
+        try {
+            val ayar = BitmapFactory.Options()
+            ayar.inScaled = false
+            val t = baglam.assets.open("qa/tema_acik.png").use { BitmapFactory.decodeStream(it, null, ayar) }
+            if (t != null) {
+                val kare = t.height / 2
+                val adet = t.width / kare
+                for (i in 0 until adet) {
+                    val cx = i * kare + kare / 2
+                    val u = t.getPixel(cx, kare / 2)
+                    val a = t.getPixel(cx, kare + kare / 2)
+                    if (u != a) m[u] = a
+                }
+            }
+        } catch (e: Exception) {
+        }
+        m
+    }
+
+    fun esle(renk: Int, acik: Boolean): Int = if (acik) (ACIK[renk] ?: renk) else renk
 
     private fun degisir(ad: String): Boolean =
         !(ad.startsWith("duvar") || ad.contains("ogeleri") || ad.contains("ogesi") || ad.startsWith("telefon_dis"))
@@ -225,7 +238,7 @@ fun qaKokCalistir(komut: String) {
     }
 }
 
-private fun qaRenk(acik: Boolean): Color = if (acik) Color.Black else QA_KREM
+private fun qaRenk(acik: Boolean): Color = if (acik) Color(QaVarlik.esle(0xFFFFE8AF.toInt(), true)) else QA_KREM
 
 private val koseOnbellek = HashMap<Int, Int>()
 
