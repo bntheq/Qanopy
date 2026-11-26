@@ -214,6 +214,37 @@ private val QA_TEMALAR = listOf("OTOMATİK", "AÇIK", "KOYU")
 const val QA_DY = 22
 const val QA_BLOK = 484
 
+private class QaDuzen(
+    val yatay: Boolean,
+    val gen: Int, val yuk: Int,
+    val onX: Int, val onYan: Int, val onY: Int, val onDusus: Int, val onKlip: Int,
+    val dgBoy: Int, val dgX: Int, val dgY: Int, val dgAdimX: Int, val dgAdimY: Int, val dgIkon: Int,
+    val gsY: Int, val gsAdim: Int, val gsMerkez: Int,
+    val altY: Int, val secX: Int, val logoX: Int, val ayarX: Int,
+    val uyX: Int, val uyY: Int, val bittiX: Int, val bittiY: Int,
+    val hIkonY: Int, val hBasY: Int, val hYakY: Int
+)
+
+private val QA_DIKEY = QaDuzen(
+    false, 270, QA_BLOK,
+    87, 68, QA_DY, 17, 270,
+    66, 17, QA_DY + 244, 85, 84, 17,
+    QA_DY + 408, 17, 135,
+    QA_DY + 430, 17, 71, 221,
+    17, 2, 135, 2,
+    QA_DY + 150, QA_DY + 200, QA_DY + 230
+)
+
+private val QA_YATAY = QaDuzen(
+    true, 480, 216,
+    72, 64, 0, 16, 240,
+    64, 248, 8, 80, 80, 16,
+    164, 16, 360,
+    184, 248, 296, 440,
+    10, -2, 120, 30,
+    50, 100, 130
+)
+
 fun qaKokKontrol(sonuc: (Boolean) -> Unit) {
     thread {
         val ok = try {
@@ -268,42 +299,43 @@ private fun qaKose(sekil: Int): Int {
 private class QaKutu(val id: Int, val x: Int, val y: Int, val w: Int, val h: Int)
 private class QaPencere(val x: Int, val y: Int, val w: Int, val h: Int, val kutular: List<QaKutu>)
 
-private fun qaPencere(tur: Int): QaPencere {
+private fun qaPencere(tur: Int, d: QaDuzen = QA_DIKEY): QaPencere {
     val k = ArrayList<QaKutu>()
+    val dx = (d.gen - 270) / 2
     if (tur == 1) {
         val ph = 170
-        val py = (QA_BLOK - ph) / 2
-        for (i in QA_ISLEMLER.indices) k.add(QaKutu(200 + i, 27, py + 40 + i * 42, 216, 34))
-        return QaPencere(15, py, 240, ph, k)
+        val py = (d.yuk - ph) / 2
+        for (i in QA_ISLEMLER.indices) k.add(QaKutu(200 + i, 27 + dx, py + 40 + i * 42, 216, 34))
+        return QaPencere(15 + dx, py, 240, ph, k)
     }
     if (tur == 2) {
         val ph = 212
-        val py = (QA_BLOK - ph) / 2
-        k.add(QaKutu(210, 143, py + 40, 100, 34))
-        k.add(QaKutu(211, 203, py + 82, 40, 34))
-        k.add(QaKutu(212, 203, py + 124, 40, 34))
-        k.add(QaKutu(213, 199, py + 166, 44, 34))
-        return QaPencere(15, py, 240, ph, k)
+        val py = (d.yuk - ph) / 2
+        k.add(QaKutu(210, 143 + dx, py + 40, 100, 34))
+        k.add(QaKutu(211, 203 + dx, py + 82, 40, 34))
+        k.add(QaKutu(212, 203 + dx, py + 124, 40, 34))
+        k.add(QaKutu(213, 199 + dx, py + 166, 44, 34))
+        return QaPencere(15 + dx, py, 240, ph, k)
     }
     val ph = 134
-    val py = (QA_BLOK - ph) / 2
-    k.add(QaKutu(220, 27, py + 88, 104, 34))
-    k.add(QaKutu(221, 139, py + 88, 104, 34))
-    return QaPencere(15, py, 240, ph, k)
+    val py = (d.yuk - ph) / 2
+    k.add(QaKutu(220, 27 + dx, py + 88, 104, 34))
+    k.add(QaKutu(221, 139 + dx, py + 88, 104, 34))
+    return QaPencere(15 + dx, py, 240, ph, k)
 }
 
 private fun qaGostergeSayisi(s: Int): Int = min(s, 5) + (if (s > 5) 1 else 0)
 
-private fun qaGostergeX(s: Int, i: Int): Int {
+private fun qaGostergeX(s: Int, i: Int, d: QaDuzen = QA_DIKEY): Int {
     val c = qaGostergeSayisi(s)
-    val t = c * 8 + (c - 1) * 9
-    return (270 - t) / 2 + i * 17
+    val t = c * 8 + (c - 1) * (d.gsAdim - 8)
+    return (2 * d.gsMerkez - t) / 2 + i * d.gsAdim
 }
 
-private fun qaHedef(lx: Int, ly: Int, pencere: Int, harita: Int, sayfa: Int, sayfaSayisi: Int, n: Int, kokYok: Boolean): Int {
+private fun qaHedef(lx: Int, ly: Int, pencere: Int, harita: Int, sayfa: Int, sayfaSayisi: Int, n: Int, kokYok: Boolean, d: QaDuzen = QA_DIKEY): Int {
     if (harita >= 0) return -1
     if (pencere != 0) {
-        for (k in qaPencere(pencere).kutular) {
+        for (k in qaPencere(pencere, d).kutular) {
             if (lx >= k.x && lx < k.x + k.w && ly >= k.y && ly < k.y + k.h) return k.id
         }
         return -1
@@ -311,21 +343,20 @@ private fun qaHedef(lx: Int, ly: Int, pencere: Int, harita: Int, sayfa: Int, say
     for (i in 0 until 6) {
         val ix = sayfa * 6 + i
         if (ix >= n) continue
-        val bx = 17 + (i % 3) * 85
-        val by = QA_DY + 244 + (i / 3) * 84
-        if (lx >= bx && lx < bx + 66 && ly >= by && ly < by + 66) return ix
+        val bx = d.dgX + (i % 3) * d.dgAdimX
+        val by = d.dgY + (i / 3) * d.dgAdimY
+        if (lx >= bx && lx < bx + d.dgBoy && ly >= by && ly < by + d.dgBoy) return ix
     }
     for (p in 0 until min(sayfaSayisi, 5)) {
-        val gx = qaGostergeX(sayfaSayisi, p)
-        if (lx >= gx - 4 && lx < gx + 12 && ly >= QA_DY + 402 && ly < QA_DY + 422) return 300 + p
+        val gx = qaGostergeX(sayfaSayisi, p, d)
+        if (lx >= gx - 4 && lx < gx + 12 && ly >= d.gsY - 6 && ly < d.gsY + 14) return 300 + p
     }
-    val ay = QA_DY + 430
-    if (ly >= ay && ly < ay + 32) {
-        if (lx >= 17 && lx < 49) return 100
-        if (lx >= 221 && lx < 253) return 101
-        if (lx >= 71 && lx < 199) return 102
+    if (ly >= d.altY && ly < d.altY + 32) {
+        if (lx >= d.secX && lx < d.secX + 32) return 100
+        if (lx >= d.ayarX && lx < d.ayarX + 32) return 101
+        if (lx >= d.logoX && lx < d.logoX + 128) return 102
     }
-    if (kokYok && lx >= 0 && lx < 90 && ly >= 0 && ly < 20) return 103
+    if (kokYok && lx >= d.uyX - 17 && lx < d.uyX + 73 && ly >= d.uyY - 2 && ly < d.uyY + 18) return 103
     return -1
 }
 
@@ -487,14 +518,15 @@ fun QaAnaEkran(onEski: () -> Unit) {
     BoxWithConstraints(Modifier.fillMaxSize().background(zemin)) {
         val gw = constraints.maxWidth
         val gh = constraints.maxHeight
-        val o = maxOf(1, gw / 270)
-        val xk = (gw - 270 * o) / 2
-        val yk = maxOf(0, (gh - QA_BLOK * o) / (2 * o)) * o
+        val dz = if (gw > gh) QA_YATAY else QA_DIKEY
+        val o = if (dz.yatay) maxOf(1, minOf(gw / dz.gen, gh / dz.yuk)) else maxOf(1, gw / 270)
+        val xk = (gw - dz.gen * o) / 2
+        val yk = maxOf(0, (gh - dz.yuk * o) / (2 * o)) * o
 
         fun hedefBul(p: Offset): Int {
             val lx = floor((p.x - xk) / o).toInt()
             val ly = floor((p.y - yk) / o).toInt()
-            return qaHedef(lx, ly, pencere, harita, onizleme / 6, sayfaSayisi, n, kok == false)
+            return qaHedef(lx, ly, pencere, harita, onizleme / 6, sayfaSayisi, n, kok == false, dz)
         }
 
         fun dokun(p: Offset) {
@@ -503,7 +535,7 @@ fun QaAnaEkran(onEski: () -> Unit) {
             val h = hedefBul(p)
             if (pencere != 0) {
                 if (h < 0) {
-                    val w = qaPencere(pencere)
+                    val w = qaPencere(pencere, dz)
                     if (lx < w.x || lx >= w.x + w.w || ly < w.y || ly >= w.y + w.h) {
                         pencere = 0
                         bekleyen = -1
@@ -554,7 +586,7 @@ fun QaAnaEkran(onEski: () -> Unit) {
 
         Canvas(
             Modifier.fillMaxSize()
-                .pointerInput(o, xk, yk) {
+                .pointerInput(o, xk, yk, dz.yatay) {
                     detectTapGestures(
                         onPress = { p ->
                             val h = hedefBul(p)
@@ -569,14 +601,18 @@ fun QaAnaEkran(onEski: () -> Unit) {
                         onTap = { p -> dokun(p) }
                     )
                 }
-                .pointerInput(o, xk, yk) {
+                .pointerInput(o, xk, yk, dz.yatay) {
                     var toplam = 0f
                     var bolge = 0
                     detectHorizontalDragGestures(
                         onDragStart = { p ->
                             toplam = 0f
                             val ly = (p.y - yk) / o
+                            val lx = (p.x - xk) / o
                             bolge = if (pencere != 0 || harita >= 0) 0
+                            else if (dz.yatay && lx < 240) 1
+                            else if (dz.yatay && ly < 176) 2
+                            else if (dz.yatay) 0
                             else if (ly < QA_DY + 230) 1
                             else if (ly < QA_DY + 410) 2
                             else 0
@@ -599,63 +635,65 @@ fun QaAnaEkran(onEski: () -> Unit) {
 
             if (harita >= 0) {
                 val d = QA_OGELER[harita]
-                qaResim(d.dugmeIkon, xk + 119 * o, yk + (QA_DY + 150) * o, o, ak)
-                qaYaziOrta(d.baslik, xk + 135 * o, yk + (QA_DY + 200) * o, o, renk)
-                qaYaziOrta("yakında", xk + 135 * o, yk + (QA_DY + 230) * o, o, renk)
+                qaResim(d.dugmeIkon, xk + (dz.gen / 2 - 16) * o, yk + dz.hIkonY * o, o, ak)
+                qaYaziOrta(d.baslik, xk + (dz.gen / 2) * o, yk + dz.hBasY * o, o, renk)
+                qaYaziOrta("yakında", xk + (dz.gen / 2) * o, yk + dz.hYakY * o, o, renk)
                 return@Canvas
             }
 
             // 1) uyari satiri
-            if (kok == false) qaYazi("root yok", xk + 17 * o, yk + 2 * o, o, renk)
-            if (uc != 0) qaYaziOrta("bitti", xk + 135 * o, yk + 2 * o, o, renk)
+            if (kok == false) qaYazi("root yok", xk + dz.uyX * o, yk + dz.uyY * o, o, renk)
+            // bitti yazisi onizlemeden sonra cizilir
 
             // 2) onizlemeler
-            clipRect(left = xk.toFloat(), top = 0f, right = (xk + 270 * o).toFloat(), bottom = size.height) {
+            clipRect(left = xk.toFloat(), top = 0f, right = (xk + dz.onKlip * o).toFloat(), bottom = size.height) {
                 for (i in QA_OGELER.indices.sortedByDescending { abs(it - konum) }) {
                     val d = i - konum
                     if (abs(d) < 2f) {
-                        val lx = (87 + d * 68f).roundToInt()
-                        val ly = QA_DY + (min(abs(d), 1f) * 17f).roundToInt()
+                        val lx = (dz.onX + d * dz.onYan).roundToInt()
+                        val ly = dz.onY + (min(abs(d), 1f) * dz.onDusus).roundToInt()
                         qaOnizleme(QA_OGELER[i], xk + lx * o, yk + ly * o, o)
                     }
                 }
             }
+
+            if (uc != 0) qaYaziOrta("bitti", xk + dz.bittiX * o, yk + dz.bittiY * o, o, renk)
 
             // 3) 2x3 dugmeler
             val sayfa = onizleme / 6
             for (i in 0 until 6) {
                 val ix = sayfa * 6 + i
                 if (ix >= n) continue
-                val bx = xk + (17 + (i % 3) * 85) * o
-                val by = yk + (QA_DY + 244 + (i / 3) * 84) * o
+                val bx = xk + (dz.dgX + (i % 3) * dz.dgAdimX) * o
+                val by = yk + (dz.dgY + (i / 3) * dz.dgAdimY) * o
                 val b = basili == ix
-                qaCerceve(sekil, bx, by, 66 * o, 66 * o, o, ak != b)
-                qaResim(QA_OGELER[ix].dugmeIkon, bx + 17 * o, by + 17 * o, o, ak != b)
+                qaCerceve(sekil, bx, by, dz.dgBoy * o, dz.dgBoy * o, o, ak != b)
+                qaResim(QA_OGELER[ix].dugmeIkon, bx + dz.dgIkon * o, by + dz.dgIkon * o, o, ak != b)
             }
 
             // 4) sayfa gostergesi
             for (p in 0 until min(sayfaSayisi, 5)) {
                 val ad = if (p == sayfa) "secili_sayfa_gostergesi_8x8.png" else "secili_olmayan_sayfa_gostergesi_8x8.png"
-                qaResim(ad, xk + qaGostergeX(sayfaSayisi, p) * o, yk + (QA_DY + 408) * o, o, ak)
+                qaResim(ad, xk + qaGostergeX(sayfaSayisi, p, dz) * o, yk + dz.gsY * o, o, ak)
             }
             if (sayfaSayisi > 5) {
-                qaResim("daha_fazla_sayfa_gostergesi_8x8.png", xk + qaGostergeX(sayfaSayisi, 5) * o, yk + (QA_DY + 408) * o, o, ak)
+                qaResim("daha_fazla_sayfa_gostergesi_8x8.png", xk + qaGostergeX(sayfaSayisi, 5, dz) * o, yk + dz.gsY * o, o, ak)
             }
 
             // 5) alt satir
-            val ay = yk + (QA_DY + 430) * o
+            val ay = yk + dz.altY * o
             val b1 = basili == 100
-            qaDaire(xk + 17 * o, ay, o, ak != b1)
-            qaResim("secenekler_16x16.png", xk + 25 * o, ay + 8 * o, o, ak != b1)
-            qaResim("qanopy_logo_128x32.png", xk + 71 * o, ay, o, ak)
+            qaDaire(xk + dz.secX * o, ay, o, ak != b1)
+            qaResim("secenekler_16x16.png", xk + (dz.secX + 8) * o, ay + 8 * o, o, ak != b1)
+            qaResim("qanopy_logo_128x32.png", xk + dz.logoX * o, ay, o, ak)
             val b2 = basili == 101
-            qaDaire(xk + 221 * o, ay, o, ak != b2)
-            qaResim("ayarlar_16x16.png", xk + 229 * o, ay + 8 * o, o, ak != b2)
+            qaDaire(xk + dz.ayarX * o, ay, o, ak != b2)
+            qaResim("ayarlar_16x16.png", xk + (dz.ayarX + 8) * o, ay + 8 * o, o, ak != b2)
 
             // 6) pencereler
             if (pencere != 0) {
                 drawRect(Color(0xAA000000))
-                val w = qaPencere(pencere)
+                val w = qaPencere(pencere, dz)
                 val px0 = xk + w.x * o
                 val py0 = yk + w.y * o
                 qaCerceve(sekil, px0, py0, w.w * o, w.h * o, o, ak)
