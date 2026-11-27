@@ -18,7 +18,7 @@ android {
         minSdk = 29
         targetSdk = 34
         versionCode = 68
-        versionName = "X6part5 long time after big update"
+        versionName = "X6part5"
     }
 
     signingConfigs {
