@@ -49,8 +49,15 @@ private val QA_HARITA_KUTULARI: Map<Int, List<QaKutuTanim>> = mapOf(
 
 // zorluk: 0 yesil (kolay), 1 turuncu (orta), 2 kirmizi (zor). Simdilik hepsi turuncu.
 private val QA_ZORLUK_RENK = arrayOf(Color(0xFF00A75C), Color(0xFFDE4600), Color(0xFFE02828))
+private val QA_ZORLUK_SONUK = arrayOf(Color(0xFF00532E), Color(0xFF6F2300), Color(0xFF701414))
 
-fun qaZorluk(harita: Int, parca: Int): Int = 1
+fun qaZorluk(harita: Int, parca: Int): Int = when (harita) {
+    1 -> if (parca == 1 || parca == 2) 2 else 1
+    2 -> 0
+    4 -> if (parca == 1) 2 else 1
+    5 -> 2
+    else -> 1
+}
 
 class QaHaritaVeri(val resim: ImageBitmap, val w: Int, val h: Int, val parcalar: List<IntArray>)
 
@@ -197,10 +204,10 @@ private fun DrawScope.qaHaritaCizgi(ad: String, px: Int, py: Int, o: Int, faz: I
             val ry = py + (a / v.w) * o
             val yanik = ((k - faz) % 4 + 4) % 4 < 2
             drawRect(
-                color = renk,
+                color = if (yanik) renk else QA_ZORLUK_SONUK[qaZorluk(harita, pi).coerceIn(0, 2)],
                 topLeft = Offset(rx.toFloat(), ry.toFloat()),
                 size = Size(o.toFloat(), o.toFloat()),
-                alpha = if (yanik) 1f else 0.3f
+                alpha = 1f
             )
         }
     }
@@ -212,7 +219,7 @@ fun DrawScope.qaHaritaSayfasi(harita: Int, xk: Int, yk: Int, o: Int, ak: Boolean
     val oge = QA_OGELER[harita]
     val px = ox + 16 * o
     val py = oy + 16 * o
-    qaResim("duvar_kagidi.png", px, py, o, false)
+    qaResim(QA_DUVARLAR[QaAyar.duvar.coerceIn(0, QA_DUVARLAR.size - 1)], px, py, o, false)
     qaHaritaCizgi(oge.ad + "_harita.png", px, py, o, faz, harita)
     qaResim("telefon_dis_cerceve_seffaf.png", px, py, o, false)
 

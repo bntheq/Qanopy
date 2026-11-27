@@ -74,7 +74,7 @@ object QaVarlik {
     fun esle(renk: Int, acik: Boolean): Int = if (acik) (ACIK[renk] ?: renk) else renk
 
     private fun degisir(ad: String): Boolean =
-        !(ad.startsWith("duvar") || ad.contains("ogeleri") || ad.contains("ogesi") || ad.startsWith("telefon_dis"))
+        !(ad.startsWith("duvar") || ad.startsWith("qp_") || ad.contains("ogeleri") || ad.contains("ogesi") || ad.startsWith("telefon_dis"))
 
     fun al(ad: String, acik: Boolean = false): ImageBitmap {
         val anahtar = ad + (if (acik) "|a" else "|k")
@@ -159,6 +159,8 @@ object QaAyar {
         private set
     var kose by mutableIntStateOf(7)
         private set
+    var duvar by mutableIntStateOf(0)
+        private set
     private var yuklendi = false
     private fun pref() = QaVarlik.baglam.getSharedPreferences(DOSYA, Context.MODE_PRIVATE)
     fun yukle(c: Context) {
@@ -168,6 +170,7 @@ object QaAyar {
         emin = p.getBoolean("emin", true)
         titresim = p.getBoolean("titresim", true)
         kose = p.getInt("kose", 7).coerceIn(0, 8)
+        duvar = p.getInt("duvar", 0).coerceIn(0, 8)
         yuklendi = true
     }
     fun temaYaz(v: Int) {
@@ -181,6 +184,10 @@ object QaAyar {
     fun titresimYaz(v: Boolean) {
         titresim = v
         pref().edit().putBoolean("titresim", v).apply()
+    }
+    fun duvarYaz(v: Int) {
+        duvar = v
+        pref().edit().putInt("duvar", v).apply()
     }
     fun koseYaz(v: Int) {
         kose = v
@@ -206,6 +213,12 @@ val QA_ISLEMLER = listOf(
     QaIslem("MAGISK AÇ", "monkey -p com.topjohnwu.magisk -c android.intent.category.LAUNCHER 1", false),
     QaIslem("SYSTEMUI YENİDEN BAŞLAT", "killall com.android.systemui", true),
     QaIslem("TELEFONU YENİDEN BAŞLAT", "reboot", true)
+)
+
+val QA_DUVARLAR = listOf(
+    "duvar_kagidi.png",
+    "qp_01_sehir_gecesi.png", "qp_02_uzay.png", "qp_03_sakura_fuji.png", "qp_06_aurora_golu.png",
+    "qp_a1_droid_cayir.png", "qp_a3_astronot_droid.png", "qp_a4_termux_yagmuru.png", "qp_a5_roket.png"
 )
 
 val QA_KOSELER = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9)
@@ -310,12 +323,13 @@ private fun qaPencere(tur: Int, d: QaDuzen = QA_DIKEY): QaPencere {
         return QaPencere(15 + dx, py, 240, ph, k)
     }
     if (tur == 2) {
-        val ph = 212
+        val ph = 254
         val py = (d.yuk - ph) / 2
         k.add(QaKutu(210, 143 + dx, py + 40, 100, 34))
         k.add(QaKutu(211, 203 + dx, py + 82, 40, 34))
         k.add(QaKutu(212, 203 + dx, py + 124, 40, 34))
         k.add(QaKutu(213, 199 + dx, py + 166, 44, 34))
+        k.add(QaKutu(214, 143 + dx, py + 208, 100, 34))
         return QaPencere(15 + dx, py, 240, ph, k)
     }
     val ph = 134
@@ -441,7 +455,7 @@ private fun DrawScope.qaYaziDugme(m: String, x: Int, y: Int, w: Int, h: Int, o: 
 }
 
 private fun DrawScope.qaOnizleme(oge: QaOge, x: Int, y: Int, o: Int) {
-    qaResim("duvar_kagidi.png", x, y, o, false)
+    qaResim(QA_DUVARLAR[QaAyar.duvar.coerceIn(0, QA_DUVARLAR.size - 1)], x, y, o, false)
     qaResim(oge.onizleme, x, y, o, false)
     qaResim("telefon_dis_cerceve_seffaf.png", x, y, o, false)
 }
@@ -584,6 +598,8 @@ fun QaAnaEkran(onEski: () -> Unit) {
                     QaAyar.eminYaz(!QaAyar.emin)
                 } else if (h == 212) {
                     QaAyar.titresimYaz(!QaAyar.titresim)
+                } else if (h == 214) {
+                    QaAyar.duvarYaz((QaAyar.duvar + 1) % QA_DUVARLAR.size)
                 } else if (h == 213) {
                     QaAyar.koseYaz((QaAyar.kose + 1) % QA_KOSELER.size)
                 } else if (h == 220) {
@@ -737,8 +753,8 @@ fun QaAnaEkran(onEski: () -> Unit) {
                     }
                 } else if (pencere == 2) {
                     qaYaziOrta("AYARLAR", xk + (w.x + w.w / 2) * o, py0 + 12 * o, o, renk)
-                    val satirlar = listOf("TEMA", "EMİN MİSİN", "TİTREŞİM", "KÖŞE")
-                    for (r in 0 until 4) {
+                    val satirlar = listOf("TEMA", "EMİN MİSİN", "TİTREŞİM", "KÖŞE", "DUVAR")
+                    for (r in 0 until 5) {
                         qaYazi(satirlar[r], px0 + 12 * o, yk + (w.y + 40 + r * 42 + 8) * o, o, renk)
                     }
                     for (k in w.kutular) {
@@ -750,6 +766,8 @@ fun QaAnaEkran(onEski: () -> Unit) {
                             qaResim(if (QaAyar.emin) "switch_on.png" else "switch_off.png", kx + 4 * o, ky + 10 * o, o, ak)
                         } else if (k.id == 212) {
                             qaResim(if (QaAyar.titresim) "switch_on.png" else "switch_off.png", kx + 4 * o, ky + 10 * o, o, ak)
+                        } else if (k.id == 214) {
+                            qaYaziDugme((QaAyar.duvar + 1).toString() + "/" + QA_DUVARLAR.size, kx, ky, k.w * o, k.h * o, o, sekil, ak, basili == k.id, true)
                         } else if (k.id == 213) {
                             qaYaziDugme(QA_KOSELER[QaAyar.kose.coerceIn(0, QA_KOSELER.size - 1)].toString(), kx, ky, k.w * o, k.h * o, o, sekil, ak, basili == k.id, true)
                         }
