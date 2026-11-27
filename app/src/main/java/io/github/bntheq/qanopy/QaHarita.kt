@@ -40,12 +40,7 @@ private val QH_YERLER: List<IntArray> = listOf(
 class QaKutuTanim(val yer: Int, val ad: String, val pencere: Int)
 
 // harita sirasi: 0 kilit, 1 ana ekran, 2 durum cubugu, 3 navigasyon, 4 cekmece, 5 kontrol paneli
-private val QA_HARITA_KUTULARI: Map<Int, List<QaKutuTanim>> = mapOf(
-    1 to listOf(QaKutuTanim(0, "YAZI BOYUTU", 11), QaKutuTanim(1, "DPI", 10)),
-    2 to listOf(QaKutuTanim(0, "AĞ HIZI", 14), QaKutuTanim(1, "PİL YÜZDESİ", 16), QaKutuTanim(2, "SANİYE", 17), QaKutuTanim(3, "KALIN SAAT", 18), QaKutuTanim(4, "SAAT HAPI", 19), QaKutuTanim(6, "SİMGE\nGİZLE", 15), QaKutuTanim(7, "SAAT\nTARİHİ", 20)),
-    4 to listOf(QaKutuTanim(0, "ANİMASYON", 12)),
-    5 to listOf(QaKutuTanim(0, "YENİLEME", 13))
-)
+private val QA_HARITA_KUTULARI: Map<Int, List<QaKutuTanim>> = emptyMap()
 
 // zorluk: 0 yesil (kolay), 1 turuncu (orta), 2 kirmizi (zor). Simdilik hepsi turuncu.
 private val QA_ZORLUK_RENK = arrayOf(Color(0xFF00A75C), Color(0xFFDD9300), Color(0xFFE02828))
@@ -58,25 +53,6 @@ fun qaZorluk(harita: Int, parca: Int): Int = when (harita) {
     5 -> 2
     else -> 1
 }
-
-// durum cubugu ayar pencereleri: pencere turu -> (etiket, system anahtari)
-private val QA_AYAR_GRUPLARI: Map<Int, List<Pair<String, String>>> = mapOf(
-    16 to listOf(Pair("PİL YÜZDESİ", "status_bar_show_battery_percent")),
-    17 to listOf(Pair("SANİYE", "status_bar_clock_seconds")),
-    18 to listOf(Pair("KALIN SAAT", "status_bar_clock_bold")),
-    19 to listOf(Pair("SAAT HAPI", "statusbar_clock_chip")),
-    20 to listOf(Pair("TARİH GÖSTER", "status_bar_clock_date_display")),
-    21 to listOf(
-        Pair("SANİYE", "status_bar_clock_seconds"),
-        Pair("KALIN SAAT", "status_bar_clock_bold"),
-        Pair("SAAT HAPI", "statusbar_clock_chip"),
-        Pair("TARİH GÖSTER", "status_bar_clock_date_display")
-    )
-)
-private val QA_GRUP_BASLIK: Map<Int, String> = mapOf(
-    16 to "PİL YÜZDESİ", 17 to "SANİYE", 18 to "KALIN SAAT",
-    19 to "SAAT HAPI", 20 to "SAAT TARİHİ", 21 to "SAAT"
-)
 
 class QaHaritaVeri(val resim: ImageBitmap, val w: Int, val h: Int, val parcalar: List<IntArray>)
 
@@ -172,18 +148,7 @@ fun qaHaritaVeri(ad: String): QaHaritaVeri {
 }
 
 // cizgiye basinca acilacak ayar penceresi (0 = ayar yok)
-fun qaCizgiPencere(harita: Int, parca: Int): Int = when (harita) {
-    1 -> when (parca) {
-        0, 1 -> 11
-        2, 3, 4, 5 -> 10
-        6 -> 12
-        else -> 0
-    }
-    2 -> if (parca == 0) 21 else 15
-    4 -> if (parca == 0) 11 else 10
-    5 -> 13
-    else -> 0
-}
+fun qaCizgiPencere(harita: Int, parca: Int): Int = 0
 
 fun qaHaritaPencere(harita: Int, yer: Int): Int {
     val t = QA_HARITA_KUTULARI[harita]?.firstOrNull { it.yer == yer }
@@ -356,7 +321,6 @@ object QaAyarDurum {
     var agBirim by mutableStateOf<String?>(null)
     var agGizle by mutableStateOf<String?>(null)
     var simgeler by mutableStateOf<List<String>>(emptyList())
-    var anahtarlar by mutableStateOf<Map<String, String>>(emptyMap())
 
     private var sonTur = 0
     private val kilit = Any()
@@ -473,18 +437,6 @@ object QaAyarDurum {
                 return
             }
             simgeler = qhListe(o.deger)
-        } else if (tur in 16..21) {
-            val m = LinkedHashMap<String, String>()
-            for (p in (QA_AYAR_GRUPLARI[tur] ?: emptyList())) {
-                val o = AyarMotoru.hizliOku("system", p.second)
-                val oh = o.hata
-                if (oh != null) {
-                    mesaj = oh
-                    return
-                }
-                m[p.second] = o.deger ?: ""
-            }
-            anahtarlar = m
         }
     }
 
@@ -565,22 +517,6 @@ object QaAyarDurum {
         return QaAyarYerlesim(y + 46, "AĞ HIZI", l, e)
     }
 
-    private fun grupYerlesim(tur: Int): QaAyarYerlesim {
-        val l = ArrayList<QaAyarOge>()
-        val e = ArrayList<QaAyarEtiket>()
-        val liste = QA_AYAR_GRUPLARI[tur] ?: emptyList()
-        var ly = 34
-        for (i in liste.indices) {
-            e.add(QaAyarEtiket(12, ly, liste[i].first))
-            val v = anahtarlar[liste[i].second]
-            val s = if (v == "1") 0 else if (v == "0") 1 else -1
-            val y2 = qhIzgara(l, i * 10, ly + 20, 2, listOf("AÇIK", "KAPALI"), s, true)
-            ly = y2 + 2
-        }
-        qhMesaj(e, mesaj, ly)
-        return QaAyarYerlesim(ly + 44, QA_GRUP_BASLIK[tur] ?: "AYAR", l, e)
-    }
-
     private fun simgeYerlesim(): QaAyarYerlesim {
         val l = ArrayList<QaAyarOge>()
         val e = ArrayList<QaAyarEtiket>()
@@ -596,7 +532,6 @@ object QaAyarDurum {
 
     fun yerlesim(tur: Int): QaAyarYerlesim {
         if (tur in 10..13) return sayisalYerlesim(tur)
-        if (tur in 16..21) return grupYerlesim(tur)
         if (tur == 14) return agYerlesim()
         return simgeYerlesim()
     }
@@ -614,8 +549,6 @@ object QaAyarDurum {
             agDokun(g.kod, c)
         } else if (tur == 15) {
             simgeDokun(g.kod, c)
-        } else if (tur in 16..21) {
-            grupDokun(tur, g.kod, c)
         }
     }
 
@@ -722,32 +655,6 @@ object QaAyarDurum {
             return
         }
         yaz(c, anahtar, deger)
-    }
-
-    private fun grupDokun(tur: Int, kod: Int, c: Context) {
-        if (calisiyor) return
-        val liste = QA_AYAR_GRUPLARI[tur] ?: return
-        val i = kod / 10
-        if (i >= liste.size) return
-        val deger = if (kod % 10 == 0) "1" else "0"
-        val anahtar = liste[i].second
-        anahtarlar = anahtarlar + Pair(anahtar, deger)
-        yazSistem(c, anahtar, deger)
-    }
-
-    private fun yazSistem(c: Context, anahtar: String, deger: String) {
-        calisiyor = true
-        mesaj = ""
-        Thread {
-            try {
-                val h = AyarMotoru.yaz(c, "system", anahtar, deger)
-                mesaj = h ?: "UYGULANDI"
-            } catch (e: Exception) {
-                mesaj = e.message ?: "HATA"
-            }
-            surum = surum + 1
-            calisiyor = false
-        }.start()
     }
 
     private fun simgeDokun(kod: Int, c: Context) {

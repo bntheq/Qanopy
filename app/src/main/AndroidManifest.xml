@@ -16,8 +16,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    <service android:name=".YuzenServis" android:exported="false" android:foregroundServiceType="specialUse">
-            <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE" android:value="yuzen_dugme" />
+        <service android:name=".PunchyServis" android:exported="false" android:foregroundServiceType="specialUse" />
+        <service android:name=".QanopyDinleyici" android:exported="true" android:label="Qanopy" android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
         </service>
     </application>
 </manifest>
