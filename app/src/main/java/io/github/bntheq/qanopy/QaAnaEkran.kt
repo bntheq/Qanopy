@@ -269,7 +269,7 @@ fun qaKokCalistir(komut: String) {
     }
 }
 
-private fun qaRenk(acik: Boolean): Color = if (acik) Color(QaVarlik.esle(0xFFFFE8AF.toInt(), true)) else QA_KREM
+fun qaRenk(acik: Boolean): Color = if (acik) Color(QaVarlik.esle(0xFFFFE8AF.toInt(), true)) else QA_KREM
 
 private val koseOnbellek = HashMap<Int, Int>()
 
@@ -296,12 +296,13 @@ private fun qaKose(sekil: Int): Int {
     return sonuc
 }
 
-private class QaKutu(val id: Int, val x: Int, val y: Int, val w: Int, val h: Int)
-private class QaPencere(val x: Int, val y: Int, val w: Int, val h: Int, val kutular: List<QaKutu>)
+class QaKutu(val id: Int, val x: Int, val y: Int, val w: Int, val h: Int)
+class QaPencere(val x: Int, val y: Int, val w: Int, val h: Int, val kutular: List<QaKutu>)
 
 private fun qaPencere(tur: Int, d: QaDuzen = QA_DIKEY): QaPencere {
     val k = ArrayList<QaKutu>()
     val dx = (d.gen - 270) / 2
+    if (tur >= 10) return qaAyarPencere(tur, dx, d.yuk)
     if (tur == 1) {
         val ph = 170
         val py = (d.yuk - ph) / 2
@@ -333,13 +334,19 @@ private fun qaGostergeX(s: Int, i: Int, d: QaDuzen = QA_DIKEY): Int {
 }
 
 private fun qaHedef(lx: Int, ly: Int, pencere: Int, harita: Int, sayfa: Int, sayfaSayisi: Int, n: Int, kokYok: Boolean, d: QaDuzen = QA_DIKEY): Int {
-    if (harita >= 0) return -1
+    if (BoyutDurum.bekliyor) {
+        for (k in qaOnayPencere(d.yuk, (d.gen - 270) / 2).kutular) {
+            if (lx >= k.x && lx < k.x + k.w && ly >= k.y && ly < k.y + k.h) return k.id
+        }
+        return -1
+    }
     if (pencere != 0) {
         for (k in qaPencere(pencere, d).kutular) {
             if (lx >= k.x && lx < k.x + k.w && ly >= k.y && ly < k.y + k.h) return k.id
         }
         return -1
     }
+    if (harita >= 0) return qaHaritaHedef(lx, ly, harita)
     for (i in 0 until 6) {
         val ix = sayfa * 6 + i
         if (ix >= n) continue
@@ -360,17 +367,17 @@ private fun qaHedef(lx: Int, ly: Int, pencere: Int, harita: Int, sayfa: Int, say
     return -1
 }
 
-private fun DrawScope.qaParca(im: ImageBitmap, sx: Int, sy: Int, sw: Int, sh: Int, dx: Int, dy: Int, dw: Int, dh: Int, a: Float = 1f) {
+fun DrawScope.qaParca(im: ImageBitmap, sx: Int, sy: Int, sw: Int, sh: Int, dx: Int, dy: Int, dw: Int, dh: Int, a: Float = 1f) {
     if (sw <= 0 || sh <= 0 || dw <= 0 || dh <= 0) return
     drawImage(im, IntOffset(sx, sy), IntSize(sw, sh), IntOffset(dx, dy), IntSize(dw, dh), alpha = a, filterQuality = FilterQuality.None)
 }
 
-private fun DrawScope.qaResim(ad: String, x: Int, y: Int, o: Int, acik: Boolean, a: Float = 1f) {
+fun DrawScope.qaResim(ad: String, x: Int, y: Int, o: Int, acik: Boolean, a: Float = 1f) {
     val im = QaVarlik.al(ad, acik)
     qaParca(im, 0, 0, im.width, im.height, x, y, im.width * o, im.height * o, a)
 }
 
-private fun DrawScope.qaDaire(x: Int, y: Int, o: Int, acik: Boolean) {
+fun DrawScope.qaDaire(x: Int, y: Int, o: Int, acik: Boolean) {
     val im = QaVarlik.al("qanopy_shapes_32x32.png", acik)
     qaParca(im, 0, 0, 32, 32, x, y, 32 * o, 32 * o)
 }
@@ -389,7 +396,7 @@ private fun DrawScope.qaDokuz(im: ImageBitmap, hx: Int, hy: Int, hs: Int, k: Int
     qaParca(im, hx + k, hy + k, m, m, x + kd, y + kd, w - 2 * kd, h - 2 * kd, a)
 }
 
-private fun DrawScope.qaCerceve(sekil: Int, x: Int, y: Int, w: Int, h: Int, o: Int, acik: Boolean, a: Float = 1f) {
+fun DrawScope.qaCerceve(sekil: Int, x: Int, y: Int, w: Int, h: Int, o: Int, acik: Boolean, a: Float = 1f) {
     val im = QaVarlik.al("qanopy_shapes_32x32.png", acik)
     val hx = (sekil % 5) * 34
     val hy = (sekil / 5) * 34
@@ -397,7 +404,7 @@ private fun DrawScope.qaCerceve(sekil: Int, x: Int, y: Int, w: Int, h: Int, o: I
     qaDokuz(im, hx, hy, 32, k, x, y, w, h, o, a)
 }
 
-private fun DrawScope.qaYazi(m: String, x: Int, y: Int, o: Int, renk: Color, a: Float = 1f) {
+fun DrawScope.qaYazi(m: String, x: Int, y: Int, o: Int, renk: Color, a: Float = 1f) {
     val font = QaVarlik.al("qanopy_font.png")
     var cx = x
     for (ch in m) {
@@ -421,7 +428,7 @@ private fun DrawScope.qaYazi(m: String, x: Int, y: Int, o: Int, renk: Color, a: 
     }
 }
 
-private fun DrawScope.qaYaziOrta(m: String, cx: Int, y: Int, o: Int, renk: Color, a: Float = 1f) {
+fun DrawScope.qaYaziOrta(m: String, cx: Int, y: Int, o: Int, renk: Color, a: Float = 1f) {
     qaYazi(m, cx - QaFont.genislik(m) * o / 2, y, o, renk, a)
 }
 
@@ -457,6 +464,7 @@ fun QaAnaEkran(onEski: () -> Unit) {
     var bekleyen by remember { mutableIntStateOf(-1) }
     var basili by remember { mutableIntStateOf(-1) }
     var kok by remember { mutableStateOf<Boolean?>(null) }
+    var faz by remember { mutableIntStateOf(0) }
 
     val n = QA_OGELER.size
     val sayfaSayisi = (n + 5) / 6
@@ -498,6 +506,17 @@ fun QaAnaEkran(onEski: () -> Unit) {
     }
 
     LaunchedEffect(Unit) { qaKokKontrol { kok = it } }
+    LaunchedEffect(harita) {
+        if (harita >= 0) {
+            while (true) {
+                delay(110)
+                faz = (faz + 1) % 4000
+            }
+        }
+    }
+    LaunchedEffect(pencere, BoyutDurum.surum, QaAyarDurum.surum) {
+        if (pencere >= 10) QaAyarDurum.yukle(pencere) else QaAyarDurum.kapat()
+    }
     LaunchedEffect(ucSayac) {
         if (uc != 0) {
             delay(1500)
@@ -533,6 +552,14 @@ fun QaAnaEkran(onEski: () -> Unit) {
             val lx = floor((p.x - xk) / o).toInt()
             val ly = floor((p.y - yk) / o).toInt()
             val h = hedefBul(p)
+            if (BoyutDurum.bekliyor) {
+                if (h == 230) {
+                    BoyutMotoru.onayla(QaVarlik.baglam)
+                } else if (h == 231) {
+                    BoyutMotoru.geriDon(QaVarlik.baglam, QaVarlik.baglam.getString(R.string.boyut33_reverted))
+                }
+                return
+            }
             if (pencere != 0) {
                 if (h < 0) {
                     val w = qaPencere(pencere, dz)
@@ -566,10 +593,16 @@ fun QaAnaEkran(onEski: () -> Unit) {
                 } else if (h == 221) {
                     bekleyen = -1
                     pencere = 0
+                } else if (h in 500..599) {
+                    QaAyarDurum.dokun(pencere, h)
                 }
                 return
             }
-            if (harita >= 0) return
+            if (harita >= 0 && h in 400..499) {
+                pencere = qaHaritaPencere(harita, h - 400)
+                return
+            }
+            if (harita >= 0 && h != 100 && h != 101) return
             if (h in 0 until 100) {
                 harita = h
             } else if (h == 100) {
@@ -633,13 +666,8 @@ fun QaAnaEkran(onEski: () -> Unit) {
             val renk = qaRenk(ak)
             val sekil = QA_KOSELER[QaAyar.kose.coerceIn(0, QA_KOSELER.size - 1)]
 
-            if (harita >= 0) {
-                val d = QA_OGELER[harita]
-                qaResim(d.dugmeIkon, xk + (dz.gen / 2 - 16) * o, yk + dz.hIkonY * o, o, ak)
-                qaYaziOrta(d.baslik, xk + (dz.gen / 2) * o, yk + dz.hBasY * o, o, renk)
-                qaYaziOrta("yakında", xk + (dz.gen / 2) * o, yk + dz.hYakY * o, o, renk)
-                return@Canvas
-            }
+            if (harita >= 0) qaHaritaSayfasi(harita, xk, yk, o, ak, renk, sekil, basili, faz)
+            if (harita < 0) {
 
             // 1) uyari satiri
             if (kok == false) qaYazi("root yok", xk + dz.uyX * o, yk + dz.uyY * o, o, renk)
@@ -690,8 +718,10 @@ fun QaAnaEkran(onEski: () -> Unit) {
             qaDaire(xk + dz.ayarX * o, ay, o, ak != b2)
             qaResim("ayarlar_16x16.png", xk + (dz.ayarX + 8) * o, ay + 8 * o, o, ak != b2)
 
+            }
             // 6) pencereler
-            if (pencere != 0) {
+            if (BoyutDurum.bekliyor) qaOnayCiz(dz.yuk, (dz.gen - 270) / 2, xk, yk, o, ak, renk, sekil, basili)
+            if (pencere != 0 && !BoyutDurum.bekliyor) {
                 drawRect(Color(0xAA000000))
                 val w = qaPencere(pencere, dz)
                 val px0 = xk + w.x * o
@@ -724,6 +754,8 @@ fun QaAnaEkran(onEski: () -> Unit) {
                             qaYaziDugme(QA_KOSELER[QaAyar.kose.coerceIn(0, QA_KOSELER.size - 1)].toString(), kx, ky, k.w * o, k.h * o, o, sekil, ak, basili == k.id, true)
                         }
                     }
+                } else if (pencere >= 10) {
+                    qaAyarCiz(pencere, w.x, w.y, xk, yk, o, ak, renk, sekil, basili)
                 } else {
                     qaYaziOrta("EMİN MİSİN", xk + (w.x + w.w / 2) * o, py0 + 12 * o, o, renk)
                     if (bekleyen >= 0) {
