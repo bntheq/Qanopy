@@ -316,10 +316,15 @@ private fun qaPencere(tur: Int, d: QaDuzen = QA_DIKEY): QaPencere {
     val k = ArrayList<QaKutu>()
     val dx = (d.gen - 270) / 2
     if (tur >= 10) return qaAyarPencere(tur, dx, d.yuk)
+    if (tur == 4) {
+        val ph4 = 232
+        return QaPencere(15 + dx, (d.yuk - ph4) / 2, 240, ph4, k)
+    }
     if (tur == 1) {
-        val ph = 170
+        val ph = 212
         val py = (d.yuk - ph) / 2
         for (i in QA_ISLEMLER.indices) k.add(QaKutu(200 + i, 27 + dx, py + 40 + i * 42, 216, 34))
+        k.add(QaKutu(203, 27 + dx, py + 40 + QA_ISLEMLER.size * 42, 216, 34))
         return QaPencere(15 + dx, py, 240, ph, k)
     }
     if (tur == 2) {
@@ -520,6 +525,7 @@ fun QaAnaEkran(onEski: () -> Unit) {
     }
 
     LaunchedEffect(Unit) { qaKokKontrol { kok = it } }
+    LaunchedEffect(pencere) { if (pencere == 4) QaPil.baslat() else QaPil.durdur() }
     LaunchedEffect(harita) {
         if (harita >= 0) {
             while (true) {
@@ -592,6 +598,8 @@ fun QaAnaEkran(onEski: () -> Unit) {
                             qaKokCalistir(islem.komut)
                         }
                     }
+                } else if (h == 203) {
+                    if (kok == true) pencere = 4
                 } else if (h == 210) {
                     QaAyar.temaYaz((QaAyar.tema + 1) % 3)
                 } else if (h == 211) {
@@ -751,7 +759,7 @@ fun QaAnaEkran(onEski: () -> Unit) {
                     qaYaziOrta("SEÇENEKLER", xk + (w.x + w.w / 2) * o, py0 + 12 * o, o, renk)
                     for (k in w.kutular) {
                         qaYaziDugme(
-                            QA_ISLEMLER[k.id - 200].ad, xk + k.x * o, yk + k.y * o, k.w * o, k.h * o,
+                            (if (k.id == 203) "PİL PANELİ" else QA_ISLEMLER[k.id - 200].ad), xk + k.x * o, yk + k.y * o, k.w * o, k.h * o,
                             o, sekil, ak, basili == k.id, kok == true
                         )
                     }
@@ -776,6 +784,8 @@ fun QaAnaEkran(onEski: () -> Unit) {
                             qaYaziDugme(QA_KOSELER[QaAyar.kose.coerceIn(0, QA_KOSELER.size - 1)].toString(), kx, ky, k.w * o, k.h * o, o, sekil, ak, basili == k.id, true)
                         }
                     }
+                } else if (pencere == 4) {
+                    qaPilCiz(w.x, w.y, xk, yk, o, renk)
                 } else if (pencere >= 10) {
                     qaAyarCiz(pencere, w.x, w.y, xk, yk, o, ak, renk, sekil, basili)
                 } else {

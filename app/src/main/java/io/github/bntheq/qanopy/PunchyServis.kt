@@ -68,6 +68,14 @@ fun punchyBaslat(c: Context) {
             if (!Settings.canDrawOverlays(c)) {
                 pbKok("appops set " + pk + " SYSTEM_ALERT_WINDOW allow; pm grant " + pk + " android.permission.POST_NOTIFICATIONS")
             }
+            val erisim = pk + "/" + QanopyErisim::class.java.name
+            val ea = pbKok("settings get secure enabled_accessibility_services").trim()
+            if (!ea.contains(erisim)) {
+                val tk2 = "\u0027"
+                val y2 = if (ea.isEmpty() || ea == "null") erisim else ea + ":" + erisim
+                pbKok("settings put secure enabled_accessibility_services " + tk2 + y2 + tk2)
+                pbKok("settings put secure accessibility_enabled 1")
+            }
             val bilesen = pk + "/" + QanopyDinleyici::class.java.name
             var l = pbKok("settings get secure enabled_notification_listeners").trim()
             if (!l.contains(bilesen)) {
@@ -274,6 +282,11 @@ private class PunchyGorunum(c: Context, val s: Float, val kucukW: Int, val buyuk
 }
 
 class PunchyServis : Service() {
+    companion object {
+        @Volatile
+        var kendisi: PunchyServis? = null
+    }
+    private var aktifWm: WindowManager? = null
     private var wm: WindowManager? = null
     private var gorunum: PunchyGorunum? = null
     private var lp: WindowManager.LayoutParams? = null
@@ -317,6 +330,11 @@ class PunchyServis : Service() {
 
     override fun onBind(i: Intent?): IBinder? = null
 
+    fun yenidenKur() {
+        gizle()
+        guncelle()
+    }
+
     override fun onStartCommand(i: Intent?, f: Int, id: Int): Int = START_STICKY
 
     override fun onCreate() {
@@ -331,10 +349,12 @@ class PunchyServis : Service() {
         buyukW = (PB_BUYUK_W * s).toInt()
         buyukH = (PB_BUYUK_H * s).toInt()
         ust = (PB_UST * s).toInt()
+        kendisi = this
         ana.post(bagla)
     }
 
     override fun onDestroy() {
+        kendisi = null
         ana.removeCallbacks(bagla)
         ana.removeCallbacks(gizleGorev)
         try {
@@ -434,9 +454,12 @@ class PunchyServis : Service() {
         val v = PunchyGorunum(this, s, kucukW, buyukW)
         v.onToggle = { gecis(!acik) }
         v.onKontrol = { kontrol(it) }
+        val ak = QanopyErisim.ornek
+        val yw = if (ak != null) (ak.getSystemService(Context.WINDOW_SERVICE) as WindowManager) else wm
+        val tur = if (ak != null) WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY else WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
         val l = WindowManager.LayoutParams(
             kucukW, kucukH,
-            WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+            tur,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
                 WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or
                 WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH or
@@ -450,7 +473,8 @@ class PunchyServis : Service() {
             l.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS
         }
         try {
-            wm?.addView(v, l)
+            yw?.addView(v, l)
+            aktifWm = yw
             gorunum = v
             lp = l
         } catch (e: Exception) {
@@ -466,7 +490,7 @@ class PunchyServis : Service() {
         gorunum = null
         lp = null
         try {
-            wm?.removeView(v)
+            (aktifWm ?: wm)?.removeView(v)
         } catch (e: Exception) {
         }
     }
@@ -490,7 +514,7 @@ class PunchyServis : Service() {
             l.width = (w0 + (w1 - w0) * t).toInt().coerceAtLeast(kucukW)
             l.height = (h0 + (h1 - h0) * t).toInt().coerceAtLeast(kucukH)
             try {
-                wm?.updateViewLayout(v, l)
+                (aktifWm ?: wm)?.updateViewLayout(v, l)
             } catch (e: Exception) {
             }
         }
