@@ -14,6 +14,7 @@ class MainActivity : ComponentActivity() {
         Tercih.yukle(applicationContext)
         QaVarlik.baglam = applicationContext
         QaAyar.yukle(applicationContext)
+        yuzenBaslat(applicationContext)
         setContent {
             QanopyTema {
                 var eski by remember { mutableStateOf(false) }

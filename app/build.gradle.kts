@@ -17,7 +17,7 @@ android {
         applicationId = "io.github.bntheq.qanopy"
         minSdk = 29
         targetSdk = 34
-        versionCode = 66
+        versionCode = 67
         versionName = "X6p4fix2"
     }
 

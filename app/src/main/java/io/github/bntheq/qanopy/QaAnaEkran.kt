@@ -216,7 +216,7 @@ val QA_ISLEMLER = listOf(
 )
 
 val QA_DUVARLAR = listOf(
-    "duvar_kagidi.png",
+    "duvar_kagidi_2.png",
     "qp_01_sehir_gecesi.png", "qp_02_uzay.png", "qp_03_sakura_fuji.png", "qp_06_aurora_golu.png",
     "qp_a1_droid_cayir.png", "qp_a3_astronot_droid.png", "qp_a4_termux_yagmuru.png", "qp_a5_roket.png"
 )
@@ -612,6 +612,10 @@ fun QaAnaEkran(onEski: () -> Unit) {
                 } else if (h in 500..599) {
                     QaAyarDurum.dokun(pencere, h)
                 }
+                return
+            }
+            if (harita >= 0 && h in 450..459) {
+                pencere = qaCizgiPencere(harita, h - 450)
                 return
             }
             if (harita >= 0 && h in 400..499) {
